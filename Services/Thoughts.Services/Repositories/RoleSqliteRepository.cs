@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 
 using Thoughts.DAL.Entities.Base;
 using Thoughts.DAL.Sqlite;
+using Thoughts.Services.Repositories.Base;
 
 namespace Thoughts.Services.Repositories;
 

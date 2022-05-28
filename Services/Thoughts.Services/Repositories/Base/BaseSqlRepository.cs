@@ -6,7 +6,7 @@ using Thoughts.DAL.Sqlite;
 using Thoughts.Interfaces.Base.Entities;
 using Thoughts.Interfaces.Base.Repositories;
 
-namespace Thoughts.Services.Repositories;
+namespace Thoughts.Services.Repositories.Base;
 
 public abstract class BaseSqlRepository<T> : IRepository<T> where T : class, IEntity<int>
 {
