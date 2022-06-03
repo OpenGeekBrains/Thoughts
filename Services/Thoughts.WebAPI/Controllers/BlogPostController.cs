@@ -120,28 +120,24 @@ namespace Thoughts.WebAPI.Controllers
         }
 
         /// <summary>Получить все страницы с постами пользователя по его идентификатору (есть TODO блок)</summary>
-        /// <param name="UserId">Идентификатор пользователя</param>
-        /// <param name="PageIndex">Номер страницы</param>
-        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="dto">DTO просмотра страниц постов пользователя</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Страница с перечислением всех постов пользователя</returns>
-        [HttpGet("posts/users/{UserId}/pages/{PageIndex}-{PageSize}")]
-        public async Task<IActionResult> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default)
+        [HttpPost("posts/users/{UserId}/pages/{PageIndex}-{PageSize}")]
+        public async Task<IActionResult> GetAllPostsByUserIdPageAsync([FromBody] UserPostsPageDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.GetAllPostsByUserIdPageAsync(UserId, PageIndex, PageSize, Cancel);
+            var result = await _manager.GetAllPostsByUserIdPageAsync(dto.UserId, dto.PageIndex, dto.PageSize, Cancel);
             return Ok(result);
         }
 
         /// <summary>Получить определённое количество постов пользователя</summary>
-        /// <param name="UserId">Идентификатор пользователя</param>
-        /// <param name="Skip">Количество пропускаемых элементов</param>
-        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="dto">DTO просмотра определённого количества постов пользователя</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Перечисление постов пользователя</returns>
-        [HttpGet("posts/users/{UserId}/{Skip}-{Take}")]
-        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default)
+        [HttpPost("posts/users/{UserId}/{Skip}-{Take}")]
+        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync([FromBody] UserPostsSkipTakeDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.GetAllPostsByUserIdSkipTakeAsync(UserId, Skip, Take, Cancel);
+            var result = await _manager.GetAllPostsByUserIdSkipTakeAsync(dto.UserId, dto.Skip, dto.Take, Cancel);
             return Ok(result);
         }
 
@@ -156,26 +152,24 @@ namespace Thoughts.WebAPI.Controllers
         }
 
         /// <summary>Получить страницу со всеми постами</summary>
-        /// <param name="PageIndex">Номер страницы</param>
-        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="dto">DTO страницы постов</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Страница с постами</returns>
         [HttpGet("posts/pages/{PageIndex}/{PageSize}")]
-        public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default)
+        public async Task<IActionResult> GetAllPostsPageAsync([FromBody] PostsPageDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.GetAllPostsPageAsync(PageIndex, PageSize, Cancel);
+            var result = await _manager.GetAllPostsPageAsync(dto.PageIndex, dto.PageSize, Cancel);
             return Ok(result);
         }
 
         /// <summary>Получить определённое количество постов из всех</summary>
-        /// <param name="Skip">Количество пропускаемых элементов</param>
-        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="dto">Количество пропускаемых и получаемых элементов</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Перечисление постов</returns>
-        [HttpGet("posts/{Skip}-{Take}")]
-        public async Task<IActionResult> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default)
+        [HttpPost("posts/{Skip}-{Take}")]
+        public async Task<IActionResult> GetAllPostsSkipTakeAsync([FromBody] PostsSkipTakeDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.GetAllPostsSkipTakeAsync(Skip, Take, Cancel);
+            var result = await _manager.GetAllPostsSkipTakeAsync(dto.Skip, dto.Take, Cancel);
             return Ok(result);
         }
 

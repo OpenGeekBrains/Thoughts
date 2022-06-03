@@ -162,13 +162,94 @@ namespace Thoughts.WebAPI.Clients.BlogPost
             return response ?? Enumerable.Empty<Post>();
         }
 
+        /// <summary>Получить все посты пользователя по его идентификатору</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление всех постов пользователя</returns>
+        public async Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/users/{UserId}";
+            var response = await GetAsync<IEnumerable<Post>>(address, Cancel);
 
-        public async Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<int> GetAllPostsCountAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IPage<Post>> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IEnumerable<Post>> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
+            return response ?? Enumerable.Empty<Post>();
+        }
+
+        /// <summary>Получить все страницы с постами пользователя по его идентификатору (есть TODO блок)</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="PageIndex">Номер страницы</param>
+        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Страница с перечислением всех постов пользователя</returns>
+        public async Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/users/{UserId}/pages/{PageIndex}-{PageSize}";
+            var model = new UserPostsPageDTO() { UserId = UserId, PageIndex = PageIndex };
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<IPage<Post>>().Result;
+
+            return result;
+        }
+
+        /// <summary>Получить определённое количество постов пользователя</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Skip">Количество пропускаемых элементов</param>
+        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов пользователя</returns>
+        public async Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/users/{UserId}/{Skip}-{Take}";
+            var model = new UserPostsSkipTakeDTO() { UserId = UserId, Skip = Skip, Take = Take };
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<IEnumerable<Post>>().Result;
+
+            return result;
+        }
+
+        /// <summary>Получить число постов</summary>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Число постов</returns>
+        public async Task<int> GetAllPostsCountAsync(CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/count";
+            var response = await GetAsync<int>(address, Cancel);
+
+            return response;
+        }
+
+        /// <summary>Получить страницу со всеми постами</summary>
+        /// <param name="PageIndex">Номер страницы</param>
+        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Страница с постами</returns>
+        public async Task<IPage<Post>> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/pages/{PageIndex}/{PageSize}";
+            var model = new PostsPageDTO() { PageIndex = PageIndex, PageSize = PageSize };
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<IPage<Post>>().Result;
+
+            return result;
+        }
+        /// <summary>Получить определённое количество постов из всех</summary>
+        /// <param name="Skip">Количество пропускаемых элементов</param>
+        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов</returns>
+        public async Task<IEnumerable<Post>> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/{Skip}-{Take}";
+            var model = new PostsSkipTakeDTO() { Skip = Skip, Take = Take };
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<IEnumerable<Post>>().Result;
+
+            return result;
+        }
+
         public async Task<IEnumerable<Tag>> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<Post?> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IEnumerable<Post>> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
