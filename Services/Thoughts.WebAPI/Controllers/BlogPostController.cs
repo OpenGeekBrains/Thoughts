@@ -5,7 +5,7 @@ using Thoughts.Interfaces;
 namespace Thoughts.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(WebAPIAddresses.BlogPosts)]
     public class BlogPostController : ControllerBase
     {
         private readonly IBlogPostManager _manager;
