@@ -118,9 +118,51 @@ namespace Thoughts.WebAPI.Clients.BlogPost
 
             return result;
         }
-        public async Task<Post> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<bool> DeletePostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IEnumerable<Post>> GetAllPostsAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
+
+        /// <summary>Создание нового поста</summary>
+        /// <param name="Title">Заголовок</param>
+        /// <param name="Body">Тело</param>
+        /// <param name="UserId">Идентификатор пользователя, создающего пост</param>
+        /// <param name="Category">Категория</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Вновь созданный пост</returns>
+        public async Task<Post> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default)
+        {
+            string address = Address + "posts/users/{UserId}/{Title}-{Body}-{Category}";
+            var model = new CreatePostDTO() { Title = Title, Body = Body, UserId = UserId, Category = Category};
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<Post>().Result;
+
+            return result;
+
+        }
+
+        /// <summary>Удаление поста</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Истина, если пост был удалён успешно</returns>
+        public async Task<bool> DeletePostAsync(int Id, CancellationToken Cancel = default)
+        {
+            var address = Address + "posts/{Id}";
+            var response = await DeleteAsync(address, Cancel);
+
+            var result = response.IsSuccessStatusCode;
+            return result;
+        }
+
+        /// <summary>Получить все посты</summary>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление всех постов</returns>
+        public async Task<IEnumerable<Post>> GetAllPostsAsync(CancellationToken Cancel = default)
+        {
+            var address = Address + "posts";
+            var response = await GetAsync<IEnumerable<Post>>(address, Cancel);
+
+            return response ?? Enumerable.Empty<Post>();
+        }
+
+
         public async Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
