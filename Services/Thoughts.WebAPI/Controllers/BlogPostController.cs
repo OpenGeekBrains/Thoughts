@@ -73,8 +73,31 @@ namespace Thoughts.WebAPI.Controllers
             var result = await _manager.ChangePostTitleAsync(PostId, Title, Cancel);
             return Ok(result);
         }
-        public Task<Post> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<bool> DeletePostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
+
+        /// <summary>Создание нового поста</summary>
+        /// <param name="Title">Заголовок</param>
+        /// <param name="Body">Тело</param>
+        /// <param name="UserId">Идентификатор пользователя, создающего пост</param>
+        /// <param name="Category">Категория</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Вновь созданный пост</returns>
+        public async Task<IActionResult> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default)
+        {
+            var result = await _manager.CreatePostAsync(Title, Body, UserId, Category, Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Удаление поста</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Истина, если пост был удалён успешно</returns>
+        [HttpDelete("post/{Id}")]
+        public async Task<IActionResult> DeletePostAsync(int Id, CancellationToken Cancel = default)
+        {
+            var result = await _manager.DeletePostAsync(Id, Cancel);
+            return Ok(result);
+        }
+
         public Task<IEnumerable<Post>> GetAllPostsAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
