@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thoughts.Extensions", "Services\Thoughts.Extensions\Thoughts.Extensions.csproj", "{8B4F206D-72B6-4039-BD99-A1EC05917116}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thoughts.Tests", "Tests\Thoughts.Tests\Thoughts.Tests.csproj", "{AE8F13F6-4D6E-477A-B632-9CDF9557B435}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,10 @@ Global
 		{8B4F206D-72B6-4039-BD99-A1EC05917116}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B4F206D-72B6-4039-BD99-A1EC05917116}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B4F206D-72B6-4039-BD99-A1EC05917116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE8F13F6-4D6E-477A-B632-9CDF9557B435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8F13F6-4D6E-477A-B632-9CDF9557B435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8F13F6-4D6E-477A-B632-9CDF9557B435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8F13F6-4D6E-477A-B632-9CDF9557B435}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +140,7 @@ Global
 		{42047E37-CC31-47AB-B3F4-2639BEC6299E} = {2C5DD9AF-E265-4EEB-B96A-BED94C72417C}
 		{B3EE9253-3254-4B68-843D-9AD584AE3E47} = {C3E1D31B-5256-4501-BF6F-C7BC0617745C}
 		{8B4F206D-72B6-4039-BD99-A1EC05917116} = {B46AC3E1-AAC0-4A39-A2E2-3F9C65F9E67D}
+		{AE8F13F6-4D6E-477A-B632-9CDF9557B435} = {91BDAA17-EEF1-455F-BE95-2A82842F0B21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9394604E-0258-4723-8C8C-7E8546CF09F6}
