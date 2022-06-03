@@ -7,12 +7,14 @@ using CommentDomain = Thoughts.Domain.Base.Entities.Comment;
 using PostDomain = Thoughts.Domain.Base.Entities.Post;
 using RoleDomain = Thoughts.Domain.Base.Entities.Role;
 using TagDomain = Thoughts.Domain.Base.Entities.Tag;
+using UserDomain = Thoughts.Domain.Base.Entities.User;
 using CategoryDal = Thoughts.DAL.Entities.Category;
 using StatusDal = Thoughts.DAL.Entities.Status;
 using CommentDal = Thoughts.DAL.Entities.Comment;
 using PostDal = Thoughts.DAL.Entities.Post;
 using RoleDal = Thoughts.DAL.Entities.Role;
 using TagDal = Thoughts.DAL.Entities.Tag;
+using UserDal = Thoughts.DAL.Entities.User;
 using File = Thoughts.DAL.Entities.File;
 
 namespace Thoughts.Extensions.Maps
@@ -47,7 +49,7 @@ namespace Thoughts.Extensions.Maps
                 .ForMember("Id", opt => opt.MapFrom(s => s.Id))
                 .ForMember("Name", opt => opt.MapFrom(s => s.Name))
                 .ForMember("Status", opt => opt.MapFrom(s => s.Status))
-                .ForMember("Posts", opt => opt.MapFrom(s => s.Posts))); //зачем коллекцию постов хранить?
+                .ForMember("Posts", opt => opt.MapFrom(s => s.Posts.Select(p => p.ToDomain()).ToHashSet())));
 
             var mapper = new Mapper(config);
 
@@ -63,11 +65,11 @@ namespace Thoughts.Extensions.Maps
             var config = new MapperConfiguration(cfg => cfg.CreateMap<CommentDal, CommentDomain>()
                 .ForMember("Id", opt => opt.MapFrom(s => s.Id))
                 .ForMember("Date", opt => opt.MapFrom(s => s.Date))
-                .ForMember("Post", opt => opt.MapFrom(s => s.Post)) //здесь нужно метод маппинга добавить
-                .ForMember("User", opt => opt.MapFrom(s => s.Post)) //здесь нужно метод маппинга добавить
+                .ForMember("Post", opt => opt.MapFrom(s => s.Post.ToDomain())) // здесь мы вызвали наш метод
+                .ForMember("User", opt => opt.MapFrom(s => s.User.ToDomain())) // здесь мы вызвали наш метод
                 .ForMember("Body", opt => opt.MapFrom(s => s.Body))
                 .ForMember("ParentComment", opt => opt.MapFrom(s => s.ParentComment.ToDomain())) // здесь у нас рекурсия пошла
-                .ForMember("ChildrenComment", opt => opt.MapFrom(s => s.ChildrenComment.Select(c => c.ChildrenComment.Select(cc => cc.ToDomain()).ToList()))) // здесь у нас тоже рекурсия будет
+                .ForMember("ChildrenComment", opt => opt.MapFrom(s => s.ChildrenComment.Select(c => c.ToDomain()).ToHashSet())) // здесь у нас тоже рекурсия будет
                 .ForMember("isDeleted", opt => opt.MapFrom(s => s.IsDeleted)));
 
             var mapper = new Mapper(config);
@@ -99,14 +101,14 @@ namespace Thoughts.Extensions.Maps
             var config = new MapperConfiguration(cfg => cfg.CreateMap<PostDal, PostDomain>()
                 .ForMember("Id", opt => opt.MapFrom(s => s.Id))
                 .ForMember("Date", opt => opt.MapFrom(s => s.Date)) // тут переделывают дату на DateTimeOffset
-                .ForMember("User", opt => opt.MapFrom(s => s.User)) // тут нужно метод маппинга добавить
+                .ForMember("User", opt => opt.MapFrom(s => s.User.ToDomain())) // здесь мы вызвали наш метод
                 .ForMember("Title", opt => opt.MapFrom(s => s.Title))
                 .ForMember("Body", opt => opt.MapFrom(s => s.Body))
                 .ForMember("Category", opt => opt.MapFrom(s => s.Category.ToDomain())) // здесь мы вызвали наш метод
                 .ForMember("Tags", opt => opt.MapFrom(s => s.Tags))
-                .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToList()))  // здесь мы вызвали наш метод
+                .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToHashSet()))  // здесь мы вызвали наш метод
                 .ForMember("PublicationsDate", opt => opt.MapFrom(s => s.DatePublicatione))
-                .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToList())));  // здесь мы вызвали наш метод
+                .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToHashSet())));  // здесь мы вызвали наш метод
 
             var mapper = new Mapper(config);
 
@@ -121,7 +123,7 @@ namespace Thoughts.Extensions.Maps
             var config = new MapperConfiguration(cfg => cfg.CreateMap<RoleDal, RoleDomain>()
                 .ForMember("Id", opt => opt.MapFrom(s => s.Id))
                 .ForMember("Name", opt => opt.MapFrom(s => s.Name))
-                .ForMember("Users", opt => opt.MapFrom(s => s.Users))); // здесь нужно будет добавить метод маппинга
+                .ForMember("Users", opt => opt.MapFrom(s => s.Users.Select(u => u.ToDomain()).ToHashSet()))); // здесь мы вызвали наш метод
 
             var mapper = new Mapper(config);
 
@@ -136,11 +138,31 @@ namespace Thoughts.Extensions.Maps
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TagDal, TagDomain>()
                 .ForMember("Id", opt => opt.MapFrom(s => s.Id))
                 .ForMember("Name", opt => opt.MapFrom(s => s.Name))
-                .ForMember("Posts", opt => opt.MapFrom(s => s.Posts.Select(p => p.ToDomain()).ToList()))); // здесь вызвали наш метод
+                .ForMember("Posts", opt => opt.MapFrom(s => s.Posts.Select(p => p.ToDomain()).ToHashSet()))); // здесь вызвали наш метод
 
             var mapper = new Mapper(config);
 
             return mapper.Map<TagDomain>(dalEntity);
+        }
+
+        /// <summary>Преобразование пользователя из БД в Domain форму</summary>
+        /// <param name="dalEntity">Пользователь из БД</param>
+        /// <returns>Пользователь Domian</returns>
+        public static UserDomain ToDomain(this UserDal dalEntity)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<UserDal, UserDomain>()
+                .ForMember("Id", opt => opt.MapFrom(s => s.Id))
+                .ForMember("Status", opt => opt.MapFrom(s => s.Status.ToDomain())) // здесь вызвали наш метод
+                .ForMember("LastName", opt => opt.MapFrom(s => s.LastName))
+                .ForMember("FirstName", opt => opt.MapFrom(s => s.FirstName))
+                .ForMember("Patronymic", opt => opt.MapFrom(s => s.Patronymic))
+                .ForMember("Birthday", opt => opt.MapFrom(s => s.Birthday))
+                .ForMember("NickName", opt => opt.MapFrom(s => s.NickName))
+                .ForMember("Roles", opt => opt.MapFrom(s => s.Roles.Select(r => r.ToDomain()).ToHashSet()))); // здесь вызвали наш метод
+
+            var mapper = new Mapper(config);
+
+            return mapper.Map<UserDomain>(dalEntity);
         }
     }
 }
