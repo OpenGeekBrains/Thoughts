@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using Thoughts.Domain.Base.Entities;
 using Thoughts.Interfaces;
-using Thoughts.Interfaces.Base.Repositories;
 
 namespace Thoughts.WebAPI.Controllers
 {
@@ -19,11 +16,13 @@ namespace Thoughts.WebAPI.Controllers
             _manager = manager;
             _logger = logger;
         }
+
         /// <summary>Назначение тэга посту</summary>
         /// <param name="PostId">Идентификатор поста</param>
         /// <param name="Tag">Добавляемый тэг</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тэг был назначен успешно</returns>
+        [HttpPut]
         public async Task<IActionResult> AssignTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
         {
             var result = await _manager.AssignTagAsync(PostId, Tag, Cancel);
@@ -35,6 +34,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Body">Новое тело поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тело было изменено успешно</returns>
+        [HttpPut]
         public async Task<IActionResult> ChangePostBodyAsync(int PostId, string Body, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostBodyAsync(PostId, Body, Cancel);
@@ -46,6 +46,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="CategoryName">Новая категория поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённая категория</returns>
+        [HttpPut]
         public async Task<IActionResult> ChangePostCategoryAsync(int PostId, string CategoryName, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostCategoryAsync(PostId, CategoryName, Cancel);
@@ -57,6 +58,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Status">Новый статус поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённый статус</returns>
+        [HttpPut]
         public async Task<IActionResult> ChangePostStatusAsync(int PostId, string Status, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostStatusAsync(PostId, Status, Cancel);
@@ -68,6 +70,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Title">Новый заголовок поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если заголовок был изменен успешно</returns>
+        [HttpPut]
         public async Task<IActionResult> ChangePostTitleAsync(int PostId, string Title, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostTitleAsync(PostId, Title, Cancel);
@@ -126,6 +129,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="PageSize">Размер страницы</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Страница с перечислением всех постов пользователя</returns>
+        [HttpGet]
         public async Task<IActionResult> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsByUserIdPageAsync(UserId, PageIndex, PageSize, Cancel);
@@ -138,6 +142,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Take">Количество получаемых элементов</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Перечисление постов пользователя</returns>
+        [HttpGet]
         public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsByUserIdSkipTakeAsync(UserId, Skip, Take, Cancel);
@@ -178,11 +183,60 @@ namespace Thoughts.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>Получить тэги к посту по его идентификатору</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление тэгов</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetBlogTagsAsync(int Id, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetBlogTagsAsync(Id, Cancel);
+            return Ok(result);
+        }
 
-        public async Task<IActionResult> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
+        /// <summary>Получение поста по его идентификатору</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Найденный пост или <b>null</b></returns>
+        [HttpGet("posts/{Id}")]
+        public async Task<IActionResult> GetPostAsync(int Id, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetPostAsync(Id,Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Получить посты по тэгу</summary>
+        /// <param name="Tag">Тэг</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetPostsByTag(string Tag, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetPostsByTag(Tag, Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Получить количество постов пользователя</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Количество постов</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetUserPostsCountAsync(UserId, Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Удалить тэг с поста</summary>
+        /// <param name="PostId">Идентификатор поста</param>
+        /// <param name="Tag">Тэг</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Истина, если тэг был удалён успешно</returns>
+        [HttpPut]
+        public async Task<IActionResult> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
+        {
+            var result = await _manager.RemoveTagAsync(PostId, Tag, Cancel);
+            return Ok(result);
+        }
     }
 }
