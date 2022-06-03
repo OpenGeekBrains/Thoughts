@@ -4,9 +4,11 @@ using Thoughts.Domain.Base.Entities;
 using CategoryDomain = Thoughts.Domain.Base.Entities.Category;
 using StatusDomain = Thoughts.Domain.Base.Entities.Status;
 using CommentDomain = Thoughts.Domain.Base.Entities.Comment;
+using PostDomain = Thoughts.Domain.Base.Entities.Post;
 using CategoryDal = Thoughts.DAL.Entities.Category;
 using StatusDal = Thoughts.DAL.Entities.Status;
 using CommentDal = Thoughts.DAL.Entities.Comment;
+using PostDal = Thoughts.DAL.Entities.Post;
 using File = Thoughts.DAL.Entities.File;
 
 namespace Thoughts.Extensions.Maps
@@ -61,7 +63,7 @@ namespace Thoughts.Extensions.Maps
                 .ForMember("User", opt => opt.MapFrom(s => s.Post)) //здесь нужно метод маппинга добавить
                 .ForMember("Body", opt => opt.MapFrom(s => s.Body))
                 .ForMember("ParentComment", opt => opt.MapFrom(s => s.ParentComment.ToDomain())) // здесь у нас рекурсия пошла
-                .ForMember("ChildrenComment", opt => opt.MapFrom(s => s.ChildrenComment)) // здесь у нас тоже рекурсия будет
+                .ForMember("ChildrenComment", opt => opt.MapFrom(s => s.ChildrenComment.Select(c => c.ChildrenComment.Select(cc => cc.ToDomain()).ToList()))) // здесь у нас тоже рекурсия будет
                 .ForMember("isDeleted", opt => opt.MapFrom(s => s.IsDeleted)));
 
             var mapper = new Mapper(config);
@@ -83,6 +85,28 @@ namespace Thoughts.Extensions.Maps
             var mapper = new Mapper(config);
 
             return mapper.Map<FileModel>(dalEntity);
+        }
+
+        /// <summary>Преобразование поста из БД в Domain форму</summary>
+        /// <param name="dalEntity">Пост из БД</param>
+        /// <returns>Пост Domian</returns>
+        public static PostDomain ToDomain(this PostDal dalEntity)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<PostDal, PostDomain>()
+                .ForMember("Id", opt => opt.MapFrom(s => s.Id))
+                .ForMember("Date", opt => opt.MapFrom(s => s.Date)) // тут переделывают дату на DateTimeOffset
+                .ForMember("User", opt => opt.MapFrom(s => s.User)) // тут нужно метод маппинга добавить
+                .ForMember("Title", opt => opt.MapFrom(s => s.Title))
+                .ForMember("Body", opt => opt.MapFrom(s => s.Body))
+                .ForMember("Category", opt => opt.MapFrom(s => s.Category.ToDomain())) // здесь мы вызвали наш метод маппинга
+                .ForMember("Tags", opt => opt.MapFrom(s => s.Tags))
+                .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToList()))  // здесь мы вызвали наш метод маппинга
+                .ForMember("PublicationsDate", opt => opt.MapFrom(s => s.DatePublicatione)) 
+                .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToList())));  // здесь мы вызвали наш метод маппинга
+
+            var mapper = new Mapper(config);
+
+            return mapper.Map<PostDomain>(dalEntity);
         }
     }
 }
