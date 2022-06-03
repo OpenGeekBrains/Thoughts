@@ -63,7 +63,16 @@ namespace Thoughts.WebAPI.Controllers
             return Ok(result);
         }
 
-        public Task<bool> ChangePostTitleAsync(int PostId, string Title, CancellationToken Cancel = default) => throw new NotImplementedException();
+        /// <summary>Изменение заголовка поста</summary>
+        /// <param name="PostId">Идентификатор поста</param>
+        /// <param name="Title">Новый заголовок поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Истина, если заголовок был изменен успешно</returns>
+        public async Task<IActionResult> ChangePostTitleAsync(int PostId, string Title, CancellationToken Cancel = default)
+        {
+            var result = await _manager.ChangePostTitleAsync(PostId, Title, Cancel);
+            return Ok(result);
+        }
         public Task<Post> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<bool> DeletePostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<IEnumerable<Post>> GetAllPostsAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
