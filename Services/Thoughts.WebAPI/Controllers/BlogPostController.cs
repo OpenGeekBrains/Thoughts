@@ -107,16 +107,28 @@ namespace Thoughts.WebAPI.Controllers
             var result = await _manager.GetAllPostsAsync(Cancel);
             return Ok(result);
         }
-        public Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<int> GetAllPostsCountAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IPage<Post>> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IEnumerable<Post>> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IEnumerable<Tag>> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<Post?> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<IEnumerable<Post>> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<int> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public Task<bool> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
+
+        /// <summary>Получить все посты пользователя по его идентификатору</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление всех постов пользователя</returns>
+        [HttpGet("posts/users/{UserId}")]
+        public async Task<IActionResult> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsByUserIdAsync(UserId, Cancel);
+            return Ok(result);
+        }
+
+
+        public async Task<IActionResult> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetAllPostsCountAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
+        public async Task<IActionResult> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
     }
 }
