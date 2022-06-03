@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using Thoughts.Domain.Base.Entities;
 using Thoughts.Interfaces;
+using Thoughts.Services.Models;
 
 namespace Thoughts.WebAPI.Controllers
 {
@@ -18,62 +20,57 @@ namespace Thoughts.WebAPI.Controllers
         }
 
         /// <summary>Назначение тэга посту</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="Tag">Добавляемый тэг</param>
+        /// <param name="dto">DTO ключевого слова поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тэг был назначен успешно</returns>
         [HttpPut("posts/{PostId}/tag/{Tag}")]
-        public async Task<IActionResult> AssignTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
+        public async Task<IActionResult> AssignTagAsync(PostTagDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.AssignTagAsync(PostId, Tag, Cancel);
+            var result = await _manager.AssignTagAsync(dto.PostId, dto.Tag, Cancel);
             return Ok(result);
         }
 
         /// <summary>Изменение тела поста</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="Body">Новое тело поста</param>
+        /// <param name="dto">DTO тела поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тело было изменено успешно</returns>
         [HttpPut("posts/{PostId}/body/{Body}")]
-        public async Task<IActionResult> ChangePostBodyAsync(int PostId, string Body, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostBodyAsync(PostBodyDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.ChangePostBodyAsync(PostId, Body, Cancel);
+            var result = await _manager.ChangePostBodyAsync(dto.PostId, dto.Body, Cancel);
             return Ok(result);
         }
 
         /// <summary>Изменение категории поста</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="CategoryName">Новая категория поста</param>
+        /// <param name="dto">DTO категории поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённая категория</returns>
         [HttpPut("posts/{PostId}/category/{CategoryName}")]
-        public async Task<IActionResult> ChangePostCategoryAsync(int PostId, string CategoryName, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostCategoryAsync(PostCategoryDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.ChangePostCategoryAsync(PostId, CategoryName, Cancel);
+            var result = await _manager.ChangePostCategoryAsync(dto.PostId, dto.CategoryName, Cancel);
             return Ok(result);
         }
 
         /// <summary>Изменение статуса поста</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="Status">Новый статус поста</param>
+        /// <param name="dto">DTO статуса поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённый статус</returns>
         [HttpPut("posts/{PostId}/status/{Status}")]
-        public async Task<IActionResult> ChangePostStatusAsync(int PostId, string Status, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostStatusAsync(PostStatusDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.ChangePostStatusAsync(PostId, Status, Cancel);
+            var result = await _manager.ChangePostStatusAsync(dto.PostId, dto.Status, Cancel);
             return Ok(result);
         }
 
         /// <summary>Изменение заголовка поста</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="Title">Новый заголовок поста</param>
+        /// <param name="dto">DTO заголовка поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если заголовок был изменен успешно</returns>
         [HttpPut("posts/{PostId}/title/{Title}")]
-        public async Task<IActionResult> ChangePostTitleAsync(int PostId, string Title, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostTitleAsync(PostTitleDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.ChangePostTitleAsync(PostId, Title, Cancel);
+            var result = await _manager.ChangePostTitleAsync(dto.PostId, dto.Title, Cancel);
             return Ok(result);
         }
 

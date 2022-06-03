@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Thoughts.Interfaces\Thoughts.Interfaces.csproj" />
+    <ProjectReference Include="..\Thoughts.Services\Thoughts.Services.csproj" />
   </ItemGroup>
 
 </Project>
