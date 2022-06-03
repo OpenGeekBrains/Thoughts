@@ -153,8 +153,32 @@ namespace Thoughts.WebAPI.Controllers
             var result = await _manager.GetAllPostsCountAsync(Cancel);
             return Ok(result);
         }
-        public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
+
+        /// <summary>Получить страницу со всеми постами</summary>
+        /// <param name="PageIndex">Номер страницы</param>
+        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Страница с постами</returns>
+        [HttpGet("posts/pages/{PageIndex}/{PageSize}")]
+        public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsPageAsync(PageIndex, PageSize, Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Получить определённое количество постов из всех</summary>
+        /// <param name="Skip">Количество пропускаемых элементов</param>
+        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов</returns>
+        [HttpGet("posts/skip-{Skip}/take-{Take}")]
+        public async Task<IActionResult> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsSkipTakeAsync(Skip, Take, Cancel);
+            return Ok(result);
+        }
+
+
         public async Task<IActionResult> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
