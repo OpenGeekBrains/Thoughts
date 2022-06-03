@@ -31,7 +31,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Истина, если тэг был назначен успешно</returns>
         public async Task<bool> AssignTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/{PostId}/tag/{Tag}";
+            string address = Address + $"posts/{PostId}/tag/{Tag}";
             var model = new PostTagDTO() { PostId = PostId, Tag = Tag };
 
             var response = await PutAsync(address, model, Cancel);
@@ -50,7 +50,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Истина, если тело было изменено успешно</returns>
         public async Task<bool> ChangePostBodyAsync(int PostId, string Body, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/{PostId}/body/{Body}";
+            string address = Address + $"posts/{PostId}/body/{Body}";
             var model = new PostBodyDTO() { PostId = PostId, Body = Body };
 
             var response = await PutAsync(address, model, Cancel);
@@ -69,7 +69,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Изменённая категория</returns>
         public async Task<Category> ChangePostCategoryAsync(int PostId, string CategoryName, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/{PostId}/category/{CategoryName}";
+            string address = Address + $"posts/{PostId}/category/{CategoryName}";
             var model = new PostCategoryDTO() { PostId = PostId, CategoryName = CategoryName };
 
             var response = await PutAsync(address, model, Cancel);
@@ -88,7 +88,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Изменённый статус</returns>
         public async Task<Status> ChangePostStatusAsync(int PostId, string Status, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/{PostId}/status/{Status}";
+            string address = Address + $"posts/{PostId}/status/{Status}";
             var model = new PostStatusDTO() { PostId = PostId, Status = Status };
 
             var response = await PutAsync(address, model, Cancel);
@@ -107,7 +107,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Истина, если заголовок был изменен успешно</returns>
         public async Task<bool> ChangePostTitleAsync(int PostId, string Title, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/{PostId}/title/{Title}";
+            string address = Address + $"posts/{PostId}/title/{Title}";
             var model = new PostTitleDTO() { PostId = PostId, Title = Title };
 
             var response = await PutAsync(address, model, Cancel);
@@ -128,7 +128,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Вновь созданный пост</returns>
         public async Task<Post> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default)
         {
-            string address = Address + "posts/users/{UserId}/{Title}-{Body}-{Category}";
+            string address = Address + $"posts/users/{UserId}/{Title}-{Body}-{Category}";
             var model = new CreatePostDTO() { Title = Title, Body = Body, UserId = UserId, Category = Category};
 
             var response = await PostAsync(address, model, Cancel);
@@ -144,7 +144,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Истина, если пост был удалён успешно</returns>
         public async Task<bool> DeletePostAsync(int Id, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/{Id}";
+            var address = Address + $"posts/{Id}";
             var response = await DeleteAsync(address, Cancel);
 
             var result = response.IsSuccessStatusCode;
@@ -168,7 +168,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Перечисление всех постов пользователя</returns>
         public async Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/users/{UserId}";
+            var address = Address + $"posts/users/{UserId}";
             var response = await GetAsync<IEnumerable<Post>>(address, Cancel);
 
             return response ?? Enumerable.Empty<Post>();
@@ -182,7 +182,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Страница с перечислением всех постов пользователя</returns>
         public async Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/users/{UserId}/pages/{PageIndex}-{PageSize}";
+            var address = Address + $"posts/users/{UserId}/pages/{PageIndex}-{PageSize}";
             var model = new UserPostsPageDTO() { UserId = UserId, PageIndex = PageIndex };
 
             var response = await PostAsync(address, model, Cancel);
@@ -199,7 +199,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Перечисление постов пользователя</returns>
         public async Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/users/{UserId}/{Skip}-{Take}";
+            var address = Address + $"posts/users/{UserId}/{Skip}-{Take}";
             var model = new UserPostsSkipTakeDTO() { UserId = UserId, Skip = Skip, Take = Take };
 
             var response = await PostAsync(address, model, Cancel);
@@ -213,7 +213,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Число постов</returns>
         public async Task<int> GetAllPostsCountAsync(CancellationToken Cancel = default)
         {
-            var address = Address + "posts/count";
+            var address = Address + $"posts/count";
             var response = await GetAsync<int>(address, Cancel);
 
             return response;
@@ -226,7 +226,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Страница с постами</returns>
         public async Task<IPage<Post>> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/pages/{PageIndex}/{PageSize}";
+            var address = Address + $"posts/pages/{PageIndex}/{PageSize}";
             var model = new PostsPageDTO() { PageIndex = PageIndex, PageSize = PageSize };
 
             var response = await PostAsync(address, model, Cancel);
@@ -234,6 +234,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
 
             return result;
         }
+
         /// <summary>Получить определённое количество постов из всех</summary>
         /// <param name="Skip">Количество пропускаемых элементов</param>
         /// <param name="Take">Количество получаемых элементов</param>
@@ -241,7 +242,7 @@ namespace Thoughts.WebAPI.Clients.BlogPost
         /// <returns>Перечисление постов</returns>
         public async Task<IEnumerable<Post>> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default)
         {
-            var address = Address + "posts/{Skip}-{Take}";
+            var address = Address + $"posts/{Skip}-{Take}";
             var model = new PostsSkipTakeDTO() { Skip = Skip, Take = Take };
 
             var response = await PostAsync(address, model, Cancel);
@@ -250,10 +251,68 @@ namespace Thoughts.WebAPI.Clients.BlogPost
             return result;
         }
 
-        public async Task<IEnumerable<Tag>> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<Post?> GetPostAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IEnumerable<Post>> GetPostsByTag(string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<int> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<bool> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default) => throw new NotImplementedException();
+        /// <summary>Получить тэги к посту по его идентификатору</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление тэгов</returns>
+        public async Task<IEnumerable<Tag>> GetBlogTagsAsync(int Id, CancellationToken Cancel = default)
+        {
+            var address = Address + $"posts/{Id}/tags";
+            var response = await GetAsync<IEnumerable<Tag>>(address, Cancel);
+
+            return response;
+        }
+
+        /// <summary>Получение поста по его идентификатору</summary>
+        /// <param name="Id">Идентификатор поста</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Найденный пост или <b>null</b></returns>
+        public async Task<Post?> GetPostAsync(int Id, CancellationToken Cancel = default)
+        {
+            var address = Address + $"posts/{Id}";
+            var response = await GetAsync<Post?>(address, Cancel);
+
+            return response;
+        }
+
+        /// <summary>Получить посты по тэгу</summary>
+        /// <param name="Tag">Тэг</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов</returns>
+        public async Task<IEnumerable<Post>> GetPostsByTag(string Tag, CancellationToken Cancel = default)
+        {
+            var address = Address + $"posts/tags/{Tag}";
+            var response = await GetAsync<IEnumerable<Post>>(address, Cancel);
+
+            return response;
+        }
+
+        /// <summary>Получить количество постов пользователя</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Количество постов</returns>
+        public async Task<int> GetUserPostsCountAsync(string UserId, CancellationToken Cancel = default)
+        {
+            var address = Address + $"posts/users/{UserId}/count";
+            var response = await GetAsync<int>(address, Cancel);
+
+            return response;
+        }
+
+        /// <summary>Удалить тэг с поста</summary>
+        /// <param name="PostId">Идентификатор поста</param>
+        /// <param name="Tag">Тэг</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Истина, если тэг был удалён успешно</returns>
+        public async Task<bool> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
+        {
+            var address = Address + $"posts/{PostId}/tag/{Tag}";
+            var model = new PostTagDTO() { PostId = PostId, Tag = Tag };
+
+            var response = await PostAsync(address, model, Cancel);
+            var result = response.Content.ReadFromJsonAsync<bool>().Result;
+
+            return result;
+        }
     }
 }

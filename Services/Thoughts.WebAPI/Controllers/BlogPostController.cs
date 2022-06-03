@@ -218,14 +218,13 @@ namespace Thoughts.WebAPI.Controllers
         }
 
         /// <summary>Удалить тэг с поста</summary>
-        /// <param name="PostId">Идентификатор поста</param>
-        /// <param name="Tag">Тэг</param>
+        /// <param name="dto">DTO ключевого слова поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тэг был удалён успешно</returns>
-        [HttpDelete("posts/{PostId}/tag/{Tag}")]
-        public async Task<IActionResult> RemoveTagAsync(int PostId, string Tag, CancellationToken Cancel = default)
+        [HttpPost("posts/{PostId}/tag/{Tag}")]
+        public async Task<IActionResult> RemoveTagAsync([FromBody] PostTagDTO dto, CancellationToken Cancel = default)
         {
-            var result = await _manager.RemoveTagAsync(PostId, Tag, Cancel);
+            var result = await _manager.RemoveTagAsync(dto.PostId, dto.Tag, Cancel);
             return Ok(result);
         }
     }
