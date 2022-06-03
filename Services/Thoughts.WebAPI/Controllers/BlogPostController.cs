@@ -81,6 +81,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Category">Категория</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Вновь созданный пост</returns>
+        [HttpPost("posts/users/{UserId}/{Title}-{Body}-{Category}")]
         public async Task<IActionResult> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default)
         {
             var result = await _manager.CreatePostAsync(Title, Body, UserId, Category, Cancel);
@@ -119,8 +120,17 @@ namespace Thoughts.WebAPI.Controllers
             return Ok(result);
         }
 
-
-        public async Task<IActionResult> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
+        /// <summary>Получить все страницы с постами пользователя по его идентификатору (есть TODO блок)</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="PageIndex">Номер страницы</param>
+        /// <param name="PageSize">Размер страницы</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Страница с перечислением всех постов пользователя</returns>
+        public async Task<IActionResult> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsByUserIdPageAsync(UserId, PageIndex, PageSize, Cancel);
+            return Ok(result);
+        }
         public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetAllPostsCountAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
