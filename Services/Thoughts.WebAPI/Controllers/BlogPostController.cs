@@ -91,14 +91,22 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Id">Идентификатор поста</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если пост был удалён успешно</returns>
-        [HttpDelete("post/{Id}")]
+        [HttpDelete("posts/{Id}")]
         public async Task<IActionResult> DeletePostAsync(int Id, CancellationToken Cancel = default)
         {
             var result = await _manager.DeletePostAsync(Id, Cancel);
             return Ok(result);
         }
 
-        public Task<IEnumerable<Post>> GetAllPostsAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
+        /// <summary>Получить все посты</summary>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление всех постов</returns>
+        [HttpGet("posts")]
+        public async Task<IActionResult> GetAllPostsAsync(CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsAsync(Cancel);
+            return Ok(result);
+        }
         public Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string UserId, CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<IPage<Post>> GetAllPostsByUserIdPageAsync(string UserId, int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
         public Task<IEnumerable<Post>> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
