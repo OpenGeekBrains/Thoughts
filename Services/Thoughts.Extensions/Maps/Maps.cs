@@ -5,10 +5,12 @@ using CategoryDomain = Thoughts.Domain.Base.Entities.Category;
 using StatusDomain = Thoughts.Domain.Base.Entities.Status;
 using CommentDomain = Thoughts.Domain.Base.Entities.Comment;
 using PostDomain = Thoughts.Domain.Base.Entities.Post;
+using RoleDomain = Thoughts.Domain.Base.Entities.Role;
 using CategoryDal = Thoughts.DAL.Entities.Category;
 using StatusDal = Thoughts.DAL.Entities.Status;
 using CommentDal = Thoughts.DAL.Entities.Comment;
 using PostDal = Thoughts.DAL.Entities.Post;
+using RoleDal = Thoughts.DAL.Entities.Role;
 using File = Thoughts.DAL.Entities.File;
 
 namespace Thoughts.Extensions.Maps
@@ -101,12 +103,27 @@ namespace Thoughts.Extensions.Maps
                 .ForMember("Category", opt => opt.MapFrom(s => s.Category.ToDomain())) // здесь мы вызвали наш метод маппинга
                 .ForMember("Tags", opt => opt.MapFrom(s => s.Tags))
                 .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToList()))  // здесь мы вызвали наш метод маппинга
-                .ForMember("PublicationsDate", opt => opt.MapFrom(s => s.DatePublicatione)) 
+                .ForMember("PublicationsDate", opt => opt.MapFrom(s => s.DatePublicatione))
                 .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToList())));  // здесь мы вызвали наш метод маппинга
 
             var mapper = new Mapper(config);
 
             return mapper.Map<PostDomain>(dalEntity);
+        }
+
+        /// <summary>Преобразование роли из БД в Domain форму</summary>
+        /// <param name="dalEntity">Роль из БД</param>
+        /// <returns>Роль Domian</returns>
+        public static RoleDomain ToDomain(this RoleDal dalEntity)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<RoleDal, RoleDomain>()
+                .ForMember("Id", opt => opt.MapFrom(s => s.Id))
+                .ForMember("Name", opt => opt.MapFrom(s => s.Name))
+                .ForMember("Users", opt => opt.MapFrom(s => s.Users))); // здесь нужно будет добавить метод маппинга
+
+            var mapper = new Mapper(config);
+
+            return mapper.Map<RoleDomain>(dalEntity);
         }
     }
 }
