@@ -82,7 +82,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Вновь созданный пост</returns>
         [HttpPost("posts/users/{UserId}/{Title}-{Body}-{Category}")]
-        public async Task<IActionResult> CreatePostAsync(string Title, string Body, string UserId, string Category, CancellationToken Cancel = default)
+        public async Task<IActionResult> CreatePostAsync(string UserId, string Title, string Body, string Category, CancellationToken Cancel = default)
         {
             var result = await _manager.CreatePostAsync(Title, Body, UserId, Category, Cancel);
             return Ok(result);
@@ -131,8 +131,28 @@ namespace Thoughts.WebAPI.Controllers
             var result = await _manager.GetAllPostsByUserIdPageAsync(UserId, PageIndex, PageSize, Cancel);
             return Ok(result);
         }
-        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
-        public async Task<IActionResult> GetAllPostsCountAsync(CancellationToken Cancel = default) => throw new NotImplementedException();
+
+        /// <summary>Получить определённое количество постов пользователя</summary>
+        /// <param name="UserId">Идентификатор пользователя</param>
+        /// <param name="Skip">Количество пропускаемых элементов</param>
+        /// <param name="Take">Количество получаемых элементов</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Перечисление постов пользователя</returns>
+        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync(string UserId, int Skip, int Take, CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsByUserIdSkipTakeAsync(UserId, Skip, Take, Cancel);
+            return Ok(result);
+        }
+
+        /// <summary>Получить число постов</summary>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Число постов</returns>
+        [HttpGet("posts/count")]
+        public async Task<IActionResult> GetAllPostsCountAsync(CancellationToken Cancel = default)
+        {
+            var result = await _manager.GetAllPostsCountAsync(Cancel);
+            return Ok(result);
+        }
         public async Task<IActionResult> GetAllPostsPageAsync(int PageIndex, int PageSize, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetAllPostsSkipTakeAsync(int Skip, int Take, CancellationToken Cancel = default) => throw new NotImplementedException();
         public async Task<IActionResult> GetBlogTagsAsync(int Id, CancellationToken Cancel = default) => throw new NotImplementedException();
