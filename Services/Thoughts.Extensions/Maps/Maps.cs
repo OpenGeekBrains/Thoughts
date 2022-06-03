@@ -6,11 +6,13 @@ using StatusDomain = Thoughts.Domain.Base.Entities.Status;
 using CommentDomain = Thoughts.Domain.Base.Entities.Comment;
 using PostDomain = Thoughts.Domain.Base.Entities.Post;
 using RoleDomain = Thoughts.Domain.Base.Entities.Role;
+using TagDomain = Thoughts.Domain.Base.Entities.Tag;
 using CategoryDal = Thoughts.DAL.Entities.Category;
 using StatusDal = Thoughts.DAL.Entities.Status;
 using CommentDal = Thoughts.DAL.Entities.Comment;
 using PostDal = Thoughts.DAL.Entities.Post;
 using RoleDal = Thoughts.DAL.Entities.Role;
+using TagDal = Thoughts.DAL.Entities.Tag;
 using File = Thoughts.DAL.Entities.File;
 
 namespace Thoughts.Extensions.Maps
@@ -100,11 +102,11 @@ namespace Thoughts.Extensions.Maps
                 .ForMember("User", opt => opt.MapFrom(s => s.User)) // тут нужно метод маппинга добавить
                 .ForMember("Title", opt => opt.MapFrom(s => s.Title))
                 .ForMember("Body", opt => opt.MapFrom(s => s.Body))
-                .ForMember("Category", opt => opt.MapFrom(s => s.Category.ToDomain())) // здесь мы вызвали наш метод маппинга
+                .ForMember("Category", opt => opt.MapFrom(s => s.Category.ToDomain())) // здесь мы вызвали наш метод
                 .ForMember("Tags", opt => opt.MapFrom(s => s.Tags))
-                .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToList()))  // здесь мы вызвали наш метод маппинга
+                .ForMember("Comments", opt => opt.MapFrom(s => s.Comments.Select(c => c.ToDomain()).ToList()))  // здесь мы вызвали наш метод
                 .ForMember("PublicationsDate", opt => opt.MapFrom(s => s.DatePublicatione))
-                .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToList())));  // здесь мы вызвали наш метод маппинга
+                .ForMember("Files", opt => opt.MapFrom(s => s.Files.Select(f => f.ToDomain()).ToList())));  // здесь мы вызвали наш метод
 
             var mapper = new Mapper(config);
 
@@ -124,6 +126,21 @@ namespace Thoughts.Extensions.Maps
             var mapper = new Mapper(config);
 
             return mapper.Map<RoleDomain>(dalEntity);
+        }
+
+        /// <summary>Преобразование ключевого слова из БД в Domain форму</summary>
+        /// <param name="dalEntity">Ключевое слово из БД</param>
+        /// <returns>Ключевое слово Domian</returns>
+        public static TagDomain ToDomain(this TagDal dalEntity)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<TagDal, TagDomain>()
+                .ForMember("Id", opt => opt.MapFrom(s => s.Id))
+                .ForMember("Name", opt => opt.MapFrom(s => s.Name))
+                .ForMember("Posts", opt => opt.MapFrom(s => s.Posts.Select(p => p.ToDomain()).ToList()))); // здесь вызвали наш метод
+
+            var mapper = new Mapper(config);
+
+            return mapper.Map<TagDomain>(dalEntity);
         }
     }
 }
