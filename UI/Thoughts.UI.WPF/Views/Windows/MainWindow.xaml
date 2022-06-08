@@ -1,12 +1,24 @@
 ﻿<Window x:Class="Thoughts.UI.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thoughts.UI.WPF"
-        mc:Ignorable="d"
+        xmlns:inf="clr-namespace:Thoughts.UI.WPF.Infrastructure"
+        xmlns:lb="clr-namespace:Thoughts.UI.WPF.Infrastructure.Behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="{Binding Title}" Height="700" Width="1300" Icon="/Views/Windows/Logo64.png"
-        DataContext="{Binding MainModel, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen">
+        DataContext="{Binding MainModel, Source={StaticResource Locator}}" WindowStartupLocation="CenterScreen"
+        inf:WindowEx.DragWindow="True">
+    <i:Interaction.Behaviors>
+        <i:FluidMoveBehavior />
+        <!--<lb:DragWindow/>-->
+    </i:Interaction.Behaviors>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDoubleClick">
+            <i:InvokeCommandAction Command="{Binding ShutdownCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="AliceBlue" Offset="1"/>

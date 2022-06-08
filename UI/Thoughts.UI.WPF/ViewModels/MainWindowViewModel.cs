@@ -1,4 +1,8 @@
-﻿using Thoughts.UI.WPF.ViewModels.Base;
+﻿using System.Windows;
+using System.Windows.Input;
+
+using Thoughts.UI.WPF.Infrastructure.Commands.Base;
+using Thoughts.UI.WPF.ViewModels.Base;
 
 namespace Thoughts.UI.WPF.ViewModels;
 
@@ -14,4 +18,8 @@ public class MainWindowViewModel:ViewModel
     {
         Title = "Thoughts";
     }
+
+    private ICommand? _ShutdownCommand;
+
+    public ICommand ShutdownCommand => _ShutdownCommand ??= new RelayCommand(e => Application.Current.Shutdown());
 }
