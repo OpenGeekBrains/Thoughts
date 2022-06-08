@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Thoughts.UI.WPF.ViewModels"
+                    xmlns:views="clr-namespace:Thoughts.UI.WPF.Views">
+
+    <DataTemplate DataType="{x:Type vm:RecordsViewModel}">
+        <views:RecordsView/>
+    </DataTemplate>
+
+</ResourceDictionary>

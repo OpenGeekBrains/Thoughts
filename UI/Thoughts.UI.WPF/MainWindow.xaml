@@ -51,6 +51,14 @@
             <RadioButton Content="Пользователи" Command="{Binding UsersButtonCheckedCommand}"/>
             <RadioButton Content="Сервис"/>            
         </StackPanel>
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}">
+            <ContentControl.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="Views/MainWindowTemplates/MainWindowViewsTemplates.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>

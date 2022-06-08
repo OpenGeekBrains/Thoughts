@@ -42,7 +42,11 @@
                         Margin="0 5">
                         <StackPanel>
                             <Grid>                                
-                                <Image Source="{Binding Path}"/>
+                                <Image Source="{Binding Path}">
+                                    <Image.CacheMode>
+                                        <BitmapCache/>
+                                    </Image.CacheMode>
+                                </Image>
                                 <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Button 
                                             Background="Transparent"
