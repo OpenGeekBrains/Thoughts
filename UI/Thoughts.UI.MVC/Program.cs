@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Thoughts.DAL;
 using Thoughts.DAL.Sqlite;
 using Thoughts.DAL.SqlServer;
+using Thoughts.Domain.Base.Entities;
+using Thoughts.Interfaces;
+using Thoughts.UI.MVC.Infrastructure.AutoMapper;
+using Thoughts.UI.MVC.Infrastructure.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +29,13 @@ switch (db_type)
         services.AddThoughtsDbSqlServer(configuration.GetConnectionString("SqlServer"));
         break;
 }
+
+services.AddAutoMapper(typeof(Program))
+   .AddTransient(typeof(IMapper<>), typeof(AutoMapperService<>))
+   .AddTransient(typeof(IMapper<,>), typeof(AutoMapperService<,>))
+   .AddTransient<IMapper<Tag>, TagMapper>()
+   .AddTransient<IMapper<Tag, Thoughts.DAL.Entities.Tag>, TagMapper>()
+    ;
 
 var app = builder.Build();
 

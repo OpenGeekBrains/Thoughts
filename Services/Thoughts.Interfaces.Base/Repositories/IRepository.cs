@@ -55,7 +55,7 @@ public interface IRepository<T, in TKey> where T : IEntity<TKey>
     /// <param name="Id">Идентификатор извлекаемой сущности</param>
     /// <param name="Cancel">Признак отмены асинхронной операции</param>
     /// <returns>Сущность с указанным идентификатором в случае её наличия и null, если сущность отсутствует</returns>
-    Task<T> GetById(TKey Id, CancellationToken Cancel = default);
+    Task<T?> GetById(TKey Id, CancellationToken Cancel = default);
 
     /// <summary>Добавление сущности в репозиторий</summary>
     /// <param name="item">Добавляемая в репозиторий сущность</param>
