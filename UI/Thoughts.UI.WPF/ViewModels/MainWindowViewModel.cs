@@ -20,7 +20,7 @@ namespace Thoughts.UI.WPF.ViewModels
 
 
         public static string Title => "Hello";
-        private ViewModel _CurrrentView;
+        private ViewModel? _currentView;
 
 
         #endregion
@@ -35,12 +35,12 @@ namespace Thoughts.UI.WPF.ViewModels
 
         public UsersViewModel Uvm { get; }
 
-        public ViewModel CurrentView
+        public ViewModel? CurrentView
         {
-            get => _CurrrentView;
+            get => _currentView;
             set
             {
-                _CurrrentView = value;
+                _currentView = value;
                 OnPropertyChanged();
             }
         }
@@ -53,13 +53,22 @@ namespace Thoughts.UI.WPF.ViewModels
         #region Commands
 
         private ICommand _RecordsButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads RecordVM to CurrentView property.
+        /// </summary>
         public ICommand RecordButtonCheckedCommand => _RecordsButtonCheckedCommand ?? new RelayCommand(OnRecordsButtonCheckedCommand, CanRecordsButtonCheckedCommandExecute);
 
         private bool CanRecordsButtonCheckedCommandExecute(object? p) => true;
 
         private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = Rvm;
 
+        
         private ICommand _FilesButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads FilesVM to CurrentVew property.
+        /// </summary>
         public ICommand FilesButtonCheckedCommand => _FilesButtonCheckedCommand ?? new RelayCommand(OnFilesButtonCheckedCommand, CanFilesButtonCheckedCommandExecute);
 
         private bool CanFilesButtonCheckedCommandExecute(object? p) => true;
@@ -68,9 +77,12 @@ namespace Thoughts.UI.WPF.ViewModels
 
 
         private ICommand _UsersButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads UsersVM to CurrentView property.
+        /// </summary>
         public ICommand UsersButtonCheckedCommand => _UsersButtonCheckedCommand ?? new RelayCommand(OnUsersButtonCheckedCommand, CanUsersButtonCheckedCommandExecute);
 
-        
 
         private bool CanUsersButtonCheckedCommandExecute(object? p) => true;
         private void OnUsersButtonCheckedCommand(object? p) => CurrentView = Uvm;
