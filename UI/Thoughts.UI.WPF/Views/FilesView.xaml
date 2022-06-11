@@ -17,7 +17,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Thumb}">
                             <Border CornerRadius="50"
-                                    BorderBrush="CadetBlue"
+                                    BorderBrush="{StaticResource DefaultBorderColorBrush}"
                                     BorderThickness="2"/>
                         </ControlTemplate>
                     </Setter.Value>
@@ -41,14 +41,18 @@
                         Padding="3 3"
                         Margin="0 5">
                         <StackPanel>
-                            <Grid>                                
-                                <Image Source="{Binding Path}"/>
+                            <Grid>
+                                <Image Source="{Binding Path}">
+                                    <Image.CacheMode>
+                                        <BitmapCache/>
+                                    </Image.CacheMode>
+                                </Image>
                                 <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Button 
-                                            Background="Transparent"
+                                            Background="{StaticResource DefaultBackgroundColor}"
                                             Width="20"
                                             >
-                                        <fa:ImageAwesome Icon="Trash" Foreground="DarkRed"/>
+                                        <fa:ImageAwesome Icon="Trash" Foreground="{StaticResource DefaultRemoveIconColorBrush}"/>
                                     </Button>
                                 </WrapPanel>
                             </Grid>                            

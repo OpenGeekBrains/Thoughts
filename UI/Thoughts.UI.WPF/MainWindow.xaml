@@ -12,9 +12,11 @@
         Foreground="Black"
         FontFamily="Helvetica"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}">
-    <Window.Resources>
-        
-    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding RecordButtonCheckedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Background="{StaticResource DefaultWindowBackGroundColor}"
           >
         <Grid.RowDefinitions>

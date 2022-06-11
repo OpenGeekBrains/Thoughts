@@ -15,9 +15,25 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     internal class MainWindowViewModel: ViewModel
     {
+
+        #region Fields
+
+
         public static string Title => "Hello";
         private ViewModel _CurrrentView;
 
+
+        #endregion
+
+
+        #region Propperties
+
+
+        public RecordsViewModel Rvm { get; }
+
+        public FilesViewModel Fvm { get; }
+
+        public UsersViewModel Uvm { get; }
 
         public ViewModel CurrentView
         {
@@ -29,6 +45,11 @@ namespace Thoughts.UI.WPF.ViewModels
             }
         }
 
+
+
+        #endregion
+
+
         #region Commands
 
         private ICommand _RecordsButtonCheckedCommand;
@@ -36,27 +57,32 @@ namespace Thoughts.UI.WPF.ViewModels
 
         private bool CanRecordsButtonCheckedCommandExecute(object? p) => true;
 
-        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = new RecordsViewModel();
+        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = Rvm;
 
         private ICommand _FilesButtonCheckedCommand;
         public ICommand FilesButtonCheckedCommand => _FilesButtonCheckedCommand ?? new RelayCommand(OnFilesButtonCheckedCommand, CanFilesButtonCheckedCommandExecute);
 
         private bool CanFilesButtonCheckedCommandExecute(object? p) => true;
 
-        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = new FilesViewModel();
+        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = Fvm;
 
 
         private ICommand _UsersButtonCheckedCommand;
         public ICommand UsersButtonCheckedCommand => _UsersButtonCheckedCommand ?? new RelayCommand(OnUsersButtonCheckedCommand, CanUsersButtonCheckedCommandExecute);
+
+        
+
         private bool CanUsersButtonCheckedCommandExecute(object? p) => true;
-        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = new UsersViewModel();
+        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = Uvm;
 
         #endregion
 
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(RecordsViewModel rvm, FilesViewModel fvm, UsersViewModel uvm)
         {
-            
+            Rvm = rvm;
+            Fvm = fvm;
+            Uvm = uvm;
         }
     }
 }
