@@ -4,16 +4,18 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Thoughts.UI.WPF.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="600"
+      mc:Ignorable="d"
+      xmlns:tc="clr-namespace:Thoughts.UI.WPF.ThoughtControls"
+      d:DesignHeight="400" d:DesignWidth="600"
       DataContext="{Binding RecordsModel, Source={StaticResource Locator}}"       
       >
 
-    <Grid Background="Transparent"> <!--Set this property to transparent later!!!!!-->
+    <Grid Background="{StaticResource DefaultBackgroundColor}"> <!--Set this property to transparent later!!!!!-->
         <Grid.Resources>
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="Margin" Value="4 0"/>
+                <Setter Property="Padding" Value="3 3"/>
             </Style>
             <Style TargetType="{x:Type TextBox}"
                    BasedOn="{StaticResource TextBoxStyle}">
@@ -77,23 +79,50 @@
             </ListBox>
         </StackPanel>
         <DockPanel Grid.Column="1"
-                    Margin="10 0 5 10"
+                    Margin="5 10 5 10"
                     >
-            <StackPanel DockPanel.Dock="Top">
-                <Grid>
-                    <TextBlock Text="Автор:" 
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"/>
-                    <TextBox Width="200" 
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                             IsReadOnly="True"/>
-                </Grid>
-                <Grid>
-                    <TextBlock Text="Тема:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <TextBox Width="250" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-            </StackPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Автор:"                            
+                           VerticalAlignment="Center"
+                               Margin="5 0"/>
+                    <TextBox Width="200"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             IsReadOnly="True"
+                             Text="Admin"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right"
+                            Margin="4 0 0 0">
+                    <TextBlock Text="Категория:" />
+                    <ComboBox >
+                        <ComboBoxItem Content="Мысли"/>
+                        <ComboBoxItem Content="ЗОЖ"/>
+                        <ComboBoxItem Content="Авто"/>
+                    </ComboBox>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel>
+                    <TextBlock Text="Тема:" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"
+                               Margin=" 5 0"/>
+                    <TextBox Width="200"
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Button}"
+                               BasedOn="{StaticResource ButtonStyle}">
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="Теги:"/>
+                    <tc:TagsCloudControl/>
+                </StackPanel>
+                
+            </DockPanel>
             <WrapPanel HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="0 0 0 5"

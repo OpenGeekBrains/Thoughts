@@ -7,19 +7,20 @@
            TargetType="{x:Type Button}">
         <Style.Setters>
             <Setter Property="MinWidth" Value="40"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Padding" Value="2 2"/>
+            <Setter Property="BorderBrush" Value="CadetBlue"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="10"
                                             Background="{TemplateBinding Background}"
-                                            BorderBrush="CadetBlue"
-                                            BorderThickness="1">
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding Content}"
-                                              Margin="5 0"/>
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              />
 
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">

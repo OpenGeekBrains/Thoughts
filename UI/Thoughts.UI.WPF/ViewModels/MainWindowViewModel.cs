@@ -16,13 +16,10 @@ namespace Thoughts.UI.WPF.ViewModels
     internal class MainWindowViewModel: ViewModel
     {
         public static string Title => "Hello";
-        private RecordsView _recordsView;
-        private FilesView _filesView;
-        private UsersView _usersView;
-        private object _CurrrentView;
+        private ViewModel _CurrrentView;
 
 
-        public object CurrentView
+        public ViewModel CurrentView
         {
             get => _CurrrentView;
             set
@@ -39,30 +36,27 @@ namespace Thoughts.UI.WPF.ViewModels
 
         private bool CanRecordsButtonCheckedCommandExecute(object? p) => true;
 
-        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = _recordsView;
+        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = new RecordsViewModel();
 
         private ICommand _FilesButtonCheckedCommand;
         public ICommand FilesButtonCheckedCommand => _FilesButtonCheckedCommand ?? new RelayCommand(OnFilesButtonCheckedCommand, CanFilesButtonCheckedCommandExecute);
 
         private bool CanFilesButtonCheckedCommandExecute(object? p) => true;
 
-        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = _filesView;
+        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = new FilesViewModel();
 
 
         private ICommand _UsersButtonCheckedCommand;
         public ICommand UsersButtonCheckedCommand => _UsersButtonCheckedCommand ?? new RelayCommand(OnUsersButtonCheckedCommand, CanUsersButtonCheckedCommandExecute);
         private bool CanUsersButtonCheckedCommandExecute(object? p) => true;
-        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = _usersView;
+        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = new UsersViewModel();
 
         #endregion
 
 
         public MainWindowViewModel()
         {
-            _recordsView = new RecordsView();
-            _filesView = new FilesView();
-            _usersView = new UsersView();
-            _CurrrentView = new RecordsView();
+            
         }
     }
 }

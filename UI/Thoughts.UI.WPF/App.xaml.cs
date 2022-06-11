@@ -25,6 +25,7 @@ namespace Thoughts.UI.WPF
             services.AddSingleton<FilesViewModel>();
             services.AddSingleton<RecordsViewModel>();
             services.AddSingleton <MainWindowViewModel>();
+            services.AddSingleton<UsersViewModel>();
             
         }
     }
