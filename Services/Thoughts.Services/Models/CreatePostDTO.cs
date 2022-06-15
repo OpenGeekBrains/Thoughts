@@ -1,6 +1,6 @@
 ﻿namespace Thoughts.Services.Models
 {
-    public struct CreatePostDTO
+    public class CreatePostDTO
     {
         public string Title { get; set; }
         public string Body { get; set; }

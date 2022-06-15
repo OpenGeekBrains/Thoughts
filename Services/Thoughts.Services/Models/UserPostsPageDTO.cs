@@ -1,6 +1,6 @@
 ﻿namespace Thoughts.Services.Models
 {
-    public struct UserPostsPageDTO
+    public class UserPostsPageDTO
     {
         public string UserId { get; set; }
         public int PageIndex { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Thoughts.Services.Models
 {
-    public struct UserPostsSkipTakeDTO
+    public class UserPostsSkipTakeDTO
     {
         public string UserId { get; set; }
         public int Skip { get; set; }

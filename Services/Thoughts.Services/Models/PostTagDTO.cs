@@ -1,6 +1,6 @@
 ﻿namespace Thoughts.Services.Models
 {
-    public struct PostTagDTO
+    public class PostTagDTO
     {
         public int PostId { get; set; }
         public string Tag { get; set; }
