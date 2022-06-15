@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using Thoughts.Domain.Base.Entities;
 using Thoughts.Interfaces;
 using Thoughts.Services.Models;
 
