@@ -24,7 +24,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тэг был назначен успешно</returns>
         [HttpPut("posts/{PostId}/tag/{Tag}")]
-        public async Task<IActionResult> AssignTagAsync([FromBody] PostTagDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> AssignTagAsync([FromRoute] PostTagDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.AssignTagAsync(dto.PostId, dto.Tag, Cancel);
             return Ok(result);
@@ -35,7 +35,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тело было изменено успешно</returns>
         [HttpPut("posts/{PostId}/body/{Body}")]
-        public async Task<IActionResult> ChangePostBodyAsync([FromBody] PostBodyDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostBodyAsync([FromRoute] PostBodyDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostBodyAsync(dto.PostId, dto.Body, Cancel);
             return Ok(result);
@@ -46,7 +46,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённая категория</returns>
         [HttpPut("posts/{PostId}/category/{CategoryName}")]
-        public async Task<IActionResult> ChangePostCategoryAsync([FromBody] PostCategoryDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostCategoryAsync([FromRoute] PostCategoryDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostCategoryAsync(dto.PostId, dto.CategoryName, Cancel);
             return Ok(result);
@@ -57,7 +57,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Изменённый статус</returns>
         [HttpPut("posts/{PostId}/status/{Status}")]
-        public async Task<IActionResult> ChangePostStatusAsync([FromBody] PostStatusDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostStatusAsync([FromRoute] PostStatusDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostStatusAsync(dto.PostId, dto.Status, Cancel);
             return Ok(result);
@@ -68,7 +68,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если заголовок был изменен успешно</returns>
         [HttpPut("posts/{PostId}/title/{Title}")]
-        public async Task<IActionResult> ChangePostTitleAsync([FromBody] PostTitleDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> ChangePostTitleAsync([FromRoute] PostTitleDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.ChangePostTitleAsync(dto.PostId, dto.Title, Cancel);
             return Ok(result);
@@ -79,7 +79,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Вновь созданный пост</returns>
         [HttpPost("posts/users/{UserId}/{Title}-{Body}-{Category}")]
-        public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> CreatePostAsync([FromRoute] CreatePostDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.CreatePostAsync(dto.Title, dto.Body, dto.UserId, dto.Category, Cancel);
             return Ok(result);
@@ -124,7 +124,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Страница с перечислением всех постов пользователя</returns>
         [HttpPost("posts/users/{UserId}/pages/{PageIndex}-{PageSize}")]
-        public async Task<IActionResult> GetAllPostsByUserIdPageAsync([FromBody] UserPostsPageDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> GetAllPostsByUserIdPageAsync([FromRoute] UserPostsPageDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsByUserIdPageAsync(dto.UserId, dto.PageIndex, dto.PageSize, Cancel);
             return Ok(result);
@@ -135,7 +135,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Перечисление постов пользователя</returns>
         [HttpPost("posts/users/{UserId}/{Skip}-{Take}")]
-        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync([FromBody] UserPostsSkipTakeDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> GetAllPostsByUserIdSkipTakeAsync([FromRoute] UserPostsSkipTakeDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsByUserIdSkipTakeAsync(dto.UserId, dto.Skip, dto.Take, Cancel);
             return Ok(result);
@@ -156,7 +156,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Страница с постами</returns>
         [HttpGet("posts/pages/{PageIndex}/{PageSize}")]
-        public async Task<IActionResult> GetAllPostsPageAsync([FromBody] PostsPageDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> GetAllPostsPageAsync([FromRoute] PostsPageDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsPageAsync(dto.PageIndex, dto.PageSize, Cancel);
             return Ok(result);
@@ -167,7 +167,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Перечисление постов</returns>
         [HttpPost("posts/{Skip}-{Take}")]
-        public async Task<IActionResult> GetAllPostsSkipTakeAsync([FromBody] PostsSkipTakeDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> GetAllPostsSkipTakeAsync([FromRoute] PostsSkipTakeDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.GetAllPostsSkipTakeAsync(dto.Skip, dto.Take, Cancel);
             return Ok(result);
@@ -222,7 +222,7 @@ namespace Thoughts.WebAPI.Controllers
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Истина, если тэг был удалён успешно</returns>
         [HttpPost("posts/{PostId}/tag/{Tag}")]
-        public async Task<IActionResult> RemoveTagAsync([FromBody] PostTagDTO dto, CancellationToken Cancel = default)
+        public async Task<IActionResult> RemoveTagAsync([FromRoute] PostTagDTO dto, CancellationToken Cancel = default)
         {
             var result = await _manager.RemoveTagAsync(dto.PostId, dto.Tag, Cancel);
             return Ok(result);
