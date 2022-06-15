@@ -50,16 +50,16 @@ namespace Thoughts.WebAPI.Controllers
             return Ok(result);
         }
 
-        /// <summary>Изменение статуса поста</summary>
-        /// <param name="dto">DTO статуса поста</param>
-        /// <param name="Cancel">Токен отмены</param>
-        /// <returns>Изменённый статус</returns>
-        [HttpPut("posts/{PostId}/status/{Status}")]
-        public async Task<IActionResult> ChangePostStatusAsync([FromRoute] PostStatusDTO dto, CancellationToken Cancel = default)
-        {
-            var result = await _manager.ChangePostStatusAsync(dto.PostId, dto.Status, Cancel);
-            return Ok(result);
-        }
+        ///// <summary>Изменение статуса поста</summary>
+        ///// <param name="dto">DTO статуса поста</param>
+        ///// <param name="Cancel">Токен отмены</param>
+        ///// <returns>Изменённый статус</returns>
+        //[HttpPut("posts/{PostId}/status/{Status}")]
+        //public async Task<IActionResult> ChangePostStatusAsync([FromRoute] PostStatusDTO dto, CancellationToken Cancel = default)
+        //{
+        //    var result = await _manager.ChangePostStatusAsync(dto.PostId, dto.Status, Cancel);
+        //    return Ok(result);
+        //}
 
         /// <summary>Изменение заголовка поста</summary>
         /// <param name="dto">DTO заголовка поста</param>
