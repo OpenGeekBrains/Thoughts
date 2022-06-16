@@ -60,6 +60,7 @@ public interface IBlogPostManager
 
     Task<bool> ChangePostBodyAsync(int PostId, string Body, CancellationToken Cancel = default);
 
+
     #endregion
 }
 
