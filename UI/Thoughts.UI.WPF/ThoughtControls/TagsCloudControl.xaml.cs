@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -23,13 +24,13 @@ namespace Thoughts.UI.WPF.ThoughtControls
     {
 
         #region TagTextBlock: string - Path to Text propperty of TextBlock
-        /// <summary>Path to Text propperty of TextBlock</summary>
+        /// <summary>Path to Text property of TextBlock</summary>
         public static DependencyProperty TagTextBlockProperty = DependencyProperty.Register(
                 nameof(TagTextBlock),
                 typeof(string),
                 typeof(TagsCloudControl),
                 new PropertyMetadata(default(object)));
-        /// <summary>Path to Text propperty of TextBlock</summary>
+        /// <summary>Path to Text property of TextBlock</summary>
         //[Category("")]
         [Description("Path to Text propperty of TextBlock")]
 
@@ -59,6 +60,25 @@ namespace Thoughts.UI.WPF.ThoughtControls
             set => SetValue(RemoveButtonCommandProperty, value);
         }
         #endregion
+
+
+        #region TagsSource: ICollection - ItemsSource property of ListBox
+        /// <summary>ItemsSource property of ListBox</summary>
+        public static DependencyProperty TagsSourceProperty = DependencyProperty.Register(
+                nameof(TagsSource),
+                typeof(ICollection),
+                typeof(TagsCloudControl),
+                new PropertyMetadata(default(object)));
+        /// <summary>ItemsSource property of ListBox</summary>
+        //[Category("")]
+        [Description("ItemsSource property of ListBox")]
+        public ICollection TagsSource
+        {
+            get => (ICollection)GetValue(TagsSourceProperty);
+            set => SetValue(TagsSourceProperty, value);
+        }
+        #endregion
+        
 
 
 

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:Thoughts.UI.WPF.ThoughtControls"
              mc:Ignorable="d"
              Width="200">
@@ -17,7 +17,8 @@
                   Margin="0 5"
                   IsEditable="True"/>
         <ListBox FlowDirection="LeftToRight"
-                 Foreground="White">
+                 Foreground="White"
+                 ItemsSource="{Binding TagsSource, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}">
             <ListBox.Resources>
                 <Style TargetType="{x:Type ListBox}">
                     <Setter Property="ItemsPanel">
@@ -65,28 +66,26 @@
                                                 Width="15"
                                                 Height="15"
                                                 Margin="3 0"
+                                                SnapsToDevicePixels="True"
+                                                Padding="3 1"
                                                 Command="{Binding RemoveButtonCommand, 
                                                           RelativeSource={RelativeSource 
                                                           AncestorType=local:TagsCloudControl}}"
-                                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}">
+                                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ContentPresenter}}">
                                             <Button.Content>
-                                                <fa:ImageAwesome Icon="Remove"
+                                                <fa:ImageAwesome Icon="Solid_Minus"
                                                                  Foreground="Red"
-                                                                 Height="6"
+                                                                 Height="5"
                                                                  />
                                             </Button.Content>
                                         </Button>
                                     </WrapPanel>
-                                    
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListBox.Resources>            
-            <ListBoxItem Content="123"/>
-            <ListBoxItem Content="2222"/>
-            <ListBoxItem Content="ASDASD"/>
+            </ListBox.Resources>
         </ListBox>
     </StackPanel>
 </UserControl>

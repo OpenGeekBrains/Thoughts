@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:Thoughts.UI.WPF.Views"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="800"
         DataContext="{Binding FilesModel, Source={StaticResource Locator}}"
@@ -29,13 +29,12 @@
                  Background="{StaticResource DefaultBackgroundColor}"
                  BorderThickness="0">
             
-            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border
                         CornerRadius="10"
                         BorderThickness="1"
-                        BorderBrush="CadetBlue"
+                        BorderBrush="{StaticResource DefaultBorderColorBrush}"
                         Width="190"
                         Height="160"
                         Padding="3 3"
@@ -52,7 +51,8 @@
                                             Background="{StaticResource DefaultBackgroundColor}"
                                             Width="20"
                                             >
-                                        <fa:ImageAwesome Icon="Trash" Foreground="{StaticResource DefaultRemoveIconColorBrush}"/>
+                                        <fa:ImageAwesome Icon="Regular_TrashAlt" 
+                                                         Foreground="{StaticResource DefaultRemoveIconColorBrush}"></fa:ImageAwesome>
                                     </Button>
                                 </WrapPanel>
                             </Grid>                            

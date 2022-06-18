@@ -7,6 +7,7 @@
       mc:Ignorable="d"
       xmlns:tc="clr-namespace:Thoughts.UI.WPF.ThoughtControls"
       d:DesignHeight="400" d:DesignWidth="600"
+      xmlns:models="clr-namespace:Thoughts.DAL.Entities"
       DataContext="{Binding RecordsModel, Source={StaticResource Locator}}"       
       >
 
@@ -54,13 +55,11 @@
                 <Button Content="Edit"/>
                 <Button Content="Remove"/>
             </WrapPanel>
-            <ListBox Margin="5 15 5 5"
-                     >                
+            <ListBox Margin="5 15 5 5">                
                 <ListBox.ItemTemplate>
                     <ItemContainerTemplate>
                         <WrapPanel>
-                            <TextBlock x:Name="RecordSubject" FontSize="12"
-                                       />
+                            <TextBlock x:Name="RecordSubject" FontSize="12"/>
                             <WrapPanel HorizontalAlignment="Right">
                                 <WrapPanel.Resources>
                                     <Style TargetType="TextBlock">
@@ -95,10 +94,10 @@
                 <StackPanel DockPanel.Dock="Right"
                             Margin="4 0 0 0">
                     <TextBlock Text="Категория:" />
-                    <ComboBox >
+                    <ComboBox>
                         <ComboBoxItem Content="Мысли"/>
                         <ComboBoxItem Content="ЗОЖ"/>
-                        <ComboBoxItem Content="Авто"/>
+                        <ComboBoxItem Content="Auto"/>
                     </ComboBox>
                 </StackPanel>
             </DockPanel>
