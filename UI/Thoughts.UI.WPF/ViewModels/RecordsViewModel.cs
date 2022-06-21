@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 
 using Thoughts.Domain.Base.Entities;
+using Thoughts.Interfaces;
+using Thoughts.Services;
+using Thoughts.Services.Data;
 using Thoughts.UI.WPF.Infrastructure.Commands;
 using Thoughts.UI.WPF.ViewModels.Base;
 
@@ -14,9 +17,19 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     internal class RecordsViewModel: ViewModel
     {
-       
+        private Post _selectePost;
+
+
+        public TestDbData TestDb { get; set; }
+
+
+        public Post SelectedPost { get => _selectePost; set => Set(ref _selectePost, value); }
+
+
+
         private RelayCommand _deleteTagCommand;
         public RelayCommand DeleteTagCommand => _deleteTagCommand ??= (_deleteTagCommand = new RelayCommand(OnDeleteTagCommand, CanDeleteTagCommandExecute));
+
 
         private bool CanDeleteTagCommandExecute(object? arg) => true;
 
@@ -25,9 +38,6 @@ namespace Thoughts.UI.WPF.ViewModels
             
         }
 
-        public RecordsViewModel()
-        {
-
-        }
+        public RecordsViewModel(TestDbData testData) => TestDb = testData;
     }
 }

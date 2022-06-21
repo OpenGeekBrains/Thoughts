@@ -43,7 +43,6 @@ namespace Thoughts.UI.WPF.ThoughtControls
         #endregion
 
 
-
         #region RemoveButtonCommand: ICommand - Dependency property for controls button.
         /// <summary>Dependency property for controls button.</summary>
         public static DependencyProperty RemoveButtonCommandProperty = DependencyProperty.Register(

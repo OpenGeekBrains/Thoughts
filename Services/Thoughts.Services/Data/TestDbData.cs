@@ -54,6 +54,7 @@ public class TestDbData
                 Tags = new[] { tags[1] },
                 Category = categories[0],
                 User = users[0],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -62,6 +63,7 @@ public class TestDbData
                 Tags = new[] { tags[1] },
                 Category = categories[0],
                 User = users[0],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -70,6 +72,7 @@ public class TestDbData
                 Tags = new[] { tags[2] },
                 Category = categories[0],
                 User = users[1],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -78,6 +81,7 @@ public class TestDbData
                 Tags = new[] { tags[0] },
                 Category = categories[2],
                 User = users[2],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -86,6 +90,7 @@ public class TestDbData
                 Tags = new[] { tags[1] },
                 Category = categories[2],
                 User = users[2],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -94,6 +99,7 @@ public class TestDbData
                 Tags = new[] { tags[2] },
                 Category = categories[0],
                 User = users[2],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
             new Post
             {
@@ -102,6 +108,7 @@ public class TestDbData
                 Tags = new[] { tags[0], tags[2] },
                 Category = categories[1],
                 User = users[0],
+                PublicationDate = DateTimeOffset.Now.Date,
             },
         };
 

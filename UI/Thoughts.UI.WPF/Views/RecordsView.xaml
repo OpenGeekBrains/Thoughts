@@ -55,24 +55,30 @@
                 <Button Content="Edit"/>
                 <Button Content="Remove"/>
             </WrapPanel>
-            <ListBox Margin="5 15 5 5">                
+            <ListBox Margin="5 15 5 5"
+                     SelectedItem="{Binding SelectedPost}"
+                     ItemsSource="{Binding TestDb.Posts}"
+                     Height="200">
                 <ListBox.ItemTemplate>
                     <ItemContainerTemplate>
-                        <WrapPanel>
-                            <TextBlock x:Name="RecordSubject" FontSize="12"/>
+                        <StackPanel>
+                            <TextBlock x:Name="RecordSubject" FontSize="12"
+                                       Text="{Binding Title}"/>
                             <WrapPanel HorizontalAlignment="Right">
                                 <WrapPanel.Resources>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="FontSize" Value="5"/>
+                                        <Setter Property="FontSize" Value="9"/>
                                     </Style>
                                 </WrapPanel.Resources>
                                 <TextBlock x:Name="RecordOwner"
+                                           Text="{Binding User.NickName}"
                                            />
-                                <DatePickerTextBox x:Name="RecordPublished" Margin="5 0"
+                                <TextBlock x:Name="RecordPublished" Margin="5 0"
                                                IsEnabled="False"
+                                               Text="{Binding Date.Date, Mode=OneWay}"
                                                />
                             </WrapPanel>
-                        </WrapPanel>
+                        </StackPanel>
                     </ItemContainerTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -89,15 +95,14 @@
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              IsReadOnly="True"
-                             Text="Admin"/>
+                             Text="{Binding SelectedPost.User.NickName}"
+                             />
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right"
                             Margin="4 0 0 0">
                     <TextBlock Text="Категория:" />
-                    <ComboBox>
-                        <ComboBoxItem Content="Мысли"/>
-                        <ComboBoxItem Content="ЗОЖ"/>
-                        <ComboBoxItem Content="Auto"/>
+                    <ComboBox ItemsSource="{Binding TestDb.Categories}"
+                              SelectedItem="{Binding SelectedPost.Category.Name}">
                     </ComboBox>
                 </StackPanel>
             </DockPanel>
@@ -109,7 +114,8 @@
                                Margin=" 5 0"/>
                     <TextBox Width="200"
                              HorizontalAlignment="Center" 
-                             VerticalAlignment="Center"/>
+                             VerticalAlignment="Center"
+                             Text="{Binding SelectedPost.Title}"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Resources>
@@ -118,7 +124,8 @@
                         </Style>
                     </StackPanel.Resources>
                     <TextBlock Text="Теги:"/>
-                    <tc:TagsCloudControl/>
+                    <tc:TagsCloudControl TagsSource="{Binding TestDb.Tags}"
+                                         />
                 </StackPanel>
                 
             </DockPanel>

@@ -38,6 +38,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.UI.MVC", "UI\Thoughts.UI.MVC\Thoughts.UI.MVC.csproj", "{576DF870-0E68-4DEC-8606-5C59A54B7F95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.UI.WPF", "UI\Thoughts.UI.WPF\Thoughts.UI.WPF.csproj", "{42047E37-CC31-47AB-B3F4-2639BEC6299E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BAD1077-9A80-4B03-B139-83FB9AFE8EC5} = {0BAD1077-9A80-4B03-B139-83FB9AFE8EC5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.DAL.Entities", "Data\Thoughts.DAL.Entities\Thoughts.DAL.Entities.csproj", "{B3EE9253-3254-4B68-843D-9AD584AE3E47}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -50,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thoughts.Services.Tests", "Tests\Thoughts.Services.Tests\Thoughts.Services.Tests.csproj", "{6FEB3457-D2FA-44B2-B646-EAE58DD9511B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.Services.Tests", "Tests\Thoughts.Services.Tests\Thoughts.Services.Tests.csproj", "{6FEB3457-D2FA-44B2-B646-EAE58DD9511B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

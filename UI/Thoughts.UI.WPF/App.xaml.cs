@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Windows;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Thoughts.DAL;
+using Thoughts.Interfaces.Base.Repositories;
+using Thoughts.Services;
+using Thoughts.Services.Data;
+using Thoughts.Services.InSQL;
 using Thoughts.UI.WPF.ViewModels;
 
 namespace Thoughts.UI.WPF
@@ -18,7 +24,7 @@ namespace Thoughts.UI.WPF
         public static IHost Hosting => __Hosting ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
         public static IServiceProvider Services => Hosting.Services;        
 
-        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(opt => opt.AddJsonFile("appconfig.json", false, true)).ConfigureServices(ConfigureServices);
+        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(opt => opt.AddJsonFile("appsettings.json", false, true)).ConfigureServices(ConfigureServices);
         
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
@@ -26,7 +32,10 @@ namespace Thoughts.UI.WPF
             services.AddSingleton<RecordsViewModel>();
             services.AddSingleton <MainWindowViewModel>();
             services.AddSingleton<UsersViewModel>();
-            
+
+
+            services.AddSingleton<TestDbData>();
+
         }
     }
 }
