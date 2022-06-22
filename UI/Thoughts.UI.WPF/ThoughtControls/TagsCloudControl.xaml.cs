@@ -77,7 +77,25 @@ namespace Thoughts.UI.WPF.ThoughtControls
             set => SetValue(TagsSourceProperty, value);
         }
         #endregion
-        
+
+
+        #region SelectedPostTagsSource: ICollection - ItemsSource of selected post tags.
+        /// <summary>summary</summary>
+        public static DependencyProperty SelectedPostTagsSourceProperty = DependencyProperty.Register(
+                nameof(SelectedPostTagsSource),
+                typeof(ICollection),
+                typeof(TagsCloudControl),
+                new PropertyMetadata(default(object)));
+        /// <summary>summary</summary>
+        //[Category("")]
+        [Description("summary")]
+        public ICollection SelectedPostTagsSource
+        {
+            get => (ICollection)GetValue(SelectedPostTagsSourceProperty);
+            set => SetValue(SelectedPostTagsSourceProperty, value);
+        }
+        #endregion
+
 
 
 

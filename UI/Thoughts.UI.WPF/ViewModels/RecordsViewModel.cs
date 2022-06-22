@@ -17,13 +17,17 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     internal class RecordsViewModel: ViewModel
     {
-        private Post _selectePost;
+        private Post _selectedPost;
 
 
         public TestDbData TestDb { get; set; }
 
 
-        public Post SelectedPost { get => _selectePost; set => Set(ref _selectePost, value); }
+        public Post SelectedPost
+        {
+            get => _selectedPost; 
+            set => Set(ref _selectedPost, value);
+        }
 
 
 

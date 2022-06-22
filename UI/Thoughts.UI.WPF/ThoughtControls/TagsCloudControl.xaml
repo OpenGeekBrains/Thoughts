@@ -15,10 +15,54 @@
         <ComboBox VerticalAlignment="Top" 
                   Height="20"
                   Margin="0 5"
-                  IsEditable="True"/>
+                  IsEditable="True"
+                  ItemsSource="{Binding TagsSource, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}"/>
         <ListBox FlowDirection="LeftToRight"
                  Foreground="White"
-                 ItemsSource="{Binding TagsSource, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}">
+                 ItemsSource="{Binding SelectedPostTagsSource, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="{StaticResource DefaultBorderColorBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="2 2"
+                            Margin="1 0">
+                        <WrapPanel>
+                            <ContentPresenter>
+
+                            </ContentPresenter>
+                            <TextBlock VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       MinWidth="20"
+                                       MinHeight="10"
+                                       Foreground="Black"
+                                       Margin="2 0 0 0"
+                                       Text="{Binding TagTextBlock, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}"/>
+                            <Button Style="{StaticResource ButtonStyle}"
+                                    MinWidth="0"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    BorderThickness="0.5"
+                                    Width="15"
+                                    Height="15"
+                                    Margin="3 0"
+                                    SnapsToDevicePixels="True"
+                                    Padding="3 1"
+                                    Command="{Binding RemoveButtonCommand, 
+                                                          RelativeSource={RelativeSource 
+                                                          AncestorType=local:TagsCloudControl}}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ContentPresenter}}">
+                                <Button.Content>
+                                    <fa:ImageAwesome Icon="Solid_Minus"
+                                                     Foreground="Red"
+                                                     Height="5"
+                                    />
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
             <ListBox.Resources>
                 <Style TargetType="{x:Type ListBox}">
                     <Setter Property="ItemsPanel">
@@ -37,49 +81,6 @@
                                         Background="{StaticResource DefaultBackgroundColor}"
                                         >
                                     <ItemsPresenter/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border BorderBrush="{StaticResource DefaultBorderColorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="2 2"
-                                        Margin="1 0">
-                                    <WrapPanel>
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"
-                                                          MinWidth="20"
-                                                          MinHeight="10"
-                                                          TextBlock.Foreground="Black"
-                                                          Margin="2 0 0 0"/>
-                                        <Button Style="{StaticResource ButtonStyle}"
-                                                MinWidth="0"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                BorderThickness="0.5"
-                                                Width="15"
-                                                Height="15"
-                                                Margin="3 0"
-                                                SnapsToDevicePixels="True"
-                                                Padding="3 1"
-                                                Command="{Binding RemoveButtonCommand, 
-                                                          RelativeSource={RelativeSource 
-                                                          AncestorType=local:TagsCloudControl}}"
-                                                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ContentPresenter}}">
-                                            <Button.Content>
-                                                <fa:ImageAwesome Icon="Solid_Minus"
-                                                                 Foreground="Red"
-                                                                 Height="5"
-                                                                 />
-                                            </Button.Content>
-                                        </Button>
-                                    </WrapPanel>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>

@@ -125,7 +125,9 @@
                     </StackPanel.Resources>
                     <TextBlock Text="Теги:"/>
                     <tc:TagsCloudControl TagsSource="{Binding TestDb.Tags}"
-                                         />
+                                         SelectedPostTagsSource="{Binding SelectedPost.Tags}"
+                                         TagTextBlock="{Binding Name}"
+                                         Height="35"/>
                 </StackPanel>
                 
             </DockPanel>
