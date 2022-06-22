@@ -7,8 +7,7 @@
       mc:Ignorable="d"
       xmlns:tc="clr-namespace:Thoughts.UI.WPF.ThoughtControls"
       d:DesignHeight="400" d:DesignWidth="600"
-      xmlns:models="clr-namespace:Thoughts.DAL.Entities"
-      DataContext="{Binding RecordsModel, Source={StaticResource Locator}}"       
+      DataContext="{Binding PostsModel, Source={StaticResource Locator}}"       
       >
 
     <Grid Background="{StaticResource DefaultBackgroundColor}"> <!--Set this property to transparent later!!!!!-->
@@ -57,7 +56,7 @@
             </WrapPanel>
             <ListBox Margin="5 15 5 5"
                      SelectedItem="{Binding SelectedPost}"
-                     ItemsSource="{Binding TestDb.Posts}"
+                     ItemsSource="{Binding Repo.PostRepo}"
                      Height="200">
                 <ListBox.ItemTemplate>
                     <ItemContainerTemplate>
@@ -115,7 +114,7 @@
                     <TextBox Width="200"
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"
-                             Text="{Binding SelectedPost.Title}"/>
+                             Text="{Binding SelectedPost.User.NickName}"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Resources>

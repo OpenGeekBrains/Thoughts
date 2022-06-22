@@ -28,14 +28,29 @@ namespace Thoughts.UI.WPF
         
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
+            services.AddDbContext<ThoughtsDB>(opt => opt.UseSqlServer(host.Configuration.GetConnectionString("SQLServer")));
+            services.AddTransient<ThoughtsDbInitializer>();
+
             services.AddSingleton<FilesViewModel>();
-            services.AddSingleton<RecordsViewModel>();
+            services.AddSingleton<PostsViewModel>();
             services.AddSingleton <MainWindowViewModel>();
             services.AddSingleton<UsersViewModel>();
 
-
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            services.AddSingleton<RepositoryBlogPostManager>();
             services.AddSingleton<TestDbData>();
 
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            using (var scope = Services.CreateScope())
+            {
+                var initializer = scope.ServiceProvider.GetRequiredService<ThoughtsDbInitializer>();
+                initializer.InitializeAsync().Wait();
+            }
+
+            base.OnStartup(e);
         }
     }
 }

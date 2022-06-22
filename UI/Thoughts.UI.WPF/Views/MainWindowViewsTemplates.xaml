@@ -3,7 +3,7 @@
                     xmlns:views="clr-namespace:Thoughts.UI.WPF.Views"
                     xmlns:vm ="clr-namespace:Thoughts.UI.WPF.ViewModels">
 
-    <DataTemplate DataType="{x:Type vm:RecordsViewModel}">
+    <DataTemplate DataType="{x:Type vm:PostsViewModel}">
         <views:RecordsView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type vm:FilesViewModel}">

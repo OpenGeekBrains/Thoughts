@@ -35,7 +35,7 @@ namespace Thoughts.UI.WPF.ThoughtControls
         [Description("Path to Text propperty of TextBlock")]
 
 
-        public string TagTextBlock
+        public IEnumerable TagTextBlock
         {
             get => (string)GetValue(TagTextBlockProperty);
             set => SetValue(TagTextBlockProperty, value);

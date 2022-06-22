@@ -29,7 +29,7 @@ namespace Thoughts.UI.WPF.ViewModels
         #region Propperties
 
 
-        public RecordsViewModel Rvm { get; }
+        public PostsViewModel Rvm { get; }
 
         public FilesViewModel Fvm { get; }
 
@@ -90,7 +90,7 @@ namespace Thoughts.UI.WPF.ViewModels
         #endregion
 
 
-        public MainWindowViewModel(RecordsViewModel rvm, FilesViewModel fvm, UsersViewModel uvm)
+        public MainWindowViewModel(PostsViewModel rvm, FilesViewModel fvm, UsersViewModel uvm)
         {
             Rvm = rvm;
             Fvm = fvm;
