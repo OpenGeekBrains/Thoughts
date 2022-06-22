@@ -15,54 +15,86 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     internal class MainWindowViewModel: ViewModel
     {
+
+        #region Fields
+
+
         public static string Title => "Hello";
-        private RecordsView _recordsView;
-        private FilesView _filesView;
-        private UsersView _usersView;
-        private object _CurrrentView;
+        private ViewModel? _currentView;
 
-
-        public object CurrentView
-        {
-            get => _CurrrentView;
-            set
-            {
-                _CurrrentView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #region Commands
-
-        private ICommand _RecordsButtonCheckedCommand;
-        public ICommand RecordButtonCheckedCommand => _RecordsButtonCheckedCommand ?? new RelayCommand(OnRecordsButtonCheckedCommand, CanRecordsButtonCheckedCommandExecute);
-
-        private bool CanRecordsButtonCheckedCommandExecute(object? p) => true;
-
-        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = _recordsView;
-
-        private ICommand _FilesButtonCheckedCommand;
-        public ICommand FilesButtonCheckedCommand => _FilesButtonCheckedCommand ?? new RelayCommand(OnFilesButtonCheckedCommand, CanFilesButtonCheckedCommandExecute);
-
-        private bool CanFilesButtonCheckedCommandExecute(object? p) => true;
-
-        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = _filesView;
-
-
-        private ICommand _UsersButtonCheckedCommand;
-        public ICommand UsersButtonCheckedCommand => _UsersButtonCheckedCommand ?? new RelayCommand(OnUsersButtonCheckedCommand, CanUsersButtonCheckedCommandExecute);
-        private bool CanUsersButtonCheckedCommandExecute(object? p) => true;
-        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = _usersView;
 
         #endregion
 
 
-        public MainWindowViewModel()
+        #region Propperties
+
+
+        public PostsViewModel Rvm { get; }
+
+        public FilesViewModel Fvm { get; }
+
+        public UsersViewModel Uvm { get; }
+
+        public ViewModel? CurrentView
         {
-            _recordsView = new RecordsView();
-            _filesView = new FilesView();
-            _usersView = new UsersView();
-            _CurrrentView = new RecordsView();
+            get => _currentView;
+            set
+            {
+                _currentView = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+        #endregion
+
+
+        #region Commands
+
+        private ICommand _RecordsButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads RecordVM to CurrentView property.
+        /// </summary>
+        public ICommand RecordButtonCheckedCommand => _RecordsButtonCheckedCommand ?? new RelayCommand(OnRecordsButtonCheckedCommand, CanRecordsButtonCheckedCommandExecute);
+
+        private bool CanRecordsButtonCheckedCommandExecute(object? p) => true;
+
+        private void OnRecordsButtonCheckedCommand(object? p) => CurrentView = Rvm;
+
+        
+        private ICommand _FilesButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads FilesVM to CurrentVew property.
+        /// </summary>
+        public ICommand FilesButtonCheckedCommand => _FilesButtonCheckedCommand ?? new RelayCommand(OnFilesButtonCheckedCommand, CanFilesButtonCheckedCommandExecute);
+
+        private bool CanFilesButtonCheckedCommandExecute(object? p) => true;
+
+        private void OnFilesButtonCheckedCommand(object? p) => CurrentView = Fvm;
+
+
+        private ICommand _UsersButtonCheckedCommand;
+
+        /// <summary>
+        /// Loads UsersVM to CurrentView property.
+        /// </summary>
+        public ICommand UsersButtonCheckedCommand => _UsersButtonCheckedCommand ?? new RelayCommand(OnUsersButtonCheckedCommand, CanUsersButtonCheckedCommandExecute);
+
+
+        private bool CanUsersButtonCheckedCommandExecute(object? p) => true;
+        private void OnUsersButtonCheckedCommand(object? p) => CurrentView = Uvm;
+
+        #endregion
+
+
+        public MainWindowViewModel(PostsViewModel rvm, FilesViewModel fvm, UsersViewModel uvm)
+        {
+            Rvm = rvm;
+            Fvm = fvm;
+            Uvm = uvm;
         }
     }
 }

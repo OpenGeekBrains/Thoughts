@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Thoughts.UI.WPF"
-        xmlns:views="clr-namespace:Thoughts.UI.WPF.Views"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Height="450" Width="800"
@@ -12,9 +10,11 @@
         Foreground="Black"
         FontFamily="Helvetica"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}">
-    <Window.Resources>
-        
-    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding RecordButtonCheckedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Background="{StaticResource DefaultWindowBackGroundColor}"
           >
         <Grid.RowDefinitions>
@@ -51,6 +51,14 @@
             <RadioButton Content="Пользователи" Command="{Binding UsersButtonCheckedCommand}"/>
             <RadioButton Content="Сервис"/>            
         </StackPanel>
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentView}">
+            <ContentControl.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="\Views\MainWindowViewsTemplates.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>

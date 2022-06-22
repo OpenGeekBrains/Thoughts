@@ -4,16 +4,18 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Thoughts.UI.WPF.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="600"
-      DataContext="{Binding RecordsModel, Source={StaticResource Locator}}"       
+      mc:Ignorable="d"
+      xmlns:tc="clr-namespace:Thoughts.UI.WPF.ThoughtControls"
+      d:DesignHeight="400" d:DesignWidth="600"
+      DataContext="{Binding PostsModel, Source={StaticResource Locator}}"       
       >
 
-    <Grid Background="Transparent"> <!--Set this property to transparent later!!!!!-->
+    <Grid Background="{StaticResource DefaultBackgroundColor}"> <!--Set this property to transparent later!!!!!-->
         <Grid.Resources>
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="Margin" Value="4 0"/>
+                <Setter Property="Padding" Value="3 3"/>
             </Style>
             <Style TargetType="{x:Type TextBox}"
                    BasedOn="{StaticResource TextBoxStyle}">
@@ -53,47 +55,81 @@
                 <Button Content="Remove"/>
             </WrapPanel>
             <ListBox Margin="5 15 5 5"
-                     >                
+                     SelectedItem="{Binding SelectedPost}"
+                     ItemsSource="{Binding Repo.PostRepo}"
+                     Height="200">
                 <ListBox.ItemTemplate>
                     <ItemContainerTemplate>
-                        <WrapPanel>
+                        <StackPanel>
                             <TextBlock x:Name="RecordSubject" FontSize="12"
-                                       />
+                                       Text="{Binding Title}"/>
                             <WrapPanel HorizontalAlignment="Right">
                                 <WrapPanel.Resources>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="FontSize" Value="5"/>
+                                        <Setter Property="FontSize" Value="9"/>
                                     </Style>
                                 </WrapPanel.Resources>
                                 <TextBlock x:Name="RecordOwner"
+                                           Text="{Binding User.NickName}"
                                            />
-                                <DatePickerTextBox x:Name="RecordPublished" Margin="5 0"
+                                <TextBlock x:Name="RecordPublished" Margin="5 0"
                                                IsEnabled="False"
+                                               Text="{Binding Date.Date, Mode=OneWay}"
                                                />
                             </WrapPanel>
-                        </WrapPanel>
+                        </StackPanel>
                     </ItemContainerTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
         <DockPanel Grid.Column="1"
-                    Margin="10 0 5 10"
+                    Margin="5 10 5 10"
                     >
-            <StackPanel DockPanel.Dock="Top">
-                <Grid>
-                    <TextBlock Text="Автор:" 
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"/>
-                    <TextBox Width="200" 
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                             IsReadOnly="True"/>
-                </Grid>
-                <Grid>
-                    <TextBlock Text="Тема:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <TextBox Width="250" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-            </StackPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Автор:"                            
+                           VerticalAlignment="Center"
+                               Margin="5 0"/>
+                    <TextBox Width="200"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             IsReadOnly="True"
+                             Text="{Binding SelectedPost.User.NickName}"
+                             />
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right"
+                            Margin="4 0 0 0">
+                    <TextBlock Text="Категория:" />
+                    <ComboBox ItemsSource="{Binding TestDb.Categories}"
+                              SelectedItem="{Binding SelectedPost.Category.Name}">
+                    </ComboBox>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel>
+                    <TextBlock Text="Тема:" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"
+                               Margin=" 5 0"/>
+                    <TextBox Width="200"
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center"
+                             Text="{Binding SelectedPost.User.NickName}"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Button}"
+                               BasedOn="{StaticResource ButtonStyle}">
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="Теги:"/>
+                    <tc:TagsCloudControl TagsSource="{Binding TestDb.Tags}"
+                                         SelectedPostTagsSource="{Binding SelectedPost.Tags}"
+                                         TagTextBlock="{Binding Name}"
+                                         Height="35"/>
+                </StackPanel>
+                
+            </DockPanel>
             <WrapPanel HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="0 0 0 5"

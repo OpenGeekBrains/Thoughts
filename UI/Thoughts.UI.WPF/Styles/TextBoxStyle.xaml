@@ -70,6 +70,21 @@
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="BorderThickness"
+                                                                From="{Binding BorderThickness, ElementName=Border}"
+                                                                To="2"
+                                                                Duration="0:0:0"/>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                                                     Value="#5694a9"/>
+                                            </ColorAnimationUsingKeyFrames>
+
+                                        </Storyboard>
+                                    </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <ScrollViewer Margin="0"

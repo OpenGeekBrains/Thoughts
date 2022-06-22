@@ -8,8 +8,11 @@ using Thoughts.UI.WPF.ViewModels.Base;
 
 namespace Thoughts.UI.WPF.ViewModels
 {
-    internal class RecordsViewModel: ViewModel
+    internal class UsersViewModel:ViewModel
     {
+        public UsersViewModel()
+        {
 
+        }
     }
 }
