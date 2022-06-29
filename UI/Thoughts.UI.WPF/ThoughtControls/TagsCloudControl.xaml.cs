@@ -23,26 +23,6 @@ namespace Thoughts.UI.WPF.ThoughtControls
     public partial class TagsCloudControl : UserControl
     {
 
-        #region TagTextBlock: string - Path to Text propperty of TextBlock
-        /// <summary>Path to Text property of TextBlock</summary>
-        public static DependencyProperty TagTextBlockProperty = DependencyProperty.Register(
-                nameof(TagTextBlock),
-                typeof(string),
-                typeof(TagsCloudControl),
-                new PropertyMetadata(default(object)));
-        /// <summary>Path to Text property of TextBlock</summary>
-        //[Category("")]
-        [Description("Path to Text propperty of TextBlock")]
-
-
-        public IEnumerable TagTextBlock
-        {
-            get => (string)GetValue(TagTextBlockProperty);
-            set => SetValue(TagTextBlockProperty, value);
-        }
-        #endregion
-
-
         #region RemoveButtonCommand: ICommand - Dependency property for controls button.
         /// <summary>Dependency property for controls button.</summary>
         public static DependencyProperty RemoveButtonCommandProperty = DependencyProperty.Register(
@@ -79,11 +59,11 @@ namespace Thoughts.UI.WPF.ThoughtControls
         #endregion
 
 
-        #region SelectedPostTagsSource: ICollection - ItemsSource of selected post tags.
+        #region SelectedPostTagsSource: IEnumerable - ItemsSource of selected post tags.
         /// <summary>summary</summary>
         public static DependencyProperty SelectedPostTagsSourceProperty = DependencyProperty.Register(
                 nameof(SelectedPostTagsSource),
-                typeof(ICollection),
+                typeof(IEnumerable),
                 typeof(TagsCloudControl),
                 new PropertyMetadata(default(object)));
         /// <summary>summary</summary>

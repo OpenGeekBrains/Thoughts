@@ -21,13 +21,15 @@ namespace Thoughts.UI.WPF.ViewModels
 
         public static string Title => "Hello";
         private ViewModel? _currentView;
-
+        private string _loggedUser;
 
         #endregion
 
 
         #region Propperties
 
+
+        public string LoggedUser => "admin";
 
         public PostsViewModel Rvm { get; }
 
@@ -77,6 +79,7 @@ namespace Thoughts.UI.WPF.ViewModels
 
 
         private ICommand _UsersButtonCheckedCommand;
+        
 
         /// <summary>
         /// Loads UsersVM to CurrentView property.

@@ -20,18 +20,25 @@
                                 MinHeight="20"                                
                                 Padding="4">
                             <Border.Background>
-                                <SolidColorBrush Color="#f5fdff"/>
+                                <SolidColorBrush Color="{StaticResource DefaultTextBoxBackgroundColor}"/>
                             </Border.Background>
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="#5f9ea0"/>
+                                <SolidColorBrush Color="{StaticResource DefaultBorderColor}"/>
                             </Border.BorderBrush>
-                                <VisualStateManager.VisualStateGroups>
+                            <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="ReadOnly"
+                                                          To="Focused"
+                                                          GeneratedDuration="23:59:59">
+
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
                                     <VisualState x:Name="Normal">
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                            To="#f5fdff"/>
+                                                            To="{StaticResource DefaultTextBoxBackgroundColor}"/>
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Disabled">
@@ -39,7 +46,7 @@
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                           Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                     Value="#d3d3d3"/>
+                                                                     Value="{StaticResource DisabledControlDefaultColor}"/>
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -48,7 +55,7 @@
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                           Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                     Value="#e2f4f2"/>
+                                                                     Value="{StaticResource ReadOnlyControlDefaultColor}"/>
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -56,7 +63,7 @@
                                         <Storyboard>
                                             <ThicknessAnimation Storyboard.TargetName="Border"
                                                                 Storyboard.TargetProperty="BorderThickness"
-                                                                From="{Binding BorderThickness, ElementName=Border}"
+                                                                From="{TemplateBinding BorderThickness}"
                                                                 To="2"
                                                                 Duration="0:0:0.5"
                                                                 RepeatBehavior="1x"
@@ -66,7 +73,7 @@
                                                                           Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
                                                                           >
                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                     Value="#5694a9"/>
+                                                                     Value="{StaticResource DefaultMouseOverColor}"/>
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -74,15 +81,14 @@
                                         <Storyboard>
                                             <ThicknessAnimation Storyboard.TargetName="Border"
                                                                 Storyboard.TargetProperty="BorderThickness"
-                                                                From="{Binding BorderThickness, ElementName=Border}"
+                                                                From="{TemplateBinding BorderThickness}"
                                                                 To="2"
                                                                 Duration="0:0:0"/>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                     Value="#5694a9"/>
+                                                                     Value="{StaticResource DefaultBorderColor}"/>
                                             </ColorAnimationUsingKeyFrames>
-
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>

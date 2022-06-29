@@ -22,7 +22,7 @@
     <!-- Colors -->
     <Color x:Key="DisabledControlDefaultColor">#d3d3d3</Color>
     <Color x:Key="ReadOnlyControlDefaultColor">#e2f4f2</Color>
-    <Color x:Key="DefaultMouseOverColor">#afeeee</Color>
+    <Color x:Key="DefaultMouseOverColor">#1a8d91</Color>
     <Color x:Key="DefaultTextBoxBackgroundColor">#f5fdff</Color>
     <Color x:Key="DefaultBorderColor">#5f9ea0</Color>
     <Color x:Key="DefaultRemoveIconColor">darkred</Color>

@@ -28,16 +28,13 @@
                             Padding="2 2"
                             Margin="1 0">
                         <WrapPanel>
-                            <ContentPresenter>
-
-                            </ContentPresenter>
                             <TextBlock VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        MinWidth="20"
                                        MinHeight="10"
                                        Foreground="Black"
                                        Margin="2 0 0 0"
-                                       Text="{Binding TagTextBlock, RelativeSource={RelativeSource AncestorType=local:TagsCloudControl}}"/>
+                                       Text="{Binding Name}"/>
                             <Button Style="{StaticResource ButtonStyle}"
                                     MinWidth="0"
                                     HorizontalContentAlignment="Center"
