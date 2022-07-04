@@ -17,7 +17,8 @@ using Thoughts.Extensions.Mapping.Cash.Domain;
 
 namespace Thoughts.Extensions.Mapping
 {
-    // экземпляры свойств кэша будут создаваться при первом запросе
+    // экземпляры свойств кэша будут создаваться при первом запросе к ним
+    // Scoped сущность
     public class MemoizCash : IMemoizCash
     {
         public ICash<int, CategoryDal> CategorysDal
