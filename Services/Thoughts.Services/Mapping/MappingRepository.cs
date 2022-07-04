@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Thoughts.Interfaces.Base;
 using Thoughts.Interfaces.Base.Entities;
+using Thoughts.Interfaces.Base.Mapping;
 using Thoughts.Interfaces.Base.Repositories;
 
 namespace Thoughts.Services.Mapping;
@@ -16,16 +17,16 @@ public class MappingRepository<TSource, TDestination> : IRepository<TDestination
 {
     private readonly IRepository<TSource> _SourceRepository;
     private readonly IMapper<TSource, TDestination> _Mapper;
-    private readonly IMapper<TDestination, TSource> _BackMapper;
+    //private readonly IMapper<TDestination, TSource> _BackMapper;
 
     public MappingRepository(
         IRepository<TSource> SourceRepository, 
-        IMapper<TSource, TDestination> Mapper, 
-        IMapper<TDestination, TSource> BackMapper)
+        IMapper<TSource, TDestination> Mapper 
+        /*IMapper<TDestination, TSource> BackMapper*/)
     {
         _SourceRepository = SourceRepository;
         _Mapper = Mapper;
-        _BackMapper = BackMapper;
+        //_BackMapper = BackMapper;
     }
 
     public async Task<bool> ExistId(int Id, CancellationToken Cancel = default) => await _SourceRepository.ExistId(Id, Cancel);
@@ -51,7 +52,7 @@ public class MappingRepository<TSource, TDestination> : IRepository<TDestination
 
     public async Task<TDestination> Add(TDestination item, CancellationToken Cancel = default)
     {
-        var destination_item = _BackMapper.Map(item);
+        var destination_item = _Mapper.MapBack(item);
 
         var result = await _SourceRepository.Add(destination_item, Cancel).ConfigureAwait(false);
 
