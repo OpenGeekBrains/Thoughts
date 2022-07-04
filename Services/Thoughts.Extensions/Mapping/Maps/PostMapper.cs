@@ -31,6 +31,7 @@ public class PostMapper : IMapper<PostDom, PostDal>
         _tagMapper = tagMapper;
         _commentMapper = commentMapper;
     }
+
     public PostDom? MapBack(PostDal? item)
     {
         if (item is null) return default;
@@ -98,7 +99,6 @@ public class PostMapper : IMapper<PostDom, PostDal>
 
         return post;
     }
-
 
     public PostDal? Map(PostDom? item)
     {

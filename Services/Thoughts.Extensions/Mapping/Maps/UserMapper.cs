@@ -18,6 +18,7 @@ public class UserMapper : IMapper<UserDom, User>
         _memoiz = memoiz;
         _roleMapper = roleMapper;
     }
+
     public User? Map(UserDom? item)
     {
         if (item is null) return default;

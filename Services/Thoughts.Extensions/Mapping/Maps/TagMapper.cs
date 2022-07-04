@@ -18,7 +18,6 @@ public class TagMapper : IMapper<TagDom, TagDal>
         _postMapper = postMapper;
     }
 
-
     public TagDal? Map(TagDom? item)
     {
         if (item is null) return default;
