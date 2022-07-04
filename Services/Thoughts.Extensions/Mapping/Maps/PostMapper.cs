@@ -1,12 +1,12 @@
-﻿using Thoughts.Interfaces.Base;
-
+﻿
 using PostDal = Thoughts.DAL.Entities.Post;
 using StatusDal = Thoughts.DAL.Entities.Status;
 using PostDom = Thoughts.Domain.Base.Entities.Post;
 using StatusDom = Thoughts.Domain.Base.Entities.Status;
 using UserDom = Thoughts.Domain.Base.Entities.User;
+using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Maps;
+namespace Thoughts.Extensions.Mapping.Maps;
 
 public class PostMapper : IMapper<PostDom, PostDal>, IMapper<PostDal, PostDom>
 {
@@ -44,7 +44,7 @@ public class PostMapper : IMapper<PostDom, PostDal>, IMapper<PostDal, PostDom>
 
     public PostDal? Map(PostDom? item)
     {
-        if(item is null) return default;
+        if (item is null) return default;
 
         var post = new PostDal
         {

@@ -1,11 +1,11 @@
 ﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base;
 
 using PostDAL = Thoughts.DAL.Entities.Post;
 using PostDom = Thoughts.Domain.Base.Entities.Post;
 using CategoryDom = Thoughts.Domain.Base.Entities.Category;
+using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Maps;
+namespace Thoughts.Extensions.Mapping.Maps;
 
 public class CategoryMapper : IMapper<CategoryDom, Category>, IMapper<Category, CategoryDom>
 {
@@ -29,18 +29,7 @@ public class CategoryMapper : IMapper<CategoryDom, Category>, IMapper<Category, 
         MapsCash.CategoryDalCash.Add(cat);
 
         foreach (var post in item.Posts)
-        {
             cat.Posts.Add(MapsHelper.FindPostOrMapNew(post));
-            // todo: использование локального кеша данных маппера
-            //if (_PostsDAL.TryGetValue(post.Id, out var post_dom)) 
-            //    cat.Posts.Add(post_dom);
-            //else
-            //{
-            //    post_dom = _PostMapper.Map(post);
-            //    _PostsDAL.Add(post.Id, post_dom);
-            //    cat.Posts.Add(post_dom);
-            //}
-        }
 
         return cat;
     }

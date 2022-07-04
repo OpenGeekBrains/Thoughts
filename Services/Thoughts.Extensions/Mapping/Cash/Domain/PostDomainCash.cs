@@ -1,7 +1,7 @@
 ﻿using PostDom = Thoughts.Domain.Base.Entities.Post;
 using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Cash.Domain
+namespace Thoughts.Extensions.Mapping.Cash.Domain
 {
     public class PostDomainCash : ICash<int, PostDom>
     {

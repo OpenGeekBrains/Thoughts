@@ -1,9 +1,9 @@
 ﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base;
+using Thoughts.Interfaces.Base.Mapping;
 
 using CommentDom = Thoughts.Domain.Base.Entities.Comment;
 
-namespace Thoughts.Extensions.Maps;
+namespace Thoughts.Extensions.Mapping.Maps;
 
 public class CommentMapper : IMapper<CommentDom, Comment>, IMapper<Comment, CommentDom>
 {

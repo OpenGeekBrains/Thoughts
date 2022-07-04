@@ -1,7 +1,7 @@
 ﻿using CategoryDal = Thoughts.DAL.Entities.Category;
 using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Cash.DAL
+namespace Thoughts.Extensions.Mapping.Cash.DAL
 {
     public class CategoryDalCash : ICash<int, CategoryDal>
     {

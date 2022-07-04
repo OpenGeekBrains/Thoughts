@@ -1,9 +1,9 @@
 ﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base;
+using Thoughts.Interfaces.Base.Mapping;
 
 using UserDom = Thoughts.Domain.Base.Entities.User;
 
-namespace Thoughts.Extensions.Maps;
+namespace Thoughts.Extensions.Mapping.Maps;
 
 public class UserMapper : IMapper<UserDom, User>, IMapper<User, UserDom>
 {

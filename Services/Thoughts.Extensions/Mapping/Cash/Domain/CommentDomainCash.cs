@@ -1,7 +1,7 @@
 ﻿using CommentDom = Thoughts.Domain.Base.Entities.Comment;
 using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Cash.Domain
+namespace Thoughts.Extensions.Mapping.Cash.Domain
 {
     public class CommentDomainCash : ICash<int, CommentDom>
     {

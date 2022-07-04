@@ -1,7 +1,7 @@
 ﻿using TagDom = Thoughts.Domain.Base.Entities.Tag;
 using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Cash.Domain
+namespace Thoughts.Extensions.Mapping.Cash.Domain
 {
     public class TagDomainCash : ICash<int, TagDom>
     {

@@ -1,7 +1,7 @@
 ﻿using PostDal = Thoughts.DAL.Entities.Post;
 using Thoughts.Interfaces.Base.Mapping;
 
-namespace Thoughts.Extensions.Cash.DAL
+namespace Thoughts.Extensions.Mapping.Cash.DAL
 {
     public class PostDalCash : ICash<int, PostDal>
     {

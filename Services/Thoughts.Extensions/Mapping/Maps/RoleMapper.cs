@@ -1,9 +1,9 @@
 ﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base;
+using Thoughts.Interfaces.Base.Mapping;
 
 using RoleDom = Thoughts.Domain.Base.Entities.Role;
 
-namespace Thoughts.Extensions.Maps;
+namespace Thoughts.Extensions.Mapping.Maps;
 
 public class RoleMapper : IMapper<RoleDom, Role>, IMapper<Role, RoleDom>
 {
