@@ -1,12 +1,23 @@
-﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base.Mapping;
-
+﻿using RoleDal = Thoughts.DAL.Entities.Role;
+using StatusDom = Thoughts.Domain.Base.Entities.Status;
+using RoleDom = Thoughts.Domain.Base.Entities.Role;
 using UserDom = Thoughts.Domain.Base.Entities.User;
+using Thoughts.DAL.Entities;
+using Thoughts.Interfaces.Base.Mapping;
+using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps;
 
-public class UserMapper : IMapper<UserDom, User>, IMapper<User, UserDom>
+public class UserMapper : IMapper<UserDom, User>
 {
+    private readonly IMemoizCash _memoiz;
+    private readonly IMapper<RoleDom, RoleDal> _roleMapper;
+
+    public UserMapper(IMemoizCash memoiz, IMapper<RoleDom, RoleDal> roleMapper)
+    {
+        _memoiz = memoiz;
+        _roleMapper = roleMapper;
+    }
     public User? Map(UserDom? item)
     {
         if (item is null) return default;
@@ -21,15 +32,26 @@ public class UserMapper : IMapper<UserDom, User>, IMapper<User, UserDom>
             Birthday = item.Birthday,
             Status = (Status)item.Status,
         };
-        MapsCash.UserDalCash.Add(user);
+        _memoiz.UsersDal.Cash.Add(user.Id, user);
 
         foreach (var role in item.Roles)
-            user.Roles.Add(MapsHelper.FindRoleOrMapNew(role));
+        {
+            RoleDal tmpRole;
+            if (_memoiz.RolesDal.Cash.ContainsKey(role.Id))
+            {
+                tmpRole = _memoiz.RolesDal.Cash[role.Id];
+            }
+            else
+            {
+                tmpRole = _roleMapper.Map(role);
+            }
+            user.Roles.Add(tmpRole);
+        }
 
         return user;
     }
 
-    public UserDom? Map(User? item)
+    public UserDom? MapBack(User? item)
     {
         if (item is null) return default;
 
@@ -41,12 +63,25 @@ public class UserMapper : IMapper<UserDom, User>, IMapper<User, UserDom>
             FirstName = item.FirstName,
             Patronymic = item.Patronymic,
             Birthday = item.Birthday,
-            Status = (Domain.Base.Entities.Status)item.Status,
+            Status = (StatusDom)item.Status,
         };
-        MapsCash.UserDomCash.Add(user);
+        _memoiz.UsersDomain.Cash.Add(user.Id, user);
 
         foreach (var role in item.Roles)
-            user.Roles.Add(MapsHelper.FindRoleOrMapNew(role));
+        {
+            RoleDom tmpRole;
+            if (_memoiz.RolesDomain.Cash.ContainsKey(role.Id))
+            {
+                tmpRole = _memoiz.RolesDomain.Cash[role.Id];
+            }
+            else
+            {
+                tmpRole = _roleMapper.MapBack(role);
+            }
+            user.Roles.Add(tmpRole);
+        }
+
+        return user;
 
         return user;
     }

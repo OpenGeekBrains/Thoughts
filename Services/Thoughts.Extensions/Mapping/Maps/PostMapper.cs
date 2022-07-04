@@ -112,7 +112,8 @@ public class PostMapper : IMapper<PostDom, PostDal>
             Title = item.Title,
             Body = item.Body,
             PublicationDate = item.PublicationsDate,
-        }; _memoiz.PostsDal.Cash.Add(post.Id, post);
+        };
+        _memoiz.PostsDal.Cash.Add(post.Id, post);
 
         if (_memoiz.UsersDal.Cash.ContainsKey(post.User.Id))
         {
