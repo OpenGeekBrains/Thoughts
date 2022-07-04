@@ -163,5 +163,4 @@ public class PostMapper : IMapper<PostDom, PostDal>
 
         return post;
     }
-
 }
