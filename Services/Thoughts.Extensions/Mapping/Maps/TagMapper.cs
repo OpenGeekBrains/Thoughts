@@ -15,58 +15,21 @@ using RoleDom = Thoughts.Domain.Base.Entities.Role;
 using TagDom = Thoughts.Domain.Base.Entities.Tag;
 using UserDom = Thoughts.Domain.Base.Entities.User;
 using Thoughts.Interfaces.Base.Mapping;
+using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps;
 
 public class TagMapper : IMapper<TagDom, TagDal>
 {
     private readonly IMapper<PostDom, PostDal> _mapper;
-    private readonly ICash<TagDal, TagDom, int> cash;
-    private readonly Dictionary<int, TagDal> _dalCash = new();
-    private readonly Dictionary<int, TagDom> _domCash = new();
+    private readonly IMemoizCash _memoiz;
 
-    public TagMapper(IMapper<PostDom, PostDal> mapper, ICash<TagDal, TagDom, int> cash)
+    public TagMapper(IMapper<PostDom, PostDal> mapper, IMemoizCash memoiz)
     {
         _mapper = mapper;
-        this.cash = cash;
-        cash._domCash.
+        _memoiz = memoiz;
     }
 
-    public void AddToCash(object? obj)
-    {
-        if (obj is null) return;
-
-        if (obj is TagDal)
-        {
-            var tmp = obj as TagDal;
-            _dalCash.Add(tmp.Id, tmp);
-        }
-        else if (obj is TagDom)
-        {
-            var tmp = obj as TagDom;
-            _domCash.Add(tmp.Id, tmp);
-        }
-        throw new ArgumentException($"{nameof(TagMapper)} cant add this object in cash");
-    }
-
-    public object GetDalObject(object key)
-    {
-        if (key is null) throw new ArgumentException($"Key is null");
-        if (key is not int) throw new ArgumentException($"{nameof(TagMapper)} cash doesn't use this type of key");
-
-        var tmpKey = (int)key;
-        return _dalCash[tmpKey];
-
-    }
-
-    public object GetDomainObject(object key)
-    {
-        if (key is null) throw new ArgumentException($"Key is null");
-        if (key is not int) throw new ArgumentException($"{nameof(TagMapper)} cash doesn't use this type of key");
-
-        var tmpKey = (int)key;
-        return _domCash[tmpKey];
-    }
 
     public TagDal? Map(TagDom? item)
     {
@@ -77,18 +40,17 @@ public class TagMapper : IMapper<TagDom, TagDal>
             Id = item.Id,
             Name = item.Name,
         };
-        AddToCash(tag);
+        _memoiz.TagsDal.Cash.Add(tag.Id, tag);
 
         foreach (var post in item.Posts)
         {
-            var tmpObj = _mapper.GetDalObject(post.Id);
-            if (tmpObj is not null && tmpObj is PostDal)
-            {
-                var tmpPost = tmpObj as PostDal;
-                tag.Posts.Add(tmpPost!);
-            }
+            PostDal tmpPost;
+            if (_memoiz.PostsDal.Cash.ContainsKey(post.Id))
+                tmpPost = _memoiz.PostsDal.Cash[post.Id];
             else
-                tag.Posts.Add(_mapper.Map(post));
+                tmpPost = _mapper.Map(post);
+
+            tag.Posts.Add(tmpPost);
         }
 
         return tag;
@@ -103,18 +65,17 @@ public class TagMapper : IMapper<TagDom, TagDal>
             Id = item.Id,
             Name = item.Name,
         };
-        AddToCash(tag);
+        _memoiz.TagsDomain.Cash.Add(tag.Id, tag);
 
         foreach (var post in item.Posts)
         {
-            var tmpObj = _mapper.GetDomainObject(post.Id);
-            if (tmpObj is not null && tmpObj is PostDom)
-            {
-                var tmpPost = tmpObj as PostDom;
-                tag.Posts.Add(tmpPost!);
-            }
+            PostDom tmpPost;
+            if (_memoiz.PostsDomain.Cash.ContainsKey(post.Id))
+                tmpPost = _memoiz.PostsDomain.Cash[post.Id];
             else
-                tag.Posts.Add(_mapper.MapBack(post));
+                tmpPost = _mapper.MapBack(post);
+
+            tag.Posts.Add(tmpPost);
         }
 
         return tag;
