@@ -1,22 +1,9 @@
-﻿using PostDal = Thoughts.DAL.Entities.Post;
-using StatusDal = Thoughts.DAL.Entities.Status;
-using CategoryDal = Thoughts.DAL.Entities.Category;
-using CommentDal = Thoughts.DAL.Entities.Comment;
-using RoleDal = Thoughts.DAL.Entities.Role;
-using TagDal = Thoughts.DAL.Entities.Tag;
-using UserDal = Thoughts.DAL.Entities.User;
-using PostDom = Thoughts.Domain.Base.Entities.Post;
-using StatusDom = Thoughts.Domain.Base.Entities.Status;
-using CategoryDom = Thoughts.Domain.Base.Entities.Category;
-using CommentDom = Thoughts.Domain.Base.Entities.Comment;
+﻿using UserDal = Thoughts.DAL.Entities.User;
 using RoleDom = Thoughts.Domain.Base.Entities.Role;
-using TagDom = Thoughts.Domain.Base.Entities.Tag;
 using UserDom = Thoughts.Domain.Base.Entities.User;
 using Thoughts.DAL.Entities;
 using Thoughts.Interfaces.Base.Mapping;
 using Thoughts.Interfaces.Mapping;
-
-using RoleDom = Thoughts.Domain.Base.Entities.Role;
 
 namespace Thoughts.Extensions.Mapping.Maps;
 

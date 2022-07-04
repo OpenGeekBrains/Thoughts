@@ -1,21 +1,24 @@
-﻿using Thoughts.DAL.Entities;
-
-using PostDAL = Thoughts.DAL.Entities.Post;
+﻿using PostDal = Thoughts.DAL.Entities.Post;
 using PostDom = Thoughts.Domain.Base.Entities.Post;
+using StatusDom = Thoughts.Domain.Base.Entities.Status;
 using CategoryDom = Thoughts.Domain.Base.Entities.Category;
+using PostDAL = Thoughts.DAL.Entities.Post;
+using Thoughts.DAL.Entities;
 using Thoughts.Interfaces.Base.Mapping;
+using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps;
 
-public class CategoryMapper : IMapper<CategoryDom, Category>, IMapper<Category, CategoryDom>
+public class CategoryMapper : IMapper<CategoryDom, Category>
 {
-    //private readonly IMapper<PostDom, Post> _PostMapper;
-    //private readonly Dictionary<int, PostDAL> _PostsDAL = new();
+    private readonly IMemoizCash _memoiz;
+    private readonly IMapper<PostDom, PostDAL> _postMapper;
 
-    //public CategoryMapper(IMapper<PostDom, PostDAL> PostMapper)
-    //{
-    //    _PostMapper = PostMapper;
-    //}
+    public CategoryMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper)
+    {
+        _memoiz = memoiz;
+        _postMapper = postMapper;
+    }
 
     public Category? Map(CategoryDom? item)
     {
@@ -26,17 +29,26 @@ public class CategoryMapper : IMapper<CategoryDom, Category>, IMapper<Category, 
             Name = item.Name,
             Status = (Status)item.Status,
         };
-        MapsCash.CategoryDalCash.Add(cat);
+        _memoiz.CategorysDal.Cash.Add(cat.Id, cat);
 
         foreach (var post in item.Posts)
-            cat.Posts.Add(MapsHelper.FindPostOrMapNew(post));
+        {
+            PostDal tmpPost;
+            if (_memoiz.PostsDal.Cash.ContainsKey(post.Id))
+            {
+                tmpPost = _memoiz.PostsDal.Cash[post.Id];
+            }
+            else
+            {
+                tmpPost = _postMapper.Map(post);
+            }
+            cat.Posts.Add(tmpPost);
+        }
 
         return cat;
     }
 
-    //private readonly Dictionary<int, PostDom> _PostsDom = new();
-
-    public CategoryDom? Map(Category? item)
+    public CategoryDom? MapBack(Category? item)
     {
         if (item is null) return default;
 
@@ -44,12 +56,23 @@ public class CategoryMapper : IMapper<CategoryDom, Category>, IMapper<Category, 
         {
             Id = item.Id,
             Name = item.Name,
-            Status = (Domain.Base.Entities.Status)item.Status,
-        };
-        MapsCash.CategoryDomCash.Add(cat);
+            Status = (StatusDom)item.Status,
+        }; 
+        _memoiz.CategorysDomain.Cash.Add(cat.Id, cat);
 
         foreach (var post in item.Posts)
-            cat.Posts.Add(MapsHelper.FindPostOrMapNew(post));
+        {
+            PostDom tmpPost;
+            if (_memoiz.PostsDomain.Cash.ContainsKey(post.Id))
+            {
+                tmpPost = _memoiz.PostsDomain.Cash[post.Id];
+            }
+            else
+            {
+                tmpPost = _postMapper.MapBack(post);
+            }
+            cat.Posts.Add(tmpPost);
+        }
 
         return cat;
     }
