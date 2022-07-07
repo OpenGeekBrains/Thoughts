@@ -165,18 +165,18 @@ namespace Thoughts.Extensions.Mapping
             }
         }
 
-        ICash<int, CategoryDal> _categorysDal;
-        ICash<int, CategoryDom> _categorysDomain;
-        ICash<int, CommentDal> _commentsDal;
-        ICash<int, CommentDom> _commentsDomain;
-        ICash<int, PostDal> _postsDal;
-        ICash<int, PostDom> _postsDomain;
-        ICash<int, RoleDal> _rolesDal;
-        ICash<int, RoleDom> _rolesDomain;
-        ICash<int, TagDal> _tagsDal;
-        ICash<int, TagDom> _tagsDomain;
-        ICash<string, UserDal> _usersDal;
-        ICash<string, UserDom> _usersDomain;
+        ICash<int, CategoryDal>? _categorysDal = null;
+        ICash<int, CategoryDom>? _categorysDomain = null;
+        ICash<int, CommentDal>? _commentsDal = null;
+        ICash<int, CommentDom>? _commentsDomain = null;
+        ICash<int, PostDal>? _postsDal = null;
+        ICash<int, PostDom>? _postsDomain = null;
+        ICash<int, RoleDal>? _rolesDal = null;
+        ICash<int, RoleDom>? _rolesDomain = null;
+        ICash<int, TagDal>? _tagsDal = null;
+        ICash<int, TagDom>? _tagsDomain = null;
+        ICash<string, UserDal>? _usersDal = null;
+        ICash<string, UserDom>? _usersDomain = null;
 
         bool disposed = false;
 
@@ -187,18 +187,18 @@ namespace Thoughts.Extensions.Mapping
             if (disposed) return;
             if (disposing)
             {
-                _categorysDal.Dispose();
-                _categorysDomain.Dispose();
-                _commentsDal.Dispose();
-                _commentsDomain.Dispose();
-                _postsDal.Dispose();
-                _postsDomain.Dispose();
-                _rolesDal.Dispose();
-                _rolesDomain.Dispose();
-                _tagsDal.Dispose();
-                _tagsDomain.Dispose();
-                _usersDal.Dispose();
-                _usersDomain.Dispose();
+                _categorysDal?.Dispose();
+                _categorysDomain?.Dispose();
+                _commentsDal?.Dispose();
+                _commentsDomain?.Dispose();
+                _postsDal?.Dispose();
+                _postsDomain?.Dispose();
+                _rolesDal?.Dispose();
+                _rolesDomain?.Dispose();
+                _tagsDal?.Dispose();
+                _tagsDomain?.Dispose();
+                _usersDal?.Dispose();
+                _usersDomain?.Dispose();
             }
             disposed = true;
         }
