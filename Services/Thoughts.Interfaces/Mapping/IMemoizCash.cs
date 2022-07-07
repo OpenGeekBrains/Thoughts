@@ -14,7 +14,7 @@ using Thoughts.Interfaces.Base.Mapping;
 
 namespace Thoughts.Interfaces.Mapping
 {
-    public interface IMemoizCash
+    public interface IMemoizCash: IDisposable
     {
         ICash<int, CategoryDal> CategorysDal { get; }
         ICash<int, CategoryDom> CategorysDomain { get; }

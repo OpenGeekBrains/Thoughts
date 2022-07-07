@@ -177,5 +177,30 @@ namespace Thoughts.Extensions.Mapping
         ICash<int, TagDom> _tagsDomain;
         ICash<string, UserDal> _usersDal;
         ICash<string, UserDom> _usersDomain;
+
+        bool disposed = false;
+
+        public void Dispose() => Dispose(true);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+            if (disposing)
+            {
+                _categorysDal.Dispose();
+                _categorysDomain.Dispose();
+                _commentsDal.Dispose();
+                _commentsDomain.Dispose();
+                _postsDal.Dispose();
+                _postsDomain.Dispose();
+                _rolesDal.Dispose();
+                _rolesDomain.Dispose();
+                _tagsDal.Dispose();
+                _tagsDomain.Dispose();
+                _usersDal.Dispose();
+                _usersDomain.Dispose();
+            }
+            disposed = true;
+        }
     }
 }
