@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Thoughts.DAL.Entities;
+using Thoughts.Extensions.Mapping;
 using Thoughts.Extensions.Mapping.Maps2;
 using Thoughts.Interfaces.Base.Mapping;
 using Thoughts.Mapping.Tests.Maps.Fixtures;
@@ -14,9 +15,10 @@ namespace Thoughts.Mapping.Tests.Maps
         private readonly IMapper<Category, CategoryDom> _mapper;
         ICollection<Category> Categories;
 
-        public CategoryMapper2Tests(MemoizCashFixture cashFixture)
+        public CategoryMapper2Tests(/*MemoizCashFixture cashFixture*/)
         {
-            _mapper = new CategoryMapper2(cashFixture.Cash);
+            _mapper = new CategoryMapper2(new MemoizCash());
+            //_mapper = new CategoryMapper2(cashFixture.Cash);
             Categories = TestDbData.Categories;
 
             int i = 1;
