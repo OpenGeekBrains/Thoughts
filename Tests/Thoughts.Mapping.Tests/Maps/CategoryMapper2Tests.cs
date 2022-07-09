@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Thoughts.DAL.Entities;
 using Thoughts.Extensions.Mapping.Maps2;
 using Thoughts.Interfaces.Base.Mapping;
@@ -12,7 +11,7 @@ namespace Thoughts.Mapping.Tests.Maps
 {
     public class CategoryMapper2Tests : IClassFixture<MemoizCashFixture>
     {
-        private readonly IMapper<CategoryDom, Category> _mapper;
+        private readonly IMapper<Category, CategoryDom> _mapper;
         ICollection<Category> Categories;
 
         public CategoryMapper2Tests(MemoizCashFixture cashFixture)
@@ -39,7 +38,7 @@ namespace Thoughts.Mapping.Tests.Maps
             var testCollection = new List<CategoryDom>();
             foreach (var item in Categories)
             {
-                testCollection.Add(_mapper.MapBack(item));
+                testCollection.Add(_mapper.Map(item));
             }
             foreach (var item in testCollection)
             {
@@ -53,7 +52,7 @@ namespace Thoughts.Mapping.Tests.Maps
             var testCollection = new List<CategoryDom>();
             foreach (var item in Categories)
             {
-                testCollection.Add(_mapper.MapBack(item));
+                testCollection.Add(_mapper.Map(item));
             }
             foreach (var item in testCollection)
             {
@@ -63,7 +62,7 @@ namespace Thoughts.Mapping.Tests.Maps
             var resultCollection = new List<Category>();
             foreach (var item in testCollection)
             {
-                resultCollection.Add(_mapper.Map(item));
+                resultCollection.Add(_mapper.MapBack(item));
             }
             foreach (var resultItem in resultCollection)
             {
