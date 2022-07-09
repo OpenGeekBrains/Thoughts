@@ -166,6 +166,5 @@ public class TestDbData
 
     public static ICollection<User> Users { get; }
 
-
     public static ICollection<Post> Posts { get; }
 }
