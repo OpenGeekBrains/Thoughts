@@ -13,7 +13,7 @@ namespace Thoughts.Mapping.Tests.Maps.Fixtures
         }
         public void Dispose()
         {
-            Cash.Dispose();
+            Cash?.Dispose();
         }
     }
 }
