@@ -10,6 +10,7 @@ using Thoughts.Interfaces.Base.Mapping;
 using Thoughts.Extensions.Mapping.Maps;
 using Thoughts.Interfaces.Mapping;
 using Thoughts.Extensions.Mapping;
+using Thoughts.Extensions.Mapping.Maps2;
 
 namespace Thoughts.Mapping.Tests
 {
@@ -19,12 +20,12 @@ namespace Thoughts.Mapping.Tests
         {
             services.AddScoped<IMemoizCash, MemoizCash>();
             services.AddScoped<IMapperCollector, MapperCollector>();
-            services.AddScoped<IMapper<CategoryDom, Category>, CategoryMapper>();
-            services.AddScoped<IMapper<CommentDom, Comment>, CommentMapper>();
-            services.AddScoped<IMapper<PostDom, Post>, PostMapper>();
-            services.AddScoped<IMapper<RoleDom, Role>, RoleMapper>();
-            services.AddScoped<IMapper<TagDom, Tag>, TagMapper>();
-            services.AddScoped<IMapper<UserDom, User>, UserMapper>();
+            services.AddScoped<IMapper<CategoryDom, Category>, CategoryMapper2>();
+            services.AddScoped<IMapper<CommentDom, Comment>, CommentMapper2>();
+            services.AddScoped<IMapper<PostDom, Post>, PostMapper2>();
+            services.AddScoped<IMapper<RoleDom, Role>, RoleMapper2>();
+            services.AddScoped<IMapper<TagDom, Tag>, TagMapper2>();
+            services.AddScoped<IMapper<UserDom, User>, UserMapper2>();
         }
     }
 }

@@ -4,7 +4,7 @@ using Thoughts.Extensions.Mapping;
 
 using Xunit;
 
-namespace Thoughts.Mapping.Tests
+namespace Thoughts.Mapping.Tests.Cash
 {
     public class MemoizCashTests : IDisposable
     {

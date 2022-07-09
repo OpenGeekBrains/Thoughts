@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Thoughts.Extensions\Thoughts.Extensions.csproj" />
+    <ProjectReference Include="..\..\Services\Thoughts.Services\Thoughts.Services.csproj" />
   </ItemGroup>
 
 </Project>
