@@ -32,6 +32,7 @@ namespace Thoughts.Mapping.Tests.Maps
             Assert.True(_mapper is not null);
         }
 
+        
         [Fact]
         public void MapBackTest()
         {

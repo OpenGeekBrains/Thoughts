@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
-
 using Moq;
-
 using Thoughts.DAL.Entities;
 using Thoughts.Interfaces.Base.Mapping;
 using Thoughts.Interfaces.Base.Repositories;
@@ -28,9 +26,9 @@ namespace Thoughts.Mapping.Tests.Repositories
         public CategoryMappingRepositoryTests(DataBaseFixture fixture, IMapper<Category, CategoryDom> mapper)
         {
             _loggerCategoryMock = new Mock<ILogger<DbRepository<Category>>>();
-            var dbRepository = new DbRepository<Category>(fixture.DB, _loggerCategoryMock.Object);
+            IRepository<Category> dbRepository = new DbRepository<Category>(fixture.DB, _loggerCategoryMock.Object);
 
-            //_mapperRepo = new MappingRepository<Category, CategoryDom>(dbRepository, mapper);
+            _mapperRepo = new MappingRepository<Category, CategoryDom>(dbRepository, mapper);
         }
         [Fact]
         public void RepoCreated()
