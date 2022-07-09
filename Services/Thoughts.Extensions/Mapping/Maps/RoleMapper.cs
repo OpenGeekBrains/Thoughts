@@ -45,6 +45,7 @@ public class RoleMapper : IMapper<RoleDom, Role>
             {
                 tmpUser = _userMapper.MapBack(user);
             }
+            role.Users.Add(tmpUser);
         }
 
         return role;
@@ -71,6 +72,7 @@ public class RoleMapper : IMapper<RoleDom, Role>
             {
                 tmpUser = _userMapper.Map(user);
             }
+            role.Users.Add(tmpUser);
         }
 
         return role;

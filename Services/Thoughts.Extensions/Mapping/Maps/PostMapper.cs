@@ -123,9 +123,9 @@ public class PostMapper : IMapper<PostDom, PostDal>
         };
         _memoiz.PostsDal.Cash.Add(post.Id, post);
 
-        if (_memoiz.UsersDal.Cash.ContainsKey(post.User.Id))
+        if (_memoiz.UsersDal.Cash.ContainsKey(item.User.Id))
         {
-            post.User = _memoiz.UsersDal.Cash[post.User.Id];
+            post.User = _memoiz.UsersDal.Cash[item.User.Id];
         }
         else
         {
