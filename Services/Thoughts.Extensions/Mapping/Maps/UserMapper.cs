@@ -13,10 +13,16 @@ public class UserMapper : IMapper<UserDom, User>
     private readonly IMemoizCash _memoiz;
     private readonly IMapper<RoleDom, RoleDal> _roleMapper;
 
-    public UserMapper(IMemoizCash memoiz, IMapper<RoleDom, RoleDal> roleMapper)
+    //public UserMapper(IMemoizCash memoiz, IMapper<RoleDom, RoleDal> roleMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _roleMapper = roleMapper;
+    //}
+
+    public UserMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _roleMapper = roleMapper;
+        _roleMapper = collector.RoleMapper! ;
     }
 
     public User? Map(UserDom? item)

@@ -15,11 +15,17 @@ public class CommentMapper : IMapper<CommentDom, Comment>
     private readonly IMapper<PostDom, PostDal> _postMapper;
     private readonly IMapper<UserDom, UserDal> _userMapper;
 
-    public CommentMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper, IMapper<UserDom, UserDal> userMapper)
+    //public CommentMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper, IMapper<UserDom, UserDal> userMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _postMapper = postMapper;
+    //    _userMapper = userMapper;
+    //}
+    public CommentMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _postMapper = postMapper;
-        _userMapper = userMapper;
+        _postMapper = collector.PostMapper!;
+        _userMapper = collector.UserMapper!;
     }
 
     public Comment? Map(CommentDom? item)

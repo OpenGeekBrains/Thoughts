@@ -14,10 +14,15 @@ public class CategoryMapper : IMapper<CategoryDom, Category>
     private readonly IMemoizCash _memoiz;
     private readonly IMapper<PostDom, PostDAL> _postMapper;
 
-    public CategoryMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper)
+    //public CategoryMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _postMapper = postMapper;
+    //}
+    public CategoryMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _postMapper = postMapper;
+        _postMapper = collector.PostMapper!;
     }
 
     public Category? Map(CategoryDom? item)

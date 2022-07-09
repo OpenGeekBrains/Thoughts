@@ -18,6 +18,7 @@ namespace Thoughts.Mapping.Tests
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMemoizCash, MemoizCash>();
+            services.AddScoped<IMapperCollector, MapperCollector>();
             services.AddScoped<IMapper<CategoryDom, Category>, CategoryMapper>();
             services.AddScoped<IMapper<CommentDom, Comment>, CommentMapper>();
             services.AddScoped<IMapper<PostDom, Post>, PostMapper>();

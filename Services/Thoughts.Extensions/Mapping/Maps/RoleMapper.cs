@@ -12,12 +12,17 @@ public class RoleMapper : IMapper<RoleDom, Role>
     private readonly IMemoizCash _memoiz;
     private readonly IMapper<UserDom, UserDal> _userMapper;
 
-    public RoleMapper(IMemoizCash memoiz, IMapper<UserDom, UserDal> userMapper)
+    //public RoleMapper(IMemoizCash memoiz, IMapper<UserDom, UserDal> userMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _userMapper = userMapper;
+    //}
+
+    public RoleMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _userMapper = userMapper;
+        _userMapper = collector.UserMapper!;
     }
-
     public RoleDom? MapBack(Role? item)
     {
         if (item is null) return default;
@@ -44,7 +49,6 @@ public class RoleMapper : IMapper<RoleDom, Role>
 
         return role;
     }
-
     public Role? Map(RoleDom? item)
     {
         if (item is null) return default;

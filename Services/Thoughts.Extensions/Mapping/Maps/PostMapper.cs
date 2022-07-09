@@ -23,13 +23,21 @@ public class PostMapper : IMapper<PostDom, PostDal>
     private readonly IMapper<TagDom, TagDal> _tagMapper;
     private readonly IMapper<CommentDom, CommentDal> _commentMapper;
 
-    public PostMapper(IMemoizCash memoiz, IMapper<UserDom, UserDal> userMapper, IMapper<CategoryDom, CategoryDal> categoryMapper, IMapper<TagDom, TagDal> tagMapper, IMapper<CommentDom, CommentDal> commentMapper)
+    //public PostMapper(IMemoizCash memoiz, IMapper<UserDom, UserDal> userMapper, IMapper<CategoryDom, CategoryDal> categoryMapper, IMapper<TagDom, TagDal> tagMapper, IMapper<CommentDom, CommentDal> commentMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _userMapper = userMapper;
+    //    _categoryMapper = categoryMapper;
+    //    _tagMapper = tagMapper;
+    //    _commentMapper = commentMapper;
+    //}
+    public PostMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _userMapper = userMapper;
-        _categoryMapper = categoryMapper;
-        _tagMapper = tagMapper;
-        _commentMapper = commentMapper;
+        _userMapper = collector.UserMapper!;
+        _categoryMapper = collector.CategoryMapper!;
+        _tagMapper = collector.TagMapper!;
+        _commentMapper = collector.CommentMapper!;
     }
 
     public PostDom? MapBack(PostDal? item)

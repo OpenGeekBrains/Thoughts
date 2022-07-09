@@ -12,10 +12,16 @@ public class TagMapper : IMapper<TagDom, TagDal>
     private readonly IMapper<PostDom, PostDal> _postMapper;
     private readonly IMemoizCash _memoiz;
 
-    public TagMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper)
+    //public TagMapper(IMemoizCash memoiz, IMapper<PostDom, PostDal> postMapper)
+    //{
+    //    _memoiz = memoiz;
+    //    _postMapper = postMapper;
+    //}
+
+    public TagMapper(IMemoizCash memoiz, IMapperCollector collector)
     {
         _memoiz = memoiz;
-        _postMapper = postMapper;
+        _postMapper = collector.PostMapper!;
     }
 
     public TagDal? Map(TagDom? item)
