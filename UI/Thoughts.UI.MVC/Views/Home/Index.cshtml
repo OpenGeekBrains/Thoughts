@@ -14,7 +14,7 @@
         <article>
             <h3>@e.Title</h3>
             <p>Дата: @e.Date.ToString("dd.MM.yyyy")</p>
-            <rawhtml text="@e.Body"/>
+            <rawhtml>@e.Body</rawhtml>
             <p>Автор: @e.User.NickName</p>
             <ul class="actions">
                 <li><a asp-controller="Blog" asp-action="Details" asp-route-id="@e.Id" class="button">Подробнее ...</a></li>
