@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
+
+//using Assert = Xunit.Assert;
 
 namespace Thoughts.Services.Tests;
 
@@ -18,21 +21,24 @@ public class DecodeEscapedStringTest
 
         var regex = new Regex(@"&[^;]+;");
 
+        var result0 = HttpUtility.HtmlDecode(source_string);
         var result = regex.Replace(source_string, match =>
         {
-            return match.Value.TrimStart('&').TrimEnd(';') switch
+            switch (match.Value.TrimStart('&').TrimEnd(';'))
             {
-                "lt" => "<",
-                "gt" => ">",
-                "quot" => "\"",
-                { } s when s.StartsWith("#x") => DecodeSymbol(short.Parse(match.Value[2..], NumberStyles.HexNumber)),
-                _ => ""
-            };
+                case "lt": return "<";
+                case "gt": return ">";
+                case "quot": return "\"";
+                case { } s when s.StartsWith("#x"):
+                    var v = match.Value[3..^1];
+                    return DecodeSymbol(short.Parse(v, NumberStyles.HexNumber));
+                default: return "";
+            }
         });
 
         static string DecodeSymbol(short Code)
         {
-            var c = (char)((Code - 0x43A) + 'а');
+            var c = (char)(Code - 0x430 + 'а');
             return c.ToString();
         }
 
@@ -42,6 +48,6 @@ public class DecodeEscapedStringTest
             + "https://catholicsar.ru/wp-content/uploads/1516116812_ryzhiy-maine-coon.jpg\" "
             + "alt=\"картинка\"/>";
 
-        Assert.Equals(expected_string, result);
+        Assert.AreEqual(expected_string, result);
     }
 }
