@@ -8,7 +8,7 @@ using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class UserMapper2 : IMapper<UserDom, User>
+public class UserMapper2 : IMapper<User, UserDom>
 {
     private readonly IMemoizCash _memoiz;
 
@@ -17,7 +17,7 @@ public class UserMapper2 : IMapper<UserDom, User>
         _memoiz = memoiz;
     }
 
-    public User? Map(UserDom? item)
+    public User? MapBack(UserDom? item)
     {
         if (item is null) return default;
 
@@ -50,7 +50,7 @@ public class UserMapper2 : IMapper<UserDom, User>
         return user;
     }
 
-    public UserDom? MapBack(User? item)
+    public UserDom? Map(User? item)
     {
         if (item is null) return default;
 

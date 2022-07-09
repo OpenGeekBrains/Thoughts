@@ -8,7 +8,7 @@ using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class CategoryMapper2 : IMapper<CategoryDom, Category>
+public class CategoryMapper2 : IMapper<Category, CategoryDom>
 {
     private readonly IMemoizCash _memoiz;
     public CategoryMapper2(IMemoizCash memoiz)
@@ -16,7 +16,7 @@ public class CategoryMapper2 : IMapper<CategoryDom, Category>
         _memoiz = memoiz;
     }
 
-    public Category? Map(CategoryDom? item)
+    public Category? MapBack(CategoryDom? item)
     {
         if (item is null) return default;
         var cat = new Category
@@ -44,7 +44,7 @@ public class CategoryMapper2 : IMapper<CategoryDom, Category>
         return cat;
     }
 
-    public CategoryDom? MapBack(Category? item)
+    public CategoryDom? Map(Category? item)
     {
         if (item is null) return default;
 

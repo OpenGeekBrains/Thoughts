@@ -9,7 +9,7 @@ using UserDom = Thoughts.Domain.Base.Entities.User;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class CommentMapper2 : IMapper<CommentDom, Comment>
+public class CommentMapper2 : IMapper<Comment, CommentDom>
 {
     private readonly IMemoizCash _memoiz;
     public CommentMapper2(IMemoizCash memoiz)
@@ -17,7 +17,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
         _memoiz = memoiz;
     }
 
-    public Comment? Map(CommentDom? item)
+    public Comment? MapBack(CommentDom? item)
     {
         if (item is null) return default;
 
@@ -45,7 +45,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
         }
         else
         {
-            com.ParentComment = Map(item.ParentComment);
+            com.ParentComment = MapBack(item.ParentComment);
         }
 
 
@@ -67,7 +67,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
             }
             else
             {
-                tmpCom = Map(comment);
+                tmpCom = MapBack(comment);
             }
             com.ChildrenComment.Add(tmpCom);
         }
@@ -75,7 +75,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
         return com;
     }
 
-    public CommentDom? MapBack(Comment? item)
+    public CommentDom? Map(Comment? item)
     {
         if (item is null) return default;
 
@@ -103,7 +103,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
         }
         else
         {
-            com.ParentComment = MapBack(item.ParentComment);
+            com.ParentComment = Map(item.ParentComment);
         }
 
         if (_memoiz.UsersDomain.Cash.ContainsKey(item.User.Id))
@@ -124,7 +124,7 @@ public class CommentMapper2 : IMapper<CommentDom, Comment>
             }
             else
             {
-                tmpCom = MapBack(comment);
+                tmpCom = Map(comment);
             }
             com.ChildrenComment.Add(tmpCom);
         }

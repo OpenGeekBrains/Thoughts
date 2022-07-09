@@ -15,7 +15,7 @@ using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class PostMapper2 : IMapper<PostDom, PostDal>
+public class PostMapper2 : IMapper<PostDal, PostDom>
 {
     private readonly IMemoizCash _memoiz;
     public PostMapper2(IMemoizCash memoiz)
@@ -23,7 +23,7 @@ public class PostMapper2 : IMapper<PostDom, PostDal>
         _memoiz = memoiz;
     }
 
-    public PostDom? MapBack(PostDal? item)
+    public PostDom? Map(PostDal? item)
     {
         if (item is null) return default;
 
@@ -87,7 +87,7 @@ public class PostMapper2 : IMapper<PostDom, PostDal>
         return post;
     }
 
-    public PostDal? Map(PostDom? item)
+    public PostDal? MapBack(PostDom? item)
     {
         if (item is null) return default;
 

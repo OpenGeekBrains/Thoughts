@@ -7,7 +7,7 @@ using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class RoleMapper2 : IMapper<RoleDom, Role>
+public class RoleMapper2 : IMapper<Role, RoleDom>
 {
     private readonly IMemoizCash _memoiz;
 
@@ -15,7 +15,7 @@ public class RoleMapper2 : IMapper<RoleDom, Role>
     {
         _memoiz = memoiz;
     }
-    public RoleDom? MapBack(Role? item)
+    public RoleDom? Map(Role? item)
     {
         if (item is null) return default;
 
@@ -42,7 +42,7 @@ public class RoleMapper2 : IMapper<RoleDom, Role>
 
         return role;
     }
-    public Role? Map(RoleDom? item)
+    public Role? MapBack(RoleDom? item)
     {
         if (item is null) return default;
 

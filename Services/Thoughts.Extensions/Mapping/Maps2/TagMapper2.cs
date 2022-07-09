@@ -7,7 +7,7 @@ using Thoughts.Interfaces.Mapping;
 
 namespace Thoughts.Extensions.Mapping.Maps2;
 
-public class TagMapper2 : IMapper<TagDom, TagDal>
+public class TagMapper2 : IMapper<TagDal, TagDom>
 {
     private readonly IMemoizCash _memoiz;
 
@@ -16,7 +16,7 @@ public class TagMapper2 : IMapper<TagDom, TagDal>
         _memoiz = memoiz;
     }
 
-    public TagDal? Map(TagDom? item)
+    public TagDal? MapBack(TagDom? item)
     {
         if (item is null) return default;
 
@@ -41,7 +41,7 @@ public class TagMapper2 : IMapper<TagDom, TagDal>
         return tag;
     }
 
-    public TagDom? MapBack(TagDal? item)
+    public TagDom? Map(TagDal? item)
     {
         if (item is null) return default;
 
