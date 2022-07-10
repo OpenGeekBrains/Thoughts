@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.WebAPI.Tests.Integ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.Extensions", "Services\Thoughts.Extensions\Thoughts.Extensions.csproj", "{6CF4E66D-58A2-4917-870E-086BBF54137B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thoughts.Maps.Tests", "Tests\Thoughts.Maps.Tests\Thoughts.Maps.Tests.csproj", "{E25B386B-10C3-4D9D-9BEC-11B5D4D33392}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{6CF4E66D-58A2-4917-870E-086BBF54137B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CF4E66D-58A2-4917-870E-086BBF54137B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CF4E66D-58A2-4917-870E-086BBF54137B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25B386B-10C3-4D9D-9BEC-11B5D4D33392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25B386B-10C3-4D9D-9BEC-11B5D4D33392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25B386B-10C3-4D9D-9BEC-11B5D4D33392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25B386B-10C3-4D9D-9BEC-11B5D4D33392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{061C6F1D-9851-491C-8847-A4193122A711} = {91BDAA17-EEF1-455F-BE95-2A82842F0B21}
 		{1CED3F9C-9596-403D-A5CF-CC6B0D3FEBF4} = {91BDAA17-EEF1-455F-BE95-2A82842F0B21}
 		{6CF4E66D-58A2-4917-870E-086BBF54137B} = {B46AC3E1-AAC0-4A39-A2E2-3F9C65F9E67D}
+		{E25B386B-10C3-4D9D-9BEC-11B5D4D33392} = {91BDAA17-EEF1-455F-BE95-2A82842F0B21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9394604E-0258-4723-8C8C-7E8546CF09F6}
