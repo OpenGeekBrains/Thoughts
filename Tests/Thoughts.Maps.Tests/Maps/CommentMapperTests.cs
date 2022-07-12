@@ -53,14 +53,13 @@ namespace Thoughts.Maps.Tests.Maps
             Assert.Equal(testDalRes.Date, commentForTest.Date);
         }
 
-        [Fact]
-        public void MapNull_ReturnsNull()
+        [Theory]
+        [InlineData(null)]
+        public void MapNull_ReturnsNull(CommentDOM item)
         {
-            CommentDOM commentDom = null;
-            var testDalRes = mapper.Map(commentDom);
+            var testDalRes = mapper.Map(item);
 
             Assert.Null(testDalRes);
         }
-
     }
 }

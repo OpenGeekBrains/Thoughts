@@ -36,11 +36,11 @@ namespace Thoughts.Maps.Tests.Maps
             Assert.Equal(testDalRes.Name, categoryForTest.Name);
         }
 
-        [Fact]
-        public void MapNull_ReturnsNull()
+        [Theory]
+        [InlineData(null)]
+        public void MapNull_ReturnsNull(CategoryDom item)
         {
-            CategoryDom categoryDom = null;
-            var testDalRes = mapper.Map(categoryDom);
+            var testDalRes = mapper.Map(item);
 
             Assert.Null(testDalRes);
         }

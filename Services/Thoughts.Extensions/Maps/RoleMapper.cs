@@ -1,5 +1,4 @@
-﻿using Thoughts.DAL.Entities;
-using Thoughts.Interfaces.Base;
+﻿using Thoughts.Interfaces.Base;
 
 using RoleDAL = Thoughts.DAL.Entities.Role;
 using RoleDOM = Thoughts.Domain.Base.Entities.Role;
@@ -7,7 +6,7 @@ using RoleDOM = Thoughts.Domain.Base.Entities.Role;
 
 namespace Thoughts.Extensions.Maps;
 
-public class RoleMapper : IMapper<RoleDOM, Role>
+public class RoleMapper : IMapper<RoleDOM, RoleDAL>
 {
     public RoleDOM? Map(RoleDAL? role_dal)
     {
@@ -27,7 +26,7 @@ public class RoleMapper : IMapper<RoleDOM, Role>
     {
         if (role_dom is null) return default;
 
-        var role = new Role
+        var role = new RoleDAL
         {
             Id = role_dom.Id,
             Name = role_dom.Name,
