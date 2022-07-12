@@ -40,9 +40,9 @@ namespace Thoughts.Maps.Tests.Maps
         public void MapNull_ReturnsNull()
         {
             CategoryDom categoryDom = null;
-            var testDomRes = mapper.Map(categoryDom);
+            var testDalRes = mapper.Map(categoryDom);
 
-            Assert.Null(testDomRes);
+            Assert.Null(testDalRes);
         }
     }
 }
