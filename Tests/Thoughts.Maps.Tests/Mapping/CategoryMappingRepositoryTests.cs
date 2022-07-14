@@ -11,6 +11,7 @@ using Thoughts.Extensions.Maps;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Thoughts.Maps.Tests.Mapping
 {
@@ -61,7 +62,7 @@ namespace Thoughts.Maps.Tests.Mapping
         }
 
         [Theory]
-        [InlineData(4)]
+        [InlineData(404)]
         public async void ExistIdTest_ReturnFalse(int id)
         {
             var result = await _repo.ExistId(id);
@@ -86,7 +87,7 @@ namespace Thoughts.Maps.Tests.Mapping
         }
 
         [Theory]
-        [InlineData(4, "Category4")]
+        [InlineData(404, "Category404")]
         public async void ExistTest_ReturnFalse(int id, string name)
         {
             var item = new CategoryDom()
@@ -116,12 +117,13 @@ namespace Thoughts.Maps.Tests.Mapping
             Assert.True(catched);
         }
 
+        
         [Fact]
         public async void GetCountTest()
         {
             var result = await _repo.GetCount();
 
-            Assert.Equal(3, result);
+            Assert.NotEqual(0, result);
         }
 
         [Theory]
@@ -161,5 +163,105 @@ namespace Thoughts.Maps.Tests.Mapping
             Assert.True(correct);
         }
 
+
+        // todo: GetPageTest()
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async void GetByIdTest(int id)
+        {
+            var result = await _repo.GetById(id);
+            Assert.True(result is CategoryDom);
+            Assert.Equal(id, result.Id);
+        }
+
+        [Theory]
+        [InlineData(404)]
+        public async void GetById_ReturnNull(int id)
+        {
+            var result = await _repo.GetById(id);
+            Assert.Null(result);
+        }
+
+        [Theory]
+        [InlineData("Category5")]
+        public async void AddTest(string name)
+        {
+            var categoryDom = new CategoryDom
+            {
+                Name = name
+            };
+            var result = await _repo.Add(categoryDom);
+
+            Assert.NotNull(result);
+            Assert.NotEqual(0, result.Id);
+            Assert.Equal(categoryDom.Name, result.Name);
+        }
+
+        [Theory]
+        [InlineData(new int[3] { 6, 7, 8 }, new string[3] { "Category6", "Category7", "Category8" })]
+        public async void AddRangeTest(int[] ids, string[] names)
+        {
+            var categoriesDom = new CategoryDom[3];
+            for (int i = 0; i < categoriesDom.Length; i++)
+            {
+                categoriesDom[i] = new CategoryDom
+                {
+                    Id = ids[i],
+                    Name = names[i],
+                };
+            }
+
+            await _repo.AddRange(categoriesDom);
+
+            Assert.NotNull(_fixture.DB.Categories.FirstOrDefault(i => i.Id == 6));
+            Assert.NotNull(_fixture.DB.Categories.FirstOrDefault(i => i.Id == 7));
+            Assert.NotNull(_fixture.DB.Categories.FirstOrDefault(i => i.Id == 8));
+        }
+
+        // todo
+        //[Theory]
+        //[InlineData("Category9", "Category99")]
+        //public async void UpdateTest(string name, string updatedName)
+        //{
+        //    var categoryDom = new CategoryDom
+        //    {
+        //        Name = name,
+        //    };
+
+        //    var addedCategoryDom = await _repo.Add(categoryDom);
+        //    var gettedCategoryDal = _fixture.DB.Categories.AsNoTracking().FirstOrDefault(i => i.Id == addedCategoryDom.Id);
+
+        //    var gettedCategoryDom = _mapper.Map(gettedCategoryDal);
+
+        //    gettedCategoryDom.Name = updatedName;
+
+        //    var result = await _repo.Update(gettedCategoryDom);
+
+        //    Assert.Equal(updatedName, result.Name);
+        //    Assert.NotNull(_fixture.DB.Categories.FirstOrDefault(i => i.Name == updatedName));
+        //}
+
+        // todo: UpdateRangeTest()
+
+        // todo
+        //[Theory]
+        //[InlineData("Category10")]
+        //public async void DeleteTest(string name)
+        //{
+        //    var categoryDom = new CategoryDom
+        //    {
+        //        Name = name,
+        //    };
+
+        //    var addResult = await _repo.Add(categoryDom);
+
+        //    var deleteResult = await _repo.Delete(addResult);
+
+        //    Assert.NotNull(deleteResult);
+        //    Assert.Null(_fixture.DB.Categories.FirstOrDefault(i => i.Id == addResult.Id));
+        //}
     }
 }
