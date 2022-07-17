@@ -2,16 +2,13 @@
 using Thoughts.Services.Mapping;
 using CategoryDom = Thoughts.Domain.Base.Entities.Category;
 using CategoryDAL = Thoughts.DAL.Entities.Category;
-
 using Xunit;
 using Moq;
 using Microsoft.Extensions.Logging;
 using Thoughts.Services.InSQL;
 using Thoughts.Extensions.Maps;
-using System.Collections.Generic;
 using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Thoughts.Maps.Tests.Mapping
 {
