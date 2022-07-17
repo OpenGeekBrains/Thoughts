@@ -15,6 +15,7 @@ namespace Thoughts.Maps.Tests.Fixtures
         {
             var builder = new DbContextOptionsBuilder<ThoughtsDB>();
             builder.UseInMemoryDatabase("InMemoryDb");
+            builder.EnableSensitiveDataLogging();
 
             var options = builder.Options;
 
