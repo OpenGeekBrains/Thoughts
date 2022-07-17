@@ -29,5 +29,11 @@ namespace Thoughts.Maps.Tests.Mapping
             _dbRepository = new DbRepository<CommentDAL>(_fixture.DB, _dbRepoMock.Object);
             _repo = new MappingRepository<CommentDAL, CommentDom>(_dbRepository, _mapper);
         }
+
+        [Fact]
+        public void RepoCreated()
+        {
+            Assert.NotNull(_repo);
+        }
     }
 }
