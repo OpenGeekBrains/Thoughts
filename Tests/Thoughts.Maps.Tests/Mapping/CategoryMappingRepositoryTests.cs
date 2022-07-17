@@ -121,6 +121,7 @@ namespace Thoughts.Maps.Tests.Mapping
             var result = await _repo.GetCount();
 
             Assert.NotEqual(0, result);
+            Assert.True(result >= 3);
         }
 
         [Theory]

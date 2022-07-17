@@ -24,11 +24,10 @@ namespace Thoughts.Maps.Tests.Fixtures
             DB.Database.EnsureCreated();
 
             DB.Categories.AddRange(TestDbData.Categories);
+            DB.Comments.AddRange(TestDbData.Comments);
             DB.SaveChanges();
-            if (!DB.Categories.Any())
-            {
-                throw new Exception("Categories Empty");
-            }
+            if (!DB.Categories.Any()) throw new Exception("Categories Set in DB is Empty");
+            if (!DB.Comments.Any()) throw new Exception("Comments Set in DB is Empty");
         }
 
         public void Dispose()
