@@ -6,7 +6,7 @@ using RoleDOM = Thoughts.Domain.Base.Entities.Role;
 
 namespace Thoughts.Extensions.Maps;
 
-public class RoleMapper : IMapper<RoleDOM, RoleDAL>
+public class RoleMapper : IMapper<RoleDAL, RoleDOM>
 {
     public RoleDOM? Map(RoleDAL? role_dal)
     {

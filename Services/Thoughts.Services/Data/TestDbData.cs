@@ -3,6 +3,7 @@ using Post = Thoughts.DAL.Entities.Post;
 using Tag = Thoughts.DAL.Entities.Tag;
 using User = Thoughts.DAL.Entities.User;
 using Comment = Thoughts.DAL.Entities.Comment;
+using Role = Thoughts.DAL.Entities.Role;
 
 namespace Thoughts.Services.Data;
 
@@ -180,11 +181,27 @@ public class TestDbData
             },
         };
 
+        var roles = new[]
+        {
+            new Role
+            {
+                Name = "Admin",
+                Users = Users,
+            },
+            new Role
+            {
+                Name = "NoAdmin",
+                Users = Users,
+            },
+        };
+
         Tags = tags;
         Categories = categories;
         Users = users;
         Posts = posts;
         Comments = comments;
+        Roles = roles;
+
     }
 
     public static ICollection<Tag> Tags { get; }
@@ -196,4 +213,6 @@ public class TestDbData
     public static ICollection<Post> Posts { get; }
 
     public static ICollection<Comment> Comments { get; }
+    public static ICollection<Role> Roles { get; }
+
 }
