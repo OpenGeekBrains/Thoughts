@@ -263,5 +263,9 @@ namespace Thoughts.Maps.Tests.Mapping
         //    Assert.NotNull(deleteResult);
         //    Assert.Null(_fixture.DB.Categories.FirstOrDefault(i => i.Id == addResult.Id));
         //}
+
+        // todo : DeleteRangeTest()
+
+        // todo : DeleteByIdTest()
     }
 }
