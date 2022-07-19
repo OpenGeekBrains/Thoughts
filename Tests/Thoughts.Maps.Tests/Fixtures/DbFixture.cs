@@ -29,12 +29,14 @@ namespace Thoughts.Maps.Tests.Fixtures
             DB.Posts.AddRange(TestDbData.Posts);
             DB.Roles.AddRange(TestDbData.Roles);
             DB.Tags.AddRange(TestDbData.Tags);
+            DB.Users.AddRange(TestDbData.Users);
             DB.SaveChanges();
             if (!DB.Categories.Any()) throw new Exception("Categories Set in DB is Empty");
             if (!DB.Comments.Any()) throw new Exception("Comments Set in DB is Empty");
             if (!DB.Posts.Any()) throw new Exception("Posts Set in DB is Empty");
             if (!DB.Roles.Any()) throw new Exception("Roles Set in DB is Empty");
             if (!DB.Tags.Any()) throw new Exception("Tags Set in DB is Empty");
+            if (!DB.Users.Any()) throw new Exception("Users Set in DB is Empty");
         }
 
         public void Dispose()

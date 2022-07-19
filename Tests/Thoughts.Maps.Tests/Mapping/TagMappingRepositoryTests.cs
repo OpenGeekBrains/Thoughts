@@ -168,7 +168,7 @@ namespace Thoughts.Maps.Tests.Mapping
         }
 
         [Theory]
-        [InlineData("Role3")]
+        [InlineData("Tag4")]
         public async void AddTest(string name)
         {
             var tagDom = new TagDom()
