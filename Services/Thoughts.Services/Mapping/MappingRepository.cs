@@ -5,22 +5,22 @@ using Thoughts.Interfaces.Base.Repositories;
 
 namespace Thoughts.Services.Mapping;
 
-public class MappingRepository<TSource, TDestination> : IRepository<TDestination>
-    where TDestination : class, IEntity<int> 
-    where TSource : class, IEntity<int>
+public class MappingRepository<TSource, TDestination, TKey> : IRepository<TDestination, TKey>
+    where TDestination : class, IEntity<TKey> 
+    where TSource : class, IEntity<TKey>
 {
-    private readonly IRepository<TSource> _SourceRepository;
+    private readonly IRepository<TSource, TKey> _SourceRepository;
     private readonly IMapper<TSource, TDestination> _Mapper;
 
     public MappingRepository(
-        IRepository<TSource> SourceRepository, 
+        IRepository<TSource, TKey> SourceRepository, 
         IMapper<TSource, TDestination> Mapper)
     {
         _SourceRepository = SourceRepository;
         _Mapper = Mapper;
     }
 
-    public async Task<bool> ExistId(int Id, CancellationToken Cancel = default) => await _SourceRepository.ExistId(Id, Cancel);
+    public async Task<bool> ExistId(TKey Id, CancellationToken Cancel = default) => await _SourceRepository.ExistId(Id, Cancel);
 
     public async Task<bool> Exist(TDestination item, CancellationToken Cancel = default)
     {
@@ -61,7 +61,7 @@ public class MappingRepository<TSource, TDestination> : IRepository<TDestination
         return result_page;
     }
 
-    public async Task<TDestination> GetById(int Id, CancellationToken Cancel = default)
+    public async Task<TDestination> GetById(TKey Id, CancellationToken Cancel = default)
     {
         var source_item = await _SourceRepository.GetById(Id, Cancel).ConfigureAwait(false);
         if (source_item is null) return null;
@@ -126,10 +126,18 @@ public class MappingRepository<TSource, TDestination> : IRepository<TDestination
         await _SourceRepository.DeleteRange(sourse_items, Cancel);
     }
 
-    public async Task<TDestination> DeleteById(int id, CancellationToken Cancel = default)
+    public async Task<TDestination> DeleteById(TKey id, CancellationToken Cancel = default)
     {
         var result_item = await _SourceRepository.DeleteById(id, Cancel).ConfigureAwait(false);
         var result = _Mapper.Map(result_item);
         return result;
+    }
+}
+public class MappingRepository<TSource, TDestination> : MappingRepository<TSource, TDestination, int>, IRepository<TDestination>
+    where TDestination : class, IEntity<int>
+    where TSource : class, IEntity<int>
+{
+    public MappingRepository(IRepository<TSource> SourceRepository, IMapper<TSource, TDestination> Mapper) : base(SourceRepository, Mapper)
+    {
     }
 }
