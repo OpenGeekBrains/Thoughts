@@ -14,7 +14,7 @@ using RoleDOM = Thoughts.Domain.Base.Entities.Role;
 
 namespace Thoughts.Extensions.Maps;
 
-public class PostMapper : IMapper<PostDOM, PostDAL>
+public class PostMapper : IMapper<PostDAL, PostDOM>
 {
     private static StatusDOM ToDOM(StatusDAL status_dal) => status_dal switch
     {

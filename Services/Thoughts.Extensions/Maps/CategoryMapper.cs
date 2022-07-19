@@ -9,7 +9,7 @@ using StatusDOM = Thoughts.Domain.Base.Entities.Status;
 
 namespace Thoughts.Extensions.Maps;
 
-public class CategoryMapper : IMapper<CategoryDom, CategoryDAL>
+public class CategoryMapper : IMapper<CategoryDAL, CategoryDom>
 {
     private static StatusDOM ToDOM(StatusDAL status_dal) => status_dal switch
     {

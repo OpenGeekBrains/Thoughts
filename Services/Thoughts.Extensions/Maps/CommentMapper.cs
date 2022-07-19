@@ -14,7 +14,7 @@ using StatusDOM = Thoughts.Domain.Base.Entities.Status;
 
 namespace Thoughts.Extensions.Maps;
 
-public class CommentMapper : IMapper<CommentDOM, CommentDAL>
+public class CommentMapper : IMapper<CommentDAL, CommentDOM>
 {
     private static StatusDOM ToDOM(StatusDAL status_dal) => status_dal switch
     {

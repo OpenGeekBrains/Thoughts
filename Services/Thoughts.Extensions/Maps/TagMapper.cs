@@ -7,7 +7,7 @@ using PostDAL = Thoughts.DAL.Entities.Post;
 
 namespace Thoughts.Extensions.Maps;
 
-public class TagMapper : IMapper<TagDOM, TagDAL>
+public class TagMapper : IMapper<TagDAL, TagDOM>
 {
     public TagDAL? Map(TagDOM? tag_dom)
     {
