@@ -24,9 +24,9 @@ namespace Thoughts.Services.NewTests.Fixtures
             DB.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             DB.Categories.AddRange(TestDbData.Categories);
-            //DB.Comments.AddRange(TestDbData.Comments);
+            DB.Comments.AddRange(TestDbData.Comments);
             DB.Posts.AddRange(TestDbData.Posts);
-            //DB.Roles.AddRange(TestDbData.Roles);
+            DB.Roles.AddRange(TestDbData.Roles);
             DB.Tags.AddRange(TestDbData.Tags);
             DB.Users.AddRange(TestDbData.Users);
             DB.SaveChanges();
