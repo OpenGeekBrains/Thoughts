@@ -17,7 +17,7 @@ var db_type = configuration["Database"];
 
 switch (db_type)
 {
-    default: throw new InvalidOperationException($"Òèï ÁÄ {db_type} íå ïîääåðæèâàåòñÿ");
+    default: throw new InvalidOperationException($"Тип БД {db_type} не поддерживается");
 
     case "Sqlite":
         builder.Services.AddThoughtsDbSqlite(configuration.GetConnectionString("Sqlite"));
