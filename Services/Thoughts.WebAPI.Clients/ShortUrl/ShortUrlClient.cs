@@ -13,44 +13,44 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
 {
     public class ShortUrlClient: BaseClient, IShortUrlManager
     {
-        public ShortUrlClient(IConfiguration Configuration):base(Configuration,WebApiControllersPath.ShortUrl)
+        public ShortUrlClient(IConfiguration Configuration):base(Configuration,WebApiControllersPath.ShortUrlV1)
         {
 
         }
 
         public async Task<int> AddUrlAsync(string Url, CancellationToken Cancel = default)
         {
-            var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrl}", Url);
+            var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrlV1}", Url);
             return await response.Content.ReadAsAsync<int>();
         }
 
         public async Task<bool> DeleteUrlAsync(int Id, CancellationToken Cancel = default)
         {
-            var response = await DeleteAsync($"{WebApiControllersPath.ShortUrl}/{Id}");
+            var response = await DeleteAsync($"{WebApiControllersPath.ShortUrlV1}/{Id}");
             return response.IsSuccessStatusCode;
         }
 
         public async Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default)
         {
-            var response = await GetAsync<string>($"{WebApiControllersPath.ShortUrl}/alias/{Id}");
+            var response = await GetAsync<string>($"{WebApiControllersPath.ShortUrlV1}/alias/{Id}");
             return response;
         }
 
         public async Task<Uri?> GetUrlAsync(string Alias, CancellationToken Cancel = default)
         {
-            var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrl}?Alias={Alias}");
+            var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrlV1}?Alias={Alias}");
             return response;
         }
 
         public async Task<Uri?> GetUrlByIdAsync(int Id, CancellationToken Cancel = default)
         {
-            var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrl}/{Id}");
+            var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrlV1}/{Id}");
             return response;
         }
 
         public async Task<bool> UpdateUrlAsync(int Id, string Url, CancellationToken Cancel = default)
         {
-            var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrl}/{Id}", Url);
+            var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrlV1}/{Id}", Url);
             return await response.Content.ReadAsAsync<bool>();
         }
 

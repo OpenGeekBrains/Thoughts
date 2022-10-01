@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 using Thoughts.Interfaces.Base;
 
-namespace Thoughts.WebAPI.Controllers
+namespace Thoughts.WebAPI.Controllers.v1
 {
     [ApiVersion("1.0")]
     [Route(WebApiControllersPath.ShortUrl)]
@@ -45,7 +45,7 @@ namespace Thoughts.WebAPI.Controllers
         {
             var result = await _shortUrlManager.GetAliasByIdAsync(Id);
 
-            if (String.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
                 return BadRequest();
 
             return AcceptedAtAction(nameof(GetUrl), new { Alias = result }, result);
@@ -53,10 +53,10 @@ namespace Thoughts.WebAPI.Controllers
 
         // POST api/v1/url
         [HttpPost]
-        public async Task<ActionResult<int>> AddUrl([FromBody]string Url)
+        public async Task<ActionResult<int>> AddUrl([FromBody] string Url)
         {
             var result = await _shortUrlManager.AddUrlAsync(Url);
-            if (result==0)
+            if (result == 0)
                 return BadRequest();
 
             return CreatedAtAction(nameof(GetAliasById), new { Id = result }, result);
@@ -66,7 +66,7 @@ namespace Thoughts.WebAPI.Controllers
         [HttpDelete("{Id}")]
         public async Task<ActionResult<bool>> DeleteUrl(int Id)
         {
-            var result= await _shortUrlManager.DeleteUrlAsync(Id);
+            var result = await _shortUrlManager.DeleteUrlAsync(Id);
             return result ? result : BadRequest();
         }
 
@@ -74,7 +74,7 @@ namespace Thoughts.WebAPI.Controllers
         [HttpPost("{Id}")]
         public async Task<ActionResult<bool>> UpdateUrl(int Id, [FromBody] string Url)
         {
-            var result=await _shortUrlManager.UpdateUrlAsync(Id, Url);
+            var result = await _shortUrlManager.UpdateUrlAsync(Id, Url);
             return result ? result : BadRequest();
         }
     }
