@@ -48,7 +48,7 @@ namespace Thoughts.WebAPI.Controllers
             if (String.IsNullOrEmpty(result))
                 return BadRequest();
 
-            return result;
+            return AcceptedAtAction(nameof(GetUrl), new { Alias = result }, result);
         }
 
         // POST api/v1/url
@@ -59,8 +59,7 @@ namespace Thoughts.WebAPI.Controllers
             if (result==0)
                 return BadRequest();
 
-            //return $"{result}";
-            return result;
+            return CreatedAtAction(nameof(GetAliasById), new { Id = result }, result);
         }
 
         // DELETE api/v1/url/10
