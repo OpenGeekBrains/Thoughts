@@ -161,7 +161,7 @@ namespace Thoughts.Services.InSQL
             }
             catch (OperationCanceledException e)
             {
-                _logger.LogError($"Обновление короткой ссылки Id:{Id} вызвало исключение DbUpdateConcurrencyException: {e.ToString()}");
+                _logger.LogError($"Обновление короткой ссылки Id:{Id} вызвало исключение OperationCanceledException: {e.ToString()}");
                 return false;
             }
             return true;
