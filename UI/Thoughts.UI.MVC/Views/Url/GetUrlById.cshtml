@@ -1,0 +1,8 @@
+﻿@model Uri?
+
+@{
+    ViewBag.Title = "Переход по ссылке";
+}
+
+<p>Оригинальная ссылка <a href="@Model?.AbsoluteUri">@Model?.AbsoluteUri</a></p>
+

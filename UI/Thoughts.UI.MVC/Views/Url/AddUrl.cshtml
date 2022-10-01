@@ -1,0 +1,12 @@
+﻿@model ShortUrlWebModel
+
+@{
+    ViewBag.Title = "Переход по ссылке";
+}
+
+<div class="contact">
+    <p>Id созданной ссылки: @Model.Id</a></p>
+    <p>Исходная ссылка: <a href="@Model.OriginalUrl">@Model.OriginalUrl</a></p>
+    <p>Ссылка для получения Url по Id короткой ссылки: <a href="@Model.GetUrl">@Model.GetUrl</a></p>
+    <p>Ссылка для получения короткой ссылки по Id: <a href="@Model.GetAlias">@Model.GetAlias</a></p>
+</div>

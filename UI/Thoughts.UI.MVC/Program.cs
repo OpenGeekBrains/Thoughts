@@ -68,10 +68,10 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllerRoute(
-        name: "shortUrl",
-        pattern: "url/{Alias?}",
-        defaults: new { controller = "ShortUrl", action = "GetUrl" });
+    //endpoints.MapControllerRoute(
+    //    name: "shortUrl",
+    //    pattern: "url/{Alias?}",
+    //    defaults: new { controller = "ShortUrl", action = "GetUrl" });
 
     endpoints.MapControllerRoute(
         name: "default",
