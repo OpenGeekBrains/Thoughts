@@ -25,7 +25,7 @@ namespace Thoughts.Services.InSQL
             _logger = Logger;
         }
 
-        public async Task<string> AddUrlAsync(string UrlString, CancellationToken Cancel = default)
+        public async Task<int> AddUrlAsync(string UrlString, CancellationToken Cancel = default)
         {
             _logger.LogInformation($"Создание короткой ссылки для Url:{UrlString}");
 
@@ -34,7 +34,7 @@ namespace Thoughts.Services.InSQL
             if (url is null)
             {
                 _logger.LogInformation($"Короткая ссылка не создана. Некоректный Url:{UrlString}");
-                return String.Empty;
+                return 0;
             }
 
             var shortUrl = await _db.ShortUrls.
@@ -46,7 +46,7 @@ namespace Thoughts.Services.InSQL
             if (shortUrl is not null)
             {
                 _logger.LogInformation($"Короткая ссылка {shortUrl.Alias} уже существует для Url:{shortUrl.OriginalUrl}");
-                return shortUrl.Alias;
+                return shortUrl.Id;
             }
 
             shortUrl = new()
@@ -59,7 +59,7 @@ namespace Thoughts.Services.InSQL
 
             _logger.LogInformation($"Создана короткая ссылка {shortUrl.Alias} для Url:{shortUrl.OriginalUrl}");
 
-            return shortUrl.Alias;
+            return shortUrl.Id;
         }
 
         public async Task<bool> DeleteUrlAsync(int Id, CancellationToken Cancel = default)
@@ -122,6 +122,20 @@ namespace Thoughts.Services.InSQL
                 return null;
 
             return result.OriginalUrl;
+        }
+
+        public async Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default)
+        {
+            var result = await _db.ShortUrls.
+                FirstOrDefaultAsync(
+                    u => u.Id == Id,
+                    Cancel
+                ).
+                ConfigureAwait(false);
+            if (result is null)
+                return null ;
+
+            return result.Alias;
         }
 
         public async Task<bool> UpdateUrlAsync(int Id, string UrlString, CancellationToken Cancel = default)

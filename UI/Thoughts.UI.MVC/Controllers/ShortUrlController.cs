@@ -28,11 +28,11 @@ namespace Thoughts.UI.MVC.Controllers
         public async Task<IActionResult> AddUrl(string Url)
         {
             var result = await _shortUrlManager.AddUrlAsync(Url);
-            if (String.IsNullOrEmpty(result))
+            if (result==0)
                 return BadRequest();
             ShortUrlWebModel shortUrlWebModel = new()
             {
-                Alias = result,
+                Id = result,
                 OriginalUrl = Url
             };
             return View(shortUrlWebModel);

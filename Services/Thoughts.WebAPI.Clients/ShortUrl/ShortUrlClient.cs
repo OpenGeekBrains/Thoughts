@@ -18,16 +18,22 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
 
         }
 
-        public async Task<string> AddUrlAsync(string Url, CancellationToken Cancel = default)
+        public async Task<int> AddUrlAsync(string Url, CancellationToken Cancel = default)
         {
             var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrl}", Url);
-            return await response.Content.ReadAsAsync<string>();
+            return await response.Content.ReadAsAsync<int>();
         }
 
         public async Task<bool> DeleteUrlAsync(int Id, CancellationToken Cancel = default)
         {
             var response = await DeleteAsync($"{WebApiControllersPath.ShortUrl}/{Id}");
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default)
+        {
+            var response = await GetAsync<string>($"{WebApiControllersPath.ShortUrl}/alias/{Id}");
+            return response;
         }
 
         public async Task<Uri?> GetUrlAsync(string Alias, CancellationToken Cancel = default)
@@ -47,5 +53,6 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
             var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrl}/{Id}", Url);
             return await response.Content.ReadAsAsync<bool>();
         }
+
     }
 }

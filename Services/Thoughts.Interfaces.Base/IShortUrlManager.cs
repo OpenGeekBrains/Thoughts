@@ -12,6 +12,7 @@ namespace Thoughts.Interfaces.Base
         /// Получить оригинальный Url по псевдониму
         /// </summary>
         /// <param name="Alias">Псевдоним ссылки</param>
+        /// <param name="Cancel">Токен отмены</param>
         /// <returns>Оригинальный Url</returns>
         Task<Uri?> GetUrlAsync(string Alias, CancellationToken Cancel = default);
 
@@ -19,20 +20,31 @@ namespace Thoughts.Interfaces.Base
         /// Получить оригинальный Url по идентификатору
         /// </summary>
         /// <param name="Id">Идентификатор короткой ссылки</param>
+        /// <param name="Cancel">Токен отмены</param>
         /// <returns>Оригинальный Url</returns>
         Task<Uri?> GetUrlByIdAsync(int Id, CancellationToken Cancel = default);
+
+        /// <summary>
+        /// Получить псевдоним короткой ссылки по ее идентификатору
+        /// </summary>
+        /// <param name="Id">Идентификатор короткой ссылки</param>
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Псевдоним ссылки</returns>
+        Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default);
 
         /// <summary>
         /// Добавить короткую ссылку
         /// </summary>
         /// <param name="Url">Добавляемый Url</param>
-        /// <returns>Псевдоним ссылки</returns>
-        Task<string> AddUrlAsync(string Url, CancellationToken Cancel = default);
+        /// <param name="Cancel">Токен отмены</param>
+        /// <returns>Идентификатор добавленной короткой ссылки</returns>
+        Task<int> AddUrlAsync(string Url, CancellationToken Cancel = default);
 
         /// <summary>
         /// Удалить короткую ссылку по идентификатору
         /// </summary>
         /// <param name="Id">Идентификатор короткой ссылки</param>
+        /// <param name="Cancel">Токен отмены</param>
         /// <returns>Результат удаления</returns>
         Task<bool> DeleteUrlAsync(int Id, CancellationToken Cancel = default);
 
@@ -41,6 +53,7 @@ namespace Thoughts.Interfaces.Base
         /// </summary>
         /// <param name="Id">Идентификатор короткой ссылки</param>
         /// <param name="Url">Новый Url</param>
+        /// <param name="Cancel">Токен отмены</param>
         /// <returns>Результат обновления</returns>
         Task<bool> UpdateUrlAsync(int Id, string Url, CancellationToken Cancel = default);
     }

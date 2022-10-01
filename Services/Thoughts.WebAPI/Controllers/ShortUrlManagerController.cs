@@ -17,7 +17,7 @@ namespace Thoughts.WebAPI.Controllers
             _shortUrlManager = ShortUrlManager;
         }
 
-        // GET: api/url?Alias=...
+        // GET: api/v1/url?Alias=...
         [HttpGet]
         public async Task<ActionResult<Uri>> GetUrl(string Alias)
         {
@@ -28,7 +28,7 @@ namespace Thoughts.WebAPI.Controllers
             return result;
         }
 
-        // GET: api/url/10
+        // GET: api/v1/url/10
         [HttpGet("{Id}")]
         public async Task<ActionResult<Uri>> GetUrlById(int Id)
         {
@@ -39,19 +39,31 @@ namespace Thoughts.WebAPI.Controllers
             return result;
         }
 
-
-        // POST api/url
-        [HttpPost]
-        public async Task<ActionResult<string>> AddUrl([FromBody]string Url)
+        //GET: api/v1/url/alias/10
+        [HttpGet("alias/{Id}")]
+        public async Task<ActionResult<string>> GetAliasById(int Id)
         {
-            var result = await _shortUrlManager.AddUrlAsync(Url);
+            var result = await _shortUrlManager.GetAliasByIdAsync(Id);
+
             if (String.IsNullOrEmpty(result))
                 return BadRequest();
 
-            return $"{result}";
+            return result;
         }
 
-        // DELETE api/url/10
+        // POST api/v1/url
+        [HttpPost]
+        public async Task<ActionResult<int>> AddUrl([FromBody]string Url)
+        {
+            var result = await _shortUrlManager.AddUrlAsync(Url);
+            if (result==0)
+                return BadRequest();
+
+            //return $"{result}";
+            return result;
+        }
+
+        // DELETE api/v1/url/10
         [HttpDelete("{Id}")]
         public async Task<ActionResult<bool>> DeleteUrl(int Id)
         {
@@ -59,7 +71,7 @@ namespace Thoughts.WebAPI.Controllers
             return result ? result : BadRequest();
         }
 
-        // POST api/url/10
+        // POST api/v1/url/10
         [HttpPost("{Id}")]
         public async Task<ActionResult<bool>> UpdateUrl(int Id, [FromBody] string Url)
         {
