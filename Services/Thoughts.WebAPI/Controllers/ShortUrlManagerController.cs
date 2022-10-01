@@ -5,6 +5,7 @@ using Thoughts.Interfaces.Base;
 
 namespace Thoughts.WebAPI.Controllers
 {
+    [ApiVersion("1.0")]
     [Route(WebApiControllersPath.ShortUrl)]
     [ApiController]
     public class ShortUrlManagerController : ControllerBase
