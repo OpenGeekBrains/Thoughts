@@ -64,10 +64,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.Tools", "Common\Th
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.UI.MAUI", "UI\Thoughts.UI.MAUI\Thoughts.UI.MAUI.csproj", "{30543919-C502-4A04-92ED-79F9F6DE0918}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.DAL", "Data\Identity.DAL\Identity.DAL.csproj", "{DA1837A0-61EC-4228-BCFB-5FFCB8EA8C3F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.DAL.SqlServer", "Data\Identity.DAL.SqlServer\Identity.DAL.SqlServer.csproj", "{0D0D4C6B-55B0-4CE3-9388-D17DA6602DEA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.Tools.Tests", "Tests\Thoughts.Tools.Tests\Thoughts.Tools.Tests.csproj", "{46A69540-57B8-4451-A68E-7E135ABE6C1E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thoughts.WebAPI.Tests", "Tests\Thoughts.WebAPI.Tests\Thoughts.WebAPI.Tests.csproj", "{EC07231A-B243-4644-9E45-C92CA113ED0F}"

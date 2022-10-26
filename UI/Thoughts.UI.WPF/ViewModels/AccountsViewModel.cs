@@ -12,11 +12,16 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     public class AccountsViewModel : ViewModel
     {
-        private static HttpClient http = new HttpClient
+        public AccountsViewModel(AccountClient AccountClient)
         {
-            BaseAddress = new("https://localhost:5011")
-        };
-        private static AccountClient account_client = new AccountClient(http);
+            account_client = AccountClient;
+        }
+
+        //private static HttpClient http = new HttpClient
+        //{
+        //    BaseAddress = new("https://localhost:5011")
+        //};
+        private static AccountClient account_client;// = new AccountClient(http);
 
         private ObservableCollection<IdentUser> _identUserCollection = new ObservableCollection<IdentUser>();
         private ObservableCollection<IdentRole> _identRoleCollection = new ObservableCollection<IdentRole>();
