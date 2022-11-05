@@ -48,6 +48,16 @@ namespace Thoughts.WebAPI.Clients.Files
             return response.IsSuccessStatusCode;
         }
 
+        public async Task<object> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            var result = await _httpClient
+                .GetStringAsync(($"{WebApiControllersPath.FileUrl}/getallfileinfo"))
+                .ConfigureAwait(false);
+
+            return result;
+        }
 
         #region Sync versions
 
@@ -55,7 +65,9 @@ namespace Thoughts.WebAPI.Clients.Files
            UploadLimitSizeFileAsync(stream, fileName, contentType).Result;
 
         public bool UploadAnyFile(Stream stream, string fileName, string contentType) =>
-            UploadAnyFileAsync(stream, fileName, contentType).Result;  
+            UploadAnyFileAsync(stream, fileName, contentType).Result;
+
+        public object GetFiles(int page, int pageSize) => GetFilesAsync(page, pageSize).Result;
 
         #endregion
 

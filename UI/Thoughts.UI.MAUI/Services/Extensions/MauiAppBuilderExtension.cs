@@ -29,12 +29,12 @@ namespace Thoughts.UI.MAUI.Services.Extensions
 
 #if DEBUG
             webAPI = DeviceInfo.Platform == DevicePlatform.Android
-               ? settings.DebugWebAPIAndroid
-               : settings.DebugWebAPI;
+               ? settings.WebApi.DebugWebAPIAndroid
+               : settings.WebApi.DebugWebAPI;
 
             mvcWebApi = DeviceInfo.Platform == DevicePlatform.Android
-                ? settings.DebugMvcWebAPIAndroid
-                : settings.DebugMvcWebAPI;
+                ? settings.WebApi.DebugMvcWebAPIAndroid
+                : settings.WebApi.DebugMvcWebAPI;
 
             services.AddSingleton<IHttpsClientHandlerService, HttpsClientHandlerService>();
 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 using Microsoft.Extensions.Logging;
 
@@ -19,10 +20,24 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         #endregion
 
+        #region Bindable properties
+
+        public ObservableCollection<object> Files { get; } = new();
+
+        private bool _isRefresh;
+
+        public bool IsRefreshing
+        {
+            get => _isRefresh;
+            set => Set(ref _isRefresh, value);
+        } 
+
+        #endregion
+
         #region Constructors
 
         public FileViewModel(IFileManager fileManager, 
-            IConnectivity connectivity, 
+            IConnectivity connectivity,
             ILogger<FileViewModel> logger = default)
         {
             _fileManager = fileManager;
@@ -128,6 +143,40 @@ namespace Thoughts.UI.MAUI.ViewModels
                 IsBusy = false;
             }
         }
+
+        #endregion
+
+        #region Get page files
+
+        ICommand _getFilesPageCommand;
+
+        public ICommand GetFilesPageCommand => _getFilesPageCommand
+            ??= new Command(GetFilesPageAsync);
+
+        private async void GetFilesPageAsync()
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                if (!await CheckInternetConnectionAsync()) return;
+
+                IsBusy = true;
+
+                var files = _fileManager.GetFilesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "{Method}: {message}", nameof(GetFilesPageAsync), ex.Message);
+                await Shell.Current.DisplayAlert("Error!",
+                    $"Unable to get files: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+                IsRefreshing = false;
+            }
+        } 
 
         #endregion
 
