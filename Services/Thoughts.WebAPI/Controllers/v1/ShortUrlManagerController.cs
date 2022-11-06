@@ -23,7 +23,7 @@ namespace Thoughts.WebAPI.Controllers.v1
         {
             var result = await _shortUrlManager.GetUrlAsync(Alias);
             if (result is null)
-                return BadRequest();
+                return NotFound();
 
             return result;
         }
@@ -34,7 +34,7 @@ namespace Thoughts.WebAPI.Controllers.v1
         {
             var result = await _shortUrlManager.GetUrlByIdAsync(Id);
             if (result is null)
-                return BadRequest();
+                return NotFound();
 
             return result;
         }
@@ -46,7 +46,7 @@ namespace Thoughts.WebAPI.Controllers.v1
             var result = await _shortUrlManager.GetAliasByIdAsync(Id);
 
             if (string.IsNullOrEmpty(result))
-                return BadRequest();
+                return NotFound();
 
             return AcceptedAtAction(nameof(GetUrl), new { Alias = result }, result);
         }
@@ -67,7 +67,7 @@ namespace Thoughts.WebAPI.Controllers.v1
         public async Task<ActionResult<bool>> DeleteUrl(int Id)
         {
             var result = await _shortUrlManager.DeleteUrlAsync(Id);
-            return result ? result : BadRequest();
+            return result ? result : NotFound();
         }
 
         // POST api/v1/url/10
@@ -75,7 +75,7 @@ namespace Thoughts.WebAPI.Controllers.v1
         public async Task<ActionResult<bool>> UpdateUrl(int Id, [FromBody] string Url)
         {
             var result = await _shortUrlManager.UpdateUrlAsync(Id, Url);
-            return result ? result : BadRequest();
+            return result ? result : NotFound();
         }
     }
 }
