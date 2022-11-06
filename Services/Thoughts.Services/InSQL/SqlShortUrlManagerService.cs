@@ -101,7 +101,7 @@ namespace Thoughts.Services.InSQL
         {
             var result = await _db.ShortUrls.
                 FirstOrDefaultAsync(
-                    u => u.Alias == Alias,
+                    u => u.Alias.StartsWith(Alias),
                     Cancel
                 ).
                 ConfigureAwait(false);
@@ -124,7 +124,7 @@ namespace Thoughts.Services.InSQL
             return result.OriginalUrl;
         }
 
-        public async Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default)
+        public async Task<string> GetAliasByIdAsync(int Id, int Length, CancellationToken Cancel = default)
         {
             var result = await _db.ShortUrls.
                 FirstOrDefaultAsync(
@@ -133,7 +133,10 @@ namespace Thoughts.Services.InSQL
                 ).
                 ConfigureAwait(false);
             if (result is null)
-                return null ;
+                return null;
+
+            if (Length>0)
+                return result.Alias.Substring(0, result.Alias.Length < Length ? result.Alias.Length : Length);
 
             return result.Alias;
         }

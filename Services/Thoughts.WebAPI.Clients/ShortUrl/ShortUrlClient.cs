@@ -30,9 +30,9 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default)
+        public async Task<string> GetAliasByIdAsync(int Id, int Length, CancellationToken Cancel = default)
         {
-            var response = await GetAsync<string>($"{WebApiControllersPath.ShortUrlV1}/alias/{Id}");
+            var response = await GetAsync<string>($"{WebApiControllersPath.ShortUrlV1}/alias/{Id}?Length={Length}");
             return response;
         }
 

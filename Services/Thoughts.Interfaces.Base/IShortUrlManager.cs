@@ -28,9 +28,10 @@ namespace Thoughts.Interfaces.Base
         /// Получить псевдоним короткой ссылки по ее идентификатору
         /// </summary>
         /// <param name="Id">Идентификатор короткой ссылки</param>
+        /// <param name="Length">Количество символов в возвращаемом псевдониме</param>
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Псевдоним ссылки</returns>
-        Task<string> GetAliasByIdAsync(int Id, CancellationToken Cancel = default);
+        Task<string> GetAliasByIdAsync(int Id, int Length = 0, CancellationToken Cancel = default);
 
         /// <summary>
         /// Добавить короткую ссылку

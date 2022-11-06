@@ -11,10 +11,12 @@ namespace Thoughts.WebAPI.Controllers.v1
     public class ShortUrlManagerController : ControllerBase
     {
         private readonly IShortUrlManager _shortUrlManager;
+        private readonly IConfiguration _configuration;
 
-        public ShortUrlManagerController(IShortUrlManager ShortUrlManager)
+        public ShortUrlManagerController(IShortUrlManager ShortUrlManager, IConfiguration Configuration)
         {
             _shortUrlManager = ShortUrlManager;
+            _configuration = Configuration;
         }
 
         // GET: api/v1/url?Alias=...
@@ -39,11 +41,19 @@ namespace Thoughts.WebAPI.Controllers.v1
             return result;
         }
 
-        //GET: api/v1/url/alias/10
+        //GET: api/v1/url/alias/10?Length=10
         [HttpGet("alias/{Id}")]
-        public async Task<ActionResult<string>> GetAliasById(int Id)
+        public async Task<ActionResult<string>> GetAliasById(int Id, int Length)
         {
-            var result = await _shortUrlManager.GetAliasByIdAsync(Id);
+            string dd = _configuration["ShortUrlMaxLength"];
+            string result;//
+            if (Length > 0)
+                result = await _shortUrlManager.GetAliasByIdAsync(Id, Length);
+            else if (int.TryParse(_configuration["ShortUrlMaxLength"], out int lengthFromConfig))
+                result = await _shortUrlManager.GetAliasByIdAsync(Id, lengthFromConfig);
+            else
+                result = await _shortUrlManager.GetAliasByIdAsync(Id);
+
 
             if (string.IsNullOrEmpty(result))
                 return NotFound();

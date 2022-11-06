@@ -35,16 +35,18 @@ namespace Thoughts.UI.MVC.Controllers
             return View(url);
         }
 
-        // GET -> https://localhost:5010/url/GetAliasById/10
+        // GET -> https://localhost:5010/url/GetAliasById/10?Length=6
         [Route("url/GetAliasById/{Id}")]
         [HttpGet]
-        public async Task<IActionResult> GetAliasById(int Id)
+        public async Task<IActionResult> GetAliasById(int Id, int Length)
         {
-            var alias = await _shortUrlManager.GetAliasByIdAsync(Id);
+            var alias = Length > 0
+                ? await _shortUrlManager.GetAliasByIdAsync(Id, Length)
+                : await _shortUrlManager.GetAliasByIdAsync(Id);
             if (String.IsNullOrEmpty(alias))
                 return NotFound();
-            var shortUrl= Url.ActionLink(action: nameof(RedirectByAlias), controller: "url", values: new { Alias = alias });
-            return View(model:shortUrl);
+            var shortUrl = Url.ActionLink(action: nameof(RedirectByAlias), controller: "url", values: new { Alias = alias });
+            return View(model: shortUrl);
         }
 
         // POST -> https://localhost:5010/url/
@@ -55,14 +57,14 @@ namespace Thoughts.UI.MVC.Controllers
             var result = await _shortUrlManager.AddUrlAsync(url);
             if (result == 0)
                 return BadRequest();
-            var getUrl = Url.ActionLink(action:nameof(GetUrlById), controller:"url", values: new { Id=result });
-            var getAlias = Url.ActionLink(action: nameof(GetAliasById),controller: "url",values: new { Id = result });
+            var getUrl = Url.ActionLink(action: nameof(GetUrlById), controller: "url", values: new { Id = result });
+            var getAlias = Url.ActionLink(action: nameof(GetAliasById), controller: "url", values: new { Id = result });
             ShortUrlWebModel shortUrlWebModel = new()
             {
                 Id = result,
                 OriginalUrl = url,
-                GetUrl= getUrl!,
-                GetAlias=getAlias!
+                GetUrl = getUrl!,
+                GetAlias = getAlias!
             };
             return View(shortUrlWebModel);
         }
