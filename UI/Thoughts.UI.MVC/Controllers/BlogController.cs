@@ -46,6 +46,7 @@ public class BlogController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var post = await _postManager.GetPostAsync(id);
+
         if (post is null)
             return NotFound(new { PostId = id });
 
