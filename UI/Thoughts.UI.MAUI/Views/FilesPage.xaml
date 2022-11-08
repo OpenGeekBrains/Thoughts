@@ -30,19 +30,49 @@
             <Setter Property="Margin" Value="10"/>
         </Style>
     </ContentPage.Resources>
-    <Grid ColumnDefinitions="*,*"
+    <Grid ColumnDefinitions="*,Auto,*"
+          RowDefinitions="*, Auto"
           ColumnSpacing="5">
+        <RefreshView Grid.ColumnSpan="3">
+            <CollectionView Grid.ColumnSpan="3"
+                            Background="Transparent"
+                            ItemsSource="{Binding Files}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FileViewModel">
+                        <Frame Margin="8" Padding="20">
+                            <VerticalStackLayout>
+                                
+                                <Grid Padding="0, 0, 0, 10"
+                                      ColumnDefinitions="Auto, Auto" 
+                                      ColumnSpacing="5">
+                                    <Label FontSize="16" Text="{Binding Name}" 
+                                       LineBreakMode="MiddleTruncation"/>
+                                    <Label FontSize="16" Text="{Binding Active}" Grid.Column="1"/>
+
+                                </Grid>
+
+                                <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
+                                <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
         <Button Text="Загрузить изображение"
                 Style="{StaticResource ButtonsStyle}"
                 Command="{Binding UploadImageCommand}"
-                Grid.Column="0"/>
+                Grid.Column="0"
+                Grid.Row="1"/>
 
         <Button Text="Загрузить любой файл"
                 Style="{StaticResource ButtonsStyle}"
                 Command="{Binding UploadAnyCommand}"
-                Grid.Column="1"/>
+                Grid.Column="2"
+                Grid.Row="1"/>
 
-        <ActivityIndicator Grid.ColumnSpan="2"
+        <ActivityIndicator Grid.ColumnSpan="3"
                            IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}"
                            HorizontalOptions="FillAndExpand"

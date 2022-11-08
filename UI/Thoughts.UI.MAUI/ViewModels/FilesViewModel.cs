@@ -22,13 +22,23 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         #region Bindable properties
 
-        public ObservableCollection<object> Files { get; } = new();
+        public ObservableCollection<FileViewModel> Files { get; } = new();
+
+        private int _pageNum;
+
+        public int PageNum
+        {
+            get => _pageNum;
+
+            set => Set(ref _pageNum, value);
+        }
 
         private bool _isRefresh;
 
         public bool IsRefreshing
         {
             get => _isRefresh;
+
             set => Set(ref _isRefresh, value);
         } 
 
@@ -163,7 +173,15 @@ namespace Thoughts.UI.MAUI.ViewModels
 
                 IsBusy = true;
 
-                var files = _fileManager.GetFilesAsync();
+                var files = await _fileManager.GetFilesAsync();
+
+                if (Files.Count > 1)
+                    Files.Clear();
+
+                foreach (var file in files)
+                {
+                    Files.Add(file);
+                }
             }
             catch (Exception ex)
             {
