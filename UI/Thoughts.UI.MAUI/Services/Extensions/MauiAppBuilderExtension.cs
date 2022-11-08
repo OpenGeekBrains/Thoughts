@@ -44,7 +44,7 @@ namespace Thoughts.UI.MAUI.Services.Extensions
                 .ConfigurePrimaryHttpMessageHandler(provider => provider.GetHttpsMessageHandler());
 
             services.AddHttpClient("MvcWebAPI", client => client.BaseAddress = new Uri(mvcWebApi))
-                .AddTypedClient<IFileService, FileClient>()
+                .AddTypedClient<IFilesService, FilesClient>()
                 .ConfigurePrimaryHttpMessageHandler(provider => provider.GetHttpsMessageHandler());
 #else
             webAPI = settings.DeviceWebAPI;
@@ -54,13 +54,13 @@ namespace Thoughts.UI.MAUI.Services.Extensions
 
             mvcWebApi = settings.DeviceMvcWebAPI;
             services.AddHttpClient("MvcWebAPI", client => client.BaseAddress = new Uri(mvcWebApi))
-                .AddTypedClient<IFileService, FileClient>();
+                .AddTypedClient<IFilesService, FilesClient>();
 #endif
 
             services.AddSingleton(settings);
             services.AddSingleton<IWeatherManager, WeatherManager>();
             services.AddSingleton<IBlogsManager, BlogsManager>();
-            services.AddSingleton<IFileManager, FileManager>();
+            services.AddSingleton<IFilesManager, FilesManager>();
             services.AddSingleton(Connectivity.Current);
 
             return services;
@@ -71,7 +71,7 @@ namespace Thoughts.UI.MAUI.Services.Extensions
             services.AddSingleton<MainPage>();
             services.AddSingleton<WeatherInfosPage>();
             services.AddSingleton<BlogsPage>();
-            services.AddSingleton<FilePage>();
+            services.AddSingleton<FilesPage>();
 
             services.AddTransient<PostDetailsPage>();
 
@@ -83,7 +83,7 @@ namespace Thoughts.UI.MAUI.Services.Extensions
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<WeatherViewModel>();
             services.AddSingleton<BlogsViewModel>();
-            services.AddSingleton<FileViewModel>();
+            services.AddSingleton<FilesViewModel>();
 
             services.AddTransient<PostDetailsViewModel>();
 

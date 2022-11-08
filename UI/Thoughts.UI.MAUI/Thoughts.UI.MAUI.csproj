@@ -100,10 +100,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\FilesPage.xaml.cs">
+      <DependentUpon>FilesPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <MauiXaml Update="Views\BlogsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-    <MauiXaml Update="Views\FilePage.xaml">
+    <MauiXaml Update="Views\FilesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\PostDetailsPage.xaml">

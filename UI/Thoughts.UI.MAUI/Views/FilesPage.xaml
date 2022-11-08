@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Thoughts.UI.MAUI.Views.FilePage"
+             x:Class="Thoughts.UI.MAUI.Views.FilesPage"
              xmlns:vm="clr-namespace:Thoughts.UI.MAUI.ViewModels"
-             x:DataType="vm:FileViewModel"
+             x:DataType="vm:FilesViewModel"
              Title="{Binding Title}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior 

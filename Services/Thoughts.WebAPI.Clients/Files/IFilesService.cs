@@ -1,6 +1,6 @@
 ﻿namespace Thoughts.WebAPI.Clients.Files
 {
-    public interface IFileService
+    public interface IFilesService
     {
         Task<bool> UploadLimitSizeFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default);
 
@@ -10,8 +10,8 @@
 
         bool UploadAnyFile(Stream stream, string fileName, string contentType);
 
-        Task<object> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default);
+        Task<IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)>> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default);
 
-        object GetFiles(int page = default, int pageSize = default);
+        IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page = default, int pageSize = default);
     }
 }

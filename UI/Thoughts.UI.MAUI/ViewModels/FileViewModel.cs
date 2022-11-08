@@ -1,235 +1,72 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using Microsoft.Extensions.Logging;
-
-using Thoughts.UI.MAUI.Services.Interfaces;
-using Thoughts.UI.MAUI.ViewModels.Base;
+﻿using Thoughts.UI.MAUI.ViewModels.Base;
 
 namespace Thoughts.UI.MAUI.ViewModels
 {
     public class FileViewModel : ViewModel
     {
-        #region Fields
+        #region Constructors
 
-        private readonly IFileManager _fileManager;
-        private readonly IConnectivity _connectivity;
-        private readonly ILogger<FileViewModel> _logger;
+        public FileViewModel()
+        {
 
-        private readonly PickOptions _pickOptions;
+        }
 
         #endregion
 
         #region Bindable properties
 
-        public ObservableCollection<object> Files { get; } = new();
+        private string _hash;
 
-        private bool _isRefresh;
-
-        public bool IsRefreshing
+        public string Hash
         {
-            get => _isRefresh;
-            set => Set(ref _isRefresh, value);
-        } 
+            get => _hash;
 
-        #endregion
-
-        #region Constructors
-
-        public FileViewModel(IFileManager fileManager, 
-            IConnectivity connectivity,
-            ILogger<FileViewModel> logger = default)
-        {
-            _fileManager = fileManager;
-            _connectivity = connectivity;
-            _logger = logger;
-
-            Title = "Файлы";
-
-            _pickOptions = new PickOptions
-            {
-                PickerTitle = "Выберите файл",
-            };
+            set => Set(ref _hash, value);
         }
 
-        #endregion
+        private string _name;
 
-        #region Commands
-
-        #region Upload image
-
-        ICommand _uploadImageCommand;
-
-        public ICommand UploadImageCommand => _uploadImageCommand ??= new Command(OnUploadImageAsync); 
-
-        private async void OnUploadImageAsync()
+        public string Name
         {
-            if (IsBusy) return;
+            get => _name;
 
-            try
-            {
-                if (!await CheckInternetConnectionAsync() || !await TryRequestStorageReadPermissions()) return;
-
-                IsBusy = true;
-
-                _pickOptions.FileTypes = FilePickerFileType.Images;
-
-                var file = await FilePicker.Default.PickAsync(_pickOptions);
-
-                if (file is null) return;
-
-                var result = await _fileManager.UploadLimitSizeFileAsync(file);
-
-                _logger?.LogInformation("{Method}: upload is {success}", nameof(OnUploadImageAsync), result);
-
-                var resultMsg = result ? "успешно" : "с ошибкой";
-
-                await Shell.Current.DisplayAlert("Загрузка файла",
-                    $"Загрузка {file.FileName} завершилась {resultMsg}!", "OK");
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "{Method}: {message}", nameof(OnUploadImageAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to upload file: {ex.Message}", "OK");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            set => Set(ref _name, value);
         }
 
-        #endregion
+        private int _linksCount;
 
-        #region Upload any file
-
-        ICommand _uploadAnyCommand;
-
-        public ICommand UploadAnyCommand => _uploadAnyCommand ??= new Command(OnUploadAnyAsync);
-
-        private async void OnUploadAnyAsync()
+        public int LinksCount
         {
-            if (IsBusy) return;
+            get => _linksCount;
 
-            try
-            {
-                if (!await CheckInternetConnectionAsync() || !await TryRequestStorageReadPermissions()) return;
-
-                IsBusy = true;
-
-                _pickOptions.FileTypes = default;
-
-                var file = await FilePicker.Default.PickAsync(_pickOptions);
-
-                if (file is null) return;
-
-                var result = await _fileManager.UploadAnyFileAsync(file);
-
-                _logger?.LogInformation("{Method}: upload is {success}", nameof(OnUploadAnyAsync), result);
-
-                var resultMsg = result ? "успешно" : "с ошибкой";
-
-                await Shell.Current.DisplayAlert("Загрузка файла",
-                    $"Загрузка {file.FileName} завершилась {resultMsg}!", "OK");
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "{Method}: {message}", nameof(OnUploadAnyAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to upload file: {ex.Message}", "OK");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            set => Set(ref _linksCount, value);
         }
 
-        #endregion
+        private long _size;
 
-        #region Get page files
-
-        ICommand _getFilesPageCommand;
-
-        public ICommand GetFilesPageCommand => _getFilesPageCommand
-            ??= new Command(GetFilesPageAsync);
-
-        private async void GetFilesPageAsync()
+        public long Size
         {
-            if (IsBusy) return;
+            get => _size;
 
-            try
-            {
-                if (!await CheckInternetConnectionAsync()) return;
-
-                IsBusy = true;
-
-                var files = _fileManager.GetFilesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "{Method}: {message}", nameof(GetFilesPageAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to get files: {ex.Message}", "OK");
-            }
-            finally
-            {
-                IsBusy = false;
-                IsRefreshing = false;
-            }
-        } 
-
-        #endregion
-
-        #endregion
-
-        #region Methods
-
-        private async Task<bool> CheckInternetConnectionAsync(CancellationToken token = default)
-        {
-            token.ThrowIfCancellationRequested();
-
-            if (_connectivity.NetworkAccess == NetworkAccess.Internet) return true;
-
-            _logger?.LogError("{Method}: {message}", nameof(CheckInternetConnectionAsync), "Check your internet connection");
-            await Shell.Current.DisplayAlert("Internet connection failed!",
-                $"Unable to upload file: Check your internet connection", "OK");
-
-            return false;
+            set => Set(ref _size, value);
         }
 
-        private async Task<bool> TryRequestStorageReadPermissions(CancellationToken token = default) 
+        private DateTimeOffset _created;
+
+        public DateTimeOffset Created
         {
-            //Check current permission status
-            var permissionStatus = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+            get => _created;
 
-            if (CheckPermissionsOnGranted(permissionStatus))
-            {
-                _logger?.LogInformation("{Method}: Read storage permissions obtained", nameof(TryRequestStorageReadPermissions));
-                return true;
-            }
-
-            //Trying to get permission from the user
-            permissionStatus = await Permissions.RequestAsync<Permissions.StorageRead>();
-
-            if (CheckPermissionsOnGranted(permissionStatus))
-            {
-                _logger?.LogInformation("{Method}: Permissions have been obtained", nameof(TryRequestStorageReadPermissions));
-                return true;
-            }
-
-            _logger?.LogWarning("{Method}: Read storage permissions not obtained", nameof(TryRequestStorageReadPermissions));
-
-            await Shell.Current.DisplayAlert("Предупреждение",
-                     "Права на чтение файлов не были получены", "OK");
-
-            return false;
+            set => Set(ref _created, value);
         }
 
-        private bool CheckPermissionsOnGranted(PermissionStatus permissionStatus)
+        private bool _active;
+
+        public bool Active
         {
-            return permissionStatus != PermissionStatus.Denied
-               && permissionStatus != PermissionStatus.Disabled
-               && permissionStatus != PermissionStatus.Unknown;
+            get => _active;
+
+            set => Set(ref _active, value);
         }
 
         #endregion
