@@ -61,6 +61,12 @@ namespace Thoughts.UI.MAUI.Services
         {
             token.ThrowIfCancellationRequested();
 
+            if (page < 1)
+            {
+                _logger.LogWarning("{Method}: Invalid page value = {value}. Change page value on \"1\"", nameof(GetFilesAsync), page);
+                page = 1;
+            }
+
             var files = await _filesService.GetFilesAsync(page, _pageSettings.PageSize, token).ConfigureAwait(false);
 
             var result = files.Select(f => new FileViewModel

@@ -4,7 +4,6 @@ using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 
-using Thoughts.DAL.Entities;
 using Thoughts.Interfaces.Base;
 using Thoughts.WebAPI.Clients.Tools;
 
@@ -59,7 +58,11 @@ namespace Thoughts.WebAPI.Clients.Files
                 .GetFromJsonAsync<IEnumerable<JsonElement>>($"{WebApiControllersPath.FileUrl}/getallfileinfo", token)
                 .ConfigureAwait(false);
 
-            var result = await FromJsonElementAsync(jsonElements).ConfigureAwait(false);
+            var pageJsonElements = jsonElements
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
+            var result = await FromJsonElementAsync(pageJsonElements).ConfigureAwait(false);
 
             return result;
         }
