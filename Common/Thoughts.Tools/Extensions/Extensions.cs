@@ -1,9 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Thoughts.Tools.Extensions
 {
-	public static class Extensions
+    public static class Extensions
     {
         public static string ToByteString(this byte[] array) => array
            .Aggregate(new StringBuilder(), (S, b) => S.Append(b.ToString("x2")))
@@ -18,10 +19,21 @@ namespace Thoughts.Tools.Extensions
             return result.ToByteString();
         }
 
-        public static async Task<string?> GetMd5Async(this string path)
+        public static async Task<string?> GetMd5Async(this string str)
         {
-            await using var fs = File.OpenRead(path);
-            return await GetMd5Async(fs);
+            var bytes = Encoding.UTF8.GetBytes(str);
+            return await GetMd5Async(bytes);
+        }
+
+        public static async Task<string> GetMd5Async(this FileInfo file)
+        {
+            if (!file.Exists)
+                throw new FileNotFoundException("Файл для вычисления MD5 не найден", file.FullName);
+
+            await using var fs = file.OpenRead();
+
+            var hash = await GetMd5Async(fs);
+            return hash!;
         }
 
         public static async Task<string?> GetMd5Async(this byte[] buffer)
@@ -40,10 +52,21 @@ namespace Thoughts.Tools.Extensions
             return result.ToByteString();
         }
 
-        public static async Task<string?> GetSha1Async(this string path)
+        public static async Task<string?> GetSha1Async(this string str)
         {
-            await using var fs = File.OpenRead(path);
-            return await GetSha1Async(fs);
+            var bytes = Encoding.UTF8.GetBytes(str);
+            return await GetSha1Async(bytes);
+        }
+
+        public static async Task<string?> GetSha1Async(this FileInfo file)
+        {
+            if (!file.Exists)
+                throw new FileNotFoundException("Файл для вычисления MD5 не найден", file.FullName);
+
+            await using var fs = file.OpenRead();
+
+            var hash = await GetSha1Async(fs);
+            return hash;
         }
 
         public static async Task<string?> GetSha1Async(this byte[] buffer)
