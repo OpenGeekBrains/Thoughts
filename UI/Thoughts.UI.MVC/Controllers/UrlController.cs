@@ -54,6 +54,9 @@ namespace Thoughts.UI.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUrl(string url)
         {
+            if (!Regex.IsMatch(url, @"^https?://"))
+                url = "http://" + url;
+
             var result = await _shortUrlManager.AddUrlAsync(url);
             if (result == 0)
                 return BadRequest();
@@ -76,7 +79,7 @@ namespace Thoughts.UI.MVC.Controllers
             return View();
         }
 
-        // GET -> https://localhost:5010/url/Statistic
+        // GET -> https://localhost:5010/url/Statistic?Length=9
         [Route("url/Statistic")]
         public async Task<IActionResult> Statistic(int Length )
         {

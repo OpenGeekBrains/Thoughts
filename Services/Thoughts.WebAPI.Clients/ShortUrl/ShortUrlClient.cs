@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,9 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
 
         public async Task<int> AddUrlAsync(string Url, CancellationToken Cancel = default)
         {
+            if (!Regex.IsMatch(Url, @"^https?://"))
+                throw new FormatException("Строка адреса не имеет схемы");
+
             var response = await PostAsync<string>($"{WebApiControllersPath.ShortUrlV1}", Url);
             return await response.Content.ReadAsAsync<int>();
         }

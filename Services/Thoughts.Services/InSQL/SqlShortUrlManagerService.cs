@@ -4,6 +4,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
@@ -28,8 +29,11 @@ namespace Thoughts.Services.InSQL
         }
 
         public async Task<int> AddUrlAsync(string UrlString, CancellationToken Cancel = default)
-        {
+        { 
             _logger.LogInformation($"Создание короткой ссылки для Url:{UrlString}");
+
+            if (!Regex.IsMatch(UrlString, @"^https?://"))
+                throw new FormatException("Строка адреса не имеет схемы");
 
             var url = CreateUrl(UrlString);
 

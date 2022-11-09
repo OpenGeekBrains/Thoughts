@@ -23,7 +23,7 @@
                 <tr>
                     <td>@shortUrl.Id</td>
                     <td>
-                        <a asp-action="ResetStatistic" asp-route-Id="@shortUrl.Id">Обновить</a></td>
+                        <a asp-action="ResetStatistic" asp-route-Id="@shortUrl.Id">Сбросить</a></td>
                     <td>Оригинальная ссылка: <a href="@shortUrl.OriginalUrl">@shortUrl.OriginalUrl</a><br>
                         Короткая ссылка <a href="@shortUrl.Alias">@shortUrl.Alias</a><br>
                         Колчество вызовов: @shortUrl.Statistic<br>
@@ -34,7 +34,7 @@
         </tbody>
     </table>
 
-    <a asp-action="ResetStatistic" asp-route-Id="0">Обновить всю статистику</a></td>
+    <a asp-action="ResetStatistic" asp-route-Id="0">Сбросить всю статистику</a></td>
 
 
 </div>

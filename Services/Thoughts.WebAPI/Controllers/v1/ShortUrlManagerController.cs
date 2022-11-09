@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -68,6 +70,9 @@ namespace Thoughts.WebAPI.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<int>> AddUrl([FromBody] string Url)
         {
+            if (!Regex.IsMatch(Url, @"^https?://"))
+                Url = "http://" + Url;
+
             var result = await _shortUrlManager.AddUrlAsync(Url);
             if (result == 0)
                 return BadRequest();
