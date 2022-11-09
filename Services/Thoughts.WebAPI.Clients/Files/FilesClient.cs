@@ -24,6 +24,10 @@ namespace Thoughts.WebAPI.Clients.Files
 
         public async Task<bool> UploadLimitSizeFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
+            _logger.LogInformation("{Method}: upload limit size file \"{name}\"", nameof(UploadLimitSizeFileAsync), fileName);
+
             using var streamContent = new StreamContent(stream);
             streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
 
@@ -38,6 +42,10 @@ namespace Thoughts.WebAPI.Clients.Files
 
         public async Task<bool> UploadAnyFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
+
+            _logger.LogInformation("{Method}: upload no limit size file \"{name}\"", nameof(UploadAnyFileAsync), fileName);
+
             using var streamContent = new StreamContent(stream);
             streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
 
@@ -54,6 +62,8 @@ namespace Thoughts.WebAPI.Clients.Files
         {
             token.ThrowIfCancellationRequested();
 
+            _logger.LogDebug("{Method}: get files request for page = {pageNum} with pageSize = {pageSize}", nameof(GetFilesAsync), page, pageSize);
+
             var jsonElements = await _httpClient
                 .GetFromJsonAsync<IEnumerable<JsonElement>>($"{WebApiControllersPath.FileUrl}/getallfileinfo", token)
                 .ConfigureAwait(false);
@@ -62,12 +72,59 @@ namespace Thoughts.WebAPI.Clients.Files
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
-            var result = await FromJsonElementAsync(pageJsonElements).ConfigureAwait(false);
+            var result = FromJsonToFiles(pageJsonElements);
 
             return result;
         }
 
-        #region Sync versions
+        public async Task<bool> DeleteFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            _logger.LogWarning("{Method}: delete file with hash = \"{hash}\"", nameof(DeleteFileAsync), hash);
+
+            var result = await _httpClient
+                .DeleteAsync($"{WebApiControllersPath.FileUrl}/delete?file={hash}", token)
+                .ConfigureAwait(false);
+
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeactivateFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            _logger.LogInformation("{Method}: deactivate file with hash = \"{hash}\"", nameof(DeactivateFileAsync), hash);
+
+            var jsonElement = await _httpClient
+                .GetFromJsonAsync<JsonElement>($"{WebApiControllersPath.FileUrl}/softdelete?file={hash}", token)
+                .ConfigureAwait(false);
+
+            var result = FromJsonToStatusResult(jsonElement);
+
+            return result;
+        }
+
+        public async Task<bool> ActivateFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            _logger.LogInformation("{Method}: activate file with hash = \"{hash}\"", nameof(ActivateFileAsync), hash);
+
+            var jsonElement = await _httpClient
+                .GetFromJsonAsync<JsonElement>($"{WebApiControllersPath.FileUrl}/activatefile?file={hash}", token)
+                .ConfigureAwait(false);
+
+            var result = FromJsonToStatusResult(jsonElement);
+
+            return result;
+        }
+
+        public bool DeleteFile(string hash) => DeleteFileAsync(hash).Result;
+
+        public bool DeactivateFile(string hash) => DeactivateFileAsync(hash).Result;
+
+        public bool ActivateFile(string hash) => ActivateFileAsync(hash).Result;
 
         public bool UploadLimitSizeFile(Stream stream, string fileName, string contentType) =>
            UploadLimitSizeFileAsync(stream, fileName, contentType).Result;
@@ -75,15 +132,14 @@ namespace Thoughts.WebAPI.Clients.Files
         public bool UploadAnyFile(Stream stream, string fileName, string contentType) =>
             UploadAnyFileAsync(stream, fileName, contentType).Result;
 
-        public IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page, int pageSize) => GetFilesAsync(page, pageSize).Result;
-
-        #endregion
+        public IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page, int pageSize) => 
+            GetFilesAsync(page, pageSize).Result;
 
         #endregion
 
         #region Methods
 
-        private static async Task<IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)>> FromJsonElementAsync(IEnumerable<JsonElement> jsonElements, CancellationToken token = default)
+        private IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> FromJsonToFiles(IEnumerable<JsonElement> jsonElements, CancellationToken token = default)
         {
             if (jsonElements is null) 
                 throw new ArgumentNullException(nameof(jsonElements));
@@ -93,7 +149,16 @@ namespace Thoughts.WebAPI.Clients.Files
             return result;
         }
 
-        private static (string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active) GetFileInfo(JsonElement element)
+        private bool FromJsonToStatusResult(JsonElement jsonElement)
+        {
+            var result = jsonElement
+                .GetProperty("result")
+                .GetBoolean();
+
+            return result;
+        }
+
+        private (string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active) GetFileInfo(JsonElement element)
         {
             var hash = element
                 .GetProperty("hash")

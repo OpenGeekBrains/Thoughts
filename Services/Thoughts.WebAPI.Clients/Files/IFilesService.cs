@@ -4,13 +4,25 @@
     {
         Task<bool> UploadLimitSizeFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default);
 
-        bool UploadLimitSizeFile(Stream stream, string fileName, string contentType);
-
         Task<bool> UploadAnyFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default);
 
-        bool UploadAnyFile(Stream stream, string fileName, string contentType);
-
         Task<IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)>> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default);
+
+        Task<bool> DeleteFileAsync(string hash, CancellationToken token = default);
+
+        Task<bool> DeactivateFileAsync(string hash, CancellationToken token = default);
+
+        Task<bool> ActivateFileAsync(string hash, CancellationToken token = default);
+
+        bool DeleteFile(string hash);
+
+        bool DeactivateFile(string hash);
+
+        bool ActivateFile(string hash);
+
+        bool UploadLimitSizeFile(Stream stream, string fileName, string contentType); 
+
+        bool UploadAnyFile(Stream stream, string fileName, string contentType); 
 
         IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page = default, int pageSize = default);
     }
