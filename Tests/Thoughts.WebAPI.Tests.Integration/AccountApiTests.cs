@@ -1,8 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 using Moq;
 
+using Thoughts.DAL;
+using Thoughts.Identity.DAL;
+using Thoughts.Interfaces.Base.Repositories;
+using Thoughts.Services.InSQL;
 using Thoughts.WebAPI.Clients.Identity;
 
 namespace Thoughts.WebAPI.Tests.Integration;
@@ -17,14 +25,27 @@ public class AccountApiTests
     public void Initialize()
     {
         _WebAPIHostBuilder = new WebApplicationFactory<Program>()
-            //.WithWebHostBuilder(builder => builder
-            //.ConfigureServices(services =>
-            //     {
-            //         services.RemoveAll<ThoughtsDbInitializer>();
+               .WithWebHostBuilder(builder => builder
+                   //.UseSetting("Database", "SqliteInMemory")
+                   .UseSetting("DbRemoveBefore", "false")
+            .ConfigureServices(services =>
+                 {
+                     services.RemoveAll<ThoughtsDB>();
+                     services.RemoveAll<FileStorageDb>();
+                     services.RemoveAll<IdentityDB>();
 
-            //         services.RemoveAll(typeof(IRepository<>));
-            //         services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
-            //     }))
+                     services.RemoveAll<DbContextOptions<ThoughtsDB>>();
+                     services.RemoveAll<DbContextOptions<FileStorageDb>>();
+                     services.RemoveAll<DbContextOptions<IdentityDB>>();
+
+                     services.AddDbContext<ThoughtsDB>(opt => opt.UseInMemoryDatabase("MainDb")
+                        .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+                     services.AddDbContext<FileStorageDb>(opt => opt.UseInMemoryDatabase("FilesDb")
+                        .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+                     services.AddDbContext<IdentityDB>(opt => opt.UseInMemoryDatabase("IdentityDb")
+                        .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+
+                 }))
             ;
         _Logger = new Mock<ILogger<AccountClient>>().Object;
     }

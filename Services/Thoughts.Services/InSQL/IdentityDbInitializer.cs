@@ -39,14 +39,15 @@ public class IdentityDbInitializer
         if (RemoveBefore)
             await DeleteAsync(Cancel).ConfigureAwait(false);
 
-        var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel).ConfigureAwait(false);
-        var applied_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel);
 
-        if (applied_migrations.Any())
-            _log.LogInformation("К БД применены миграции: {0}", string.Join(",", applied_migrations));
-
-        if (pending_migrations.Any())
+        if (_db.Database.IsRelational())
         {
+            var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel).ConfigureAwait(false);
+            var applied_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel);
+
+            if (pending_migrations.Any())
+                _log.LogInformation("К БД применены миграции: {0}", string.Join(",", applied_migrations));
+           
             _log.LogInformation("Применение миграций: {0}...", string.Join(",", pending_migrations));
             await _db.Database.MigrateAsync(Cancel);
             _log.LogInformation("Применение миграций выполнено");

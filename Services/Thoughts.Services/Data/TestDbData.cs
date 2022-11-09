@@ -57,7 +57,8 @@ public class TestDbData
             new Post
             {
                 Title = "Заголовок 1",
-                Body = "<h4>Тело 1.</h4><img src=\"https://catholicsar.ru/wp-content/uploads/1516116812_ryzhiy-maine-coon.jpg\" alt=\"картинка\"/> Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+                Body = "<h4>Тело 1.</h4><img src=\"https://localhost:5010/api/qr?code=Blogs%20GB\"/> Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+                //Body = "<h4>Тело 1.</h4><img src=\"https://catholicsar.ru/wp-content/uploads/1516116812_ryzhiy-maine-coon.jpg\" alt=\"картинка\"/> Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
                 Tags = new[] { tags[1], tags[0] },
                 Category = categories[0],
                 User = users[0],
@@ -65,7 +66,7 @@ public class TestDbData
             new Post
             {
                 Title = "Заголовок 2",
-                Body = "Тело 2. Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
+                Body = "Тело 2. <img src=\"https://localhost:5010/api/qr?code=Blogs%20GB\"/> Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.",
                 Tags = new[] { tags[1] },
                 Category = categories[0],
                 User = users[0],
