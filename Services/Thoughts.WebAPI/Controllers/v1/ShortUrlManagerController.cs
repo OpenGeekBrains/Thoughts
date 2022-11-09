@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
+using Thoughts.Domain.Base.Entities;
+using Thoughts.Interfaces;
 using Thoughts.Interfaces.Base;
 
 namespace Thoughts.WebAPI.Controllers.v1
@@ -45,8 +49,7 @@ namespace Thoughts.WebAPI.Controllers.v1
         [HttpGet("alias/{Id}")]
         public async Task<ActionResult<string>> GetAliasById(int Id, int Length)
         {
-            string dd = _configuration["ShortUrlMaxLength"];
-            string result;//
+            string result;
             if (Length > 0)
                 result = await _shortUrlManager.GetAliasByIdAsync(Id, Length);
             else if (int.TryParse(_configuration["ShortUrlMaxLength"], out int lengthFromConfig))
@@ -86,6 +89,34 @@ namespace Thoughts.WebAPI.Controllers.v1
         {
             var result = await _shortUrlManager.UpdateUrlAsync(Id, Url);
             return result ? result : NotFound();
+        }
+
+        // GET api/v1/url/resetstat/10
+        [HttpGet("resetstat/{Id}")]
+        public async Task<ActionResult<bool>> ResetStatistic(int Id)
+        {
+            var result = await _shortUrlManager.ResetStatistic(Id);
+            return result ? result : NotFound();
+        }
+
+        //GET: api/v1/url/getstat/10
+        [HttpGet("getstat/{Id}")]
+        public async Task<ActionResult<IEnumerable<ShortUrl>>> GetStatisticById(int Id,int Length)
+        {
+            IEnumerable<ShortUrl> result;
+
+            if (Length > 0)
+                result = await _shortUrlManager.GetStatistic(Id,Length);
+            else if (int.TryParse(_configuration["ShortUrlMaxLength"], out int lengthFromConfig))
+                result = await _shortUrlManager.GetStatistic(Id, lengthFromConfig);
+            else
+                result = await _shortUrlManager.GetStatistic(Id);
+
+
+            if (result is null || !result.Any())
+                return NotFound();
+
+            return result.ToList();
         }
     }
 }

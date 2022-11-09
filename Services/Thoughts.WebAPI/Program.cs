@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Thoughts.DAL.Sqlite;
 using Thoughts.DAL.SqlServer;
 using Thoughts.Interfaces;
-using Thoughts.Interfaces.Base;
 using Thoughts.Services.InSQL;
 using Thoughts.WebAPI;
 using Thoughts.WebAPI.Infrastructure.Extensions;

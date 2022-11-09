@@ -9,7 +9,7 @@ public static class Registrator
     {
         services.AddDbContext<ThoughtsDB>(opt => opt
             .UseSqlServer(
-                ConnectionString, 
+                ConnectionString,
                 o => o.MigrationsAssembly(typeof(Registrator).Assembly.FullName)));
 
         return services;

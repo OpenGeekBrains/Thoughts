@@ -5,6 +5,13 @@
     <ul>
         <li><a asp-controller="Home" asp-action="Index">Блог</a></li>
         <li><a asp-controller="Blog" asp-action="Index">Лента</a></li>
+        <li>
+            <span class="opener">Короткие ссылки</span>
+            <ul>
+                <li><a asp-controller="Url" asp-action="CreateUrl">Создать ссылку</a></li>
+                <li><a asp-controller="Url" asp-action="Statistic">Статистика</a></li>
+            </ul>
+        </li>
         <li><a href="#">Generic</a></li>
         <li><a href="#">Elements</a></li>
         <li>

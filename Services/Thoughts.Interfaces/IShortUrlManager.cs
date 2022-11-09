@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thoughts.Interfaces.Base
+using Thoughts.Domain.Base.Entities;
+
+namespace Thoughts.Interfaces
 {
     public interface IShortUrlManager
     {
@@ -57,5 +59,21 @@ namespace Thoughts.Interfaces.Base
         /// <param name="Cancel">Токен отмены</param>
         /// <returns>Результат обновления</returns>
         Task<bool> UpdateUrlAsync(int Id, string Url, CancellationToken Cancel = default);
+
+        /// <summary>
+        /// Сброс статистики использования коротких ссылок
+        /// </summary>
+        /// <param name="Id">Идентификатор короткой ссылки для которой сбрасывается статистика. 
+        /// Если идентификатор 0, то статистика сбрасывается для всех ссылок</param>
+        /// <returns>Результат сброса статистики</returns>
+        Task<bool> ResetStatistic(int Id = 0, CancellationToken Cancel = default);
+
+        /// <summary>
+        /// Получение статистики использования коротких ссылок
+        /// </summary>
+        /// <param name="Id">Идентификатор короткой ссылки для которой запрашивается статистика. 
+        /// Если идентификатор 0, то статистика запрашивается для всех ссылок</param>
+        /// <returns>Перечисление коротких ссылок</returns>
+        Task<IEnumerable<ShortUrl>> GetStatistic(int Id = 0, int Length = 0, CancellationToken Cancel = default);
     }
 }

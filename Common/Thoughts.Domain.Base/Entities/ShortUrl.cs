@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Thoughts.DAL.Entities.Base;
-
-namespace Thoughts.DAL.Entities
+namespace Thoughts.Domain.Base.Entities
 {
-    public  class ShortUrl:Entity
+    public class ShortUrl : EntityModel
     {
         /// <summary> Оригинальный URL </summary>
         [Required]

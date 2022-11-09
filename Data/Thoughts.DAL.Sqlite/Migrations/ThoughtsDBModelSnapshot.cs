@@ -173,9 +173,15 @@ namespace Thoughts.DAL.Sqlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTimeOffset>("LastReset")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Statistic")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

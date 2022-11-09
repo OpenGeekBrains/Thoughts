@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
 
+using Thoughts.Interfaces;
 using Thoughts.Interfaces.Base;
 using Thoughts.WebAPI.Clients.Base;
+using baseEntities = Thoughts.Domain.Base.Entities;
 
 namespace Thoughts.WebAPI.Clients.ShortUrl
 {
@@ -36,6 +38,12 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
             return response;
         }
 
+        public async Task<IEnumerable<baseEntities.ShortUrl>> GetStatistic(int Id = 0, int Length=0, CancellationToken Cancel = default)
+        {
+            var response = await GetAsync<IEnumerable<baseEntities.ShortUrl>>($"{WebApiControllersPath.ShortUrlV1}/getstat/{Id}?Length={Length}");
+            return response;
+        }
+
         public async Task<Uri?> GetUrlAsync(string Alias, CancellationToken Cancel = default)
         {
             var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrlV1}?Alias={Alias}");
@@ -45,6 +53,12 @@ namespace Thoughts.WebAPI.Clients.ShortUrl
         public async Task<Uri?> GetUrlByIdAsync(int Id, CancellationToken Cancel = default)
         {
             var response = await GetAsync<Uri?>($"{WebApiControllersPath.ShortUrlV1}/{Id}");
+            return response;
+        }
+
+        public async Task<bool> ResetStatistic(int Id = 0, CancellationToken Cancel = default)
+        {
+            var response = await GetAsync<bool>($"{WebApiControllersPath.ShortUrlV1}/resetstat/{Id}");
             return response;
         }
 

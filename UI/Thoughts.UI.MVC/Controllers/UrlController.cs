@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
 
-using Thoughts.Interfaces.Base;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Thoughts.UI.MVC.Controllers
 {
@@ -69,11 +69,35 @@ namespace Thoughts.UI.MVC.Controllers
             return View(shortUrlWebModel);
         }
 
-        // GET -> https://localhost:5010/url/Test
-        [Route("url/Test")]
-        public IActionResult Test()
+        // GET -> https://localhost:5010/url/CreateUrl
+        [Route("url/CreateUrl")]
+        public async Task<IActionResult> CreateUrl()
         {
             return View();
+        }
+
+        // GET -> https://localhost:5010/url/Statistic
+        [Route("url/Statistic")]
+        public async Task<IActionResult> Statistic(int Length )
+        {
+            var result = await _shortUrlManager.GetStatistic(Length: Length);
+            if (result is null || !result.Any())
+                return BadRequest();
+
+            foreach (var item in result)
+            {
+                item.Alias = Url.ActionLink(action: nameof(RedirectByAlias), controller: "url", values: new { Alias = item.Alias });
+            }
+            return View(result);
+        }
+
+        // GET -> https://localhost:5010/url/ResetStatistic/10
+        [Route("url/ResetStatistic/{Id}")]
+        public async Task<IActionResult> ResetStatistic(int Id=0)
+        {
+            await _shortUrlManager.ResetStatistic(Id);
+
+            return RedirectToAction("Statistic");
         }
     }
 }

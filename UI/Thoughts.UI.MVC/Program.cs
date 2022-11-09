@@ -1,4 +1,3 @@
-using Thoughts.Interfaces.Base;
 using Thoughts.Interfaces.Base.Repositories;
 using Thoughts.Services.Mapping;
 using Thoughts.WebAPI.Clients.ShortUrl;

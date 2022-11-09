@@ -4,13 +4,15 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using Thoughts.DAL;
-using Thoughts.Interfaces.Base;
+using Thoughts.Domain.Base.Entities;
+using Thoughts.Interfaces;
 
 namespace Thoughts.Services.InSQL
 {
@@ -52,7 +54,9 @@ namespace Thoughts.Services.InSQL
             shortUrl = new()
             {
                 OriginalUrl = url,
-                Alias = GenerateAlias(url.OriginalString)
+                Alias = GenerateAlias(url.OriginalString),
+                Statistic = 0,
+                LastReset = DateTime.UtcNow
             };
             await _db.ShortUrls.AddAsync(shortUrl, Cancel).ConfigureAwait(false);
             await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
@@ -108,6 +112,9 @@ namespace Thoughts.Services.InSQL
             if (result is null)
                 return null;
 
+            result.Statistic++;
+            await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+
             return result.OriginalUrl;
         }
         public async Task<Uri?> GetUrlByIdAsync(int Id, CancellationToken Cancel = default)
@@ -135,7 +142,7 @@ namespace Thoughts.Services.InSQL
             if (result is null)
                 return null;
 
-            if (Length>0)
+            if (Length > 0)
                 return result.Alias.Substring(0, result.Alias.Length < Length ? result.Alias.Length : Length);
 
             return result.Alias;
@@ -183,6 +190,80 @@ namespace Thoughts.Services.InSQL
             }
             return true;
         }
+
+        public async Task<bool> ResetStatistic(int Id = 0, CancellationToken Cancel = default)
+        {
+            //Если Id==0, сбрасываем статистику для всех коротких ссылок
+            if (Id == 0)
+            {
+                await _db.ShortUrls.ForEachAsync(s =>
+                {
+                    s.Statistic = 0;
+                    s.LastReset = DateTime.UtcNow;
+                });
+            }
+            else
+            {
+                var shortUrl = await _db.ShortUrls.FirstOrDefaultAsync(s => s.Id == Id).ConfigureAwait(false);
+                if (shortUrl is null)
+                    return false;
+                shortUrl.Statistic = 0;
+                shortUrl.LastReset = DateTime.UtcNow;
+            }
+
+            try
+            {
+                await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError($"Обновление статистики вызвало исключение DbUpdateException: {e.ToString()}");
+                return false;
+            }
+            catch (OperationCanceledException e)
+            {
+                _logger.LogError($"Обновление статистики вызвало исключение OperationCanceledException: {e.ToString()}");
+                return false;
+            }
+
+            return true;
+        }
+        public async Task<IEnumerable<ShortUrl>> GetStatistic(int Id = 0, int Length=0, CancellationToken Cancel = default)
+        {
+            if (Id == 0)
+            {
+                return _db.ShortUrls.Select(s => new ShortUrl
+                {
+                    Id = s.Id,
+                    Alias = Length == 0
+                        ? s.Alias
+                        : s.Alias.Substring(0, s.Alias.Length < Length
+                            ? s.Alias.Length
+                            : Length),
+                    OriginalUrl = s.OriginalUrl,
+                    LastReset = s.LastReset,
+                    Statistic = s.Statistic
+                });
+            }
+
+            var shortUrl = await _db.ShortUrls.FirstOrDefaultAsync(s => s.Id == Id);
+            if (shortUrl is null)
+                return null;
+
+            return Enumerable.Repeat(new ShortUrl
+            {
+                Id = shortUrl.Id,
+                Alias = Length == 0
+                    ? shortUrl.Alias :
+                    shortUrl.Alias.Substring(0, shortUrl.Alias.Length < Length
+                        ? shortUrl.Alias.Length
+                        : Length),
+                OriginalUrl = shortUrl.OriginalUrl,
+                LastReset = shortUrl.LastReset,
+                Statistic = shortUrl.Statistic
+            }, 1);
+        }
+
 
         /// <summary>
         /// Генерирование псевдонима ссылки (хеш MD5)
