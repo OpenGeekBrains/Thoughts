@@ -219,6 +219,15 @@ namespace Thoughts.UI.MAUI.ViewModels
             {
                 var result = default(bool);
 
+                if(SelectedFile is null)
+                {
+                    _logger?.LogWarning("{Method}: selected file is null", nameof(OnChangeActive));
+                    await Shell.Current.DisplayAlert("Ошибка!",
+                        $"Сначала выберите файл", "OK");
+
+                    return;
+                }
+
                 if (SelectedFile.Active)
                 {
                     result = await _fileManager.DeactivateFileAsync(SelectedFile.Hash);
