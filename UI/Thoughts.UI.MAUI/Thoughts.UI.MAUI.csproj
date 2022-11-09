@@ -77,6 +77,9 @@
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="Properties\launchSettings.json" />
+    <None Remove="Resources\Images\active16.png" />
+    <None Remove="Resources\Images\active32.svg" />
+    <None Remove="Resources\Images\not_active32.png" />
     <None Remove="Resources\Images\not_found64.png" />
     <None Remove="Resources\Images\refresh60.svg" />
   </ItemGroup>

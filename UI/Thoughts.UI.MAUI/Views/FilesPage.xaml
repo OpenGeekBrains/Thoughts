@@ -23,11 +23,17 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
-        <Style x:Key="ButtonsStyle" TargetType="Button">
+        <Style x:Key="LoadButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="Caption"/>
             <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             <Setter Property="IsEnabled" Value="{Binding IsNotBusy}"/>
             <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <Style x:Key="ActivateImageButton" TargetType="ImageButton">
+            <Setter Property="WidthRequest" Value="32"/>
+            <Setter Property="Padding" Value="-10"/>
+            <Setter Property="Grid.Column" Value="1"/>
         </Style>
     </ContentPage.Resources>
     <Grid ColumnDefinitions="*,Auto,*"
@@ -45,15 +51,21 @@
                                 
                                 <Grid Padding="0, 0, 0, 10"
                                       ColumnDefinitions="Auto, Auto" 
-                                      ColumnSpacing="5">
-                                    <Label FontSize="16" Text="{Binding Name}" 
+                                      ColumnSpacing="10">
+                                    <Label FontSize="18" Text="{Binding Name}" 
                                        LineBreakMode="MiddleTruncation"/>
-                                    <Label FontSize="16" Text="{Binding Active}" Grid.Column="1"/>
+                                    <ImageButton Style="{StaticResource ActivateImageButton}"
+                                                 Source="active32.svg" 
+                                                 IsVisible="{Binding Active}" />
+                                    <ImageButton Style="{StaticResource ActivateImageButton}"
+                                                 Source="not_active32.png" 
+                                                 IsVisible="{Binding NotActive}" />
 
                                 </Grid>
 
                                 <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
                                 <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
+                                
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -61,13 +73,13 @@
             </CollectionView>
         </RefreshView>
         <Button Text="Загрузить изображение"
-                Style="{StaticResource ButtonsStyle}"
+                Style="{StaticResource LoadButtonStyle}"
                 Command="{Binding UploadImageCommand}"
                 Grid.Column="0"
                 Grid.Row="1"/>
 
         <Button Text="Загрузить любой файл"
-                Style="{StaticResource ButtonsStyle}"
+                Style="{StaticResource LoadButtonStyle}"
                 Command="{Binding UploadAnyCommand}"
                 Grid.Column="2"
                 Grid.Row="1"/>

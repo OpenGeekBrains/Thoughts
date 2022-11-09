@@ -66,8 +66,19 @@ namespace Thoughts.UI.MAUI.ViewModels
         {
             get => _active;
 
-            set => Set(ref _active, value);
+            set
+            {
+                if (_active == value)
+                    return;
+
+                _active = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NotActive));
+            }
         }
+
+        public bool NotActive => !Active;
 
         #endregion
     }
