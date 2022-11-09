@@ -32,8 +32,25 @@
 
         <Style x:Key="ActivateImageButton" TargetType="ImageButton">
             <Setter Property="WidthRequest" Value="32"/>
-            <Setter Property="Padding" Value="-10"/>
+            <Setter Property="Padding" Value="-5"/> <!-- For image in center with label -->
+            <Setter Property="Aspect" Value="Center"/>
             <Setter Property="Grid.Column" Value="1"/>
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#E0E0E0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
         </Style>
     </ContentPage.Resources>
     <Grid ColumnDefinitions="*,Auto,*"
@@ -43,31 +60,38 @@
             <CollectionView Grid.ColumnSpan="3"
                             Background="Transparent"
                             ItemsSource="{Binding Files}"
-                            SelectionMode="None">
+                            SelectedItem="{Binding SelectedFile}"
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:FileViewModel">
-                        <Frame Margin="8" Padding="20">
+                        <Border Padding="15"
+                                StrokeShape="RoundRectangle 10"
+                                Margin="5">
                             <VerticalStackLayout>
-                                
                                 <Grid Padding="0, 0, 0, 10"
                                       ColumnDefinitions="Auto, Auto" 
                                       ColumnSpacing="10">
-                                    <Label FontSize="18" Text="{Binding Name}" 
-                                       LineBreakMode="MiddleTruncation"/>
+                                    <Label FontSize="18" 
+                                           Text="{Binding Name}" 
+                                           LineBreakMode="MiddleTruncation"/>
+                                    
                                     <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="active32.svg" 
+                                                 Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
                                                  IsVisible="{Binding Active}" />
+                                    
                                     <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="not_active32.png" 
+                                                 Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
                                                  IsVisible="{Binding NotActive}" />
 
                                 </Grid>
 
                                 <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
                                 <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
-                                
+
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

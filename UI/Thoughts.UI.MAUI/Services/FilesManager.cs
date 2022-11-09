@@ -82,15 +82,50 @@ namespace Thoughts.UI.MAUI.Services
             return result;
         }
 
-        #region Sync versions
+        public async Task<bool> DeleteFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
 
-        public bool UploadLimitSizeFile(FileResult file) => UploadLimitSizeFileAsync(file).Result;
+            if (string.IsNullOrEmpty(hash))
+            {
+                _logger.LogError("{Method}: Hash file is null or empty", nameof(DeleteFileAsync));
+                throw new ArgumentNullException(nameof(hash));
+            }
 
-        public bool UploadAnyFile(FileResult file) => UploadAnyFileAsync(file).Result;
+            var result = await _filesService.DeleteFileAsync(hash, token).ConfigureAwait(false);
 
-        public IEnumerable<FileViewModel> GetFiles(int page = default) => GetFilesAsync(page).Result;
+            return result;
+        }
 
-        #endregion
+        public async Task<bool> ActivateFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrEmpty(hash))
+            {
+                _logger.LogError("{Method}: Hash file is null or empty", nameof(ActivateFileAsync));
+                throw new ArgumentNullException(nameof(hash));
+            }
+
+            var result = await _filesService.ActivateFileAsync(hash, token).ConfigureAwait(false);
+
+            return result;
+        }
+
+        public async Task<bool> DeactivateFileAsync(string hash, CancellationToken token = default)
+        {
+            token.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrEmpty(hash))
+            {
+                _logger.LogError("{Method}: Hash file is null or empty", nameof(DeactivateFileAsync));
+                throw new ArgumentNullException(nameof(hash));
+            }
+
+            var result = await _filesService.DeactivateFileAsync(hash, token).ConfigureAwait(false);
+
+            return result;
+        }
 
         #endregion
     }

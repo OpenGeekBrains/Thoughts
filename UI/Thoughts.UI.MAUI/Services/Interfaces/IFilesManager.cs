@@ -10,10 +10,10 @@ namespace Thoughts.UI.MAUI.Services.Interfaces
 
         Task<IEnumerable<FileViewModel>> GetFilesAsync(int page = default, CancellationToken token = default);
 
-        IEnumerable<FileViewModel> GetFiles(int page = default);
+        Task<bool> DeleteFileAsync(string hash, CancellationToken token = default);
 
-        bool UploadLimitSizeFile(FileResult file);
+        Task<bool> ActivateFileAsync(string hash, CancellationToken token = default);
 
-        bool UploadAnyFile(FileResult file);
+        Task<bool> DeactivateFileAsync(string hash, CancellationToken token = default);
     }
 }

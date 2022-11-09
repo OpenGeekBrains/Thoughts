@@ -40,7 +40,16 @@ namespace Thoughts.UI.MAUI.ViewModels
             get => _isRefresh;
 
             set => Set(ref _isRefresh, value);
-        } 
+        }
+
+        private FileViewModel _selectedFile;
+
+        public FileViewModel SelectedFile
+        {
+            get => _selectedFile;
+
+            set => Set(ref _selectedFile, value);
+        }
 
         #endregion
 
@@ -194,7 +203,46 @@ namespace Thoughts.UI.MAUI.ViewModels
                 IsBusy = false;
                 IsRefreshing = false;
             }
-        } 
+        }
+
+        #endregion
+
+        #region Change file active status
+
+        ICommand _changeFileActiveCommand;
+
+        public ICommand ChangeFileActiveCommand => _changeFileActiveCommand ??= new Command(OnChangeActive);
+
+        private async void OnChangeActive()
+        {
+            try
+            {
+                var result = default(bool);
+
+                if (SelectedFile.Active)
+                {
+                    result = await _fileManager.DeactivateFileAsync(SelectedFile.Hash);
+
+                    SelectedFile.Active = !result;
+
+                    return;
+                }
+
+                result = await _fileManager.ActivateFileAsync(SelectedFile.Hash);
+
+                SelectedFile.Active = result;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "{Method}: {message}", nameof(OnChangeActive), ex.Message);
+                await Shell.Current.DisplayAlert("Error!",
+                    $"Unable to get files: {ex.Message}", "OK");
+            }
+            finally
+            {
+                SelectedFile = null;
+            }
+        }
 
         #endregion
 
