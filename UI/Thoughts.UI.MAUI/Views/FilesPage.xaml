@@ -26,8 +26,8 @@
         <Style x:Key="LoadButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="Caption"/>
             <Setter Property="VerticalOptions" Value="EndAndExpand"/>
-            <Setter Property="IsEnabled" Value="{Binding IsNotBusy}"/>
             <Setter Property="Margin" Value="10"/>
+            <Setter Property="IsEnabled" Value="{Binding IsNotBusy}"/>
         </Style>
 
         <Style x:Key="ActivateImageButton" TargetType="ImageButton">
@@ -56,7 +56,9 @@
     <Grid ColumnDefinitions="*,Auto,*"
           RowDefinitions="*, Auto"
           ColumnSpacing="5">
-        <RefreshView Grid.ColumnSpan="3">
+        <RefreshView Grid.ColumnSpan="3"
+                     Command="{Binding GetFilesPageCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
             <CollectionView Grid.ColumnSpan="3"
                             Background="Transparent"
                             ItemsSource="{Binding Files}"
@@ -69,7 +71,7 @@
                                 Margin="5">
                             <VerticalStackLayout>
                                 <Grid Padding="0, 0, 0, 10"
-                                      ColumnDefinitions="Auto, Auto" 
+                                      ColumnDefinitions="*, Auto" 
                                       ColumnSpacing="10">
                                     <Label FontSize="18" 
                                            Text="{Binding Name}" 
@@ -78,6 +80,7 @@
                                     <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="active32.svg" 
                                                  Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
+                                                 HorizontalOptions="Start"
                                                  IsVisible="{Binding Active}" />
                                     
                                     <ImageButton Style="{StaticResource ActivateImageButton}"

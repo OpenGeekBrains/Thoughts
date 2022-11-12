@@ -47,12 +47,12 @@ namespace Thoughts.UI.MAUI.Services.Extensions
                 .AddTypedClient<IFilesService, FilesClient>()
                 .ConfigurePrimaryHttpMessageHandler(provider => provider.GetHttpsMessageHandler());
 #else
-            webAPI = settings.DeviceWebAPI;
+            webAPI = settings.WebApi.DeviceWebAPI;
             services.AddHttpClient("WebAPI", client => client.BaseAddress = new Uri(webAPI))
                 .AddTypedClient<IWeatherService, WeatherClient>()
                 .AddTypedClient<IBlogsService, BlogsClient>();
 
-            mvcWebApi = settings.DeviceMvcWebAPI;
+            mvcWebApi = settings.WebApi.DeviceMvcWebAPI;
             services.AddHttpClient("MvcWebAPI", client => client.BaseAddress = new Uri(mvcWebApi))
                 .AddTypedClient<IFilesService, FilesClient>();
 #endif
