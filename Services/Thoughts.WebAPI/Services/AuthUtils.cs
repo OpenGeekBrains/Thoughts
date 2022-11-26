@@ -51,7 +51,6 @@ namespace Thoughts.WebAPI.Services
             SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
 
             return jwtSecurityTokenHandler.WriteToken(securityToken);
-
         }
     }
 }
