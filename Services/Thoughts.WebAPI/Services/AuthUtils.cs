@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 
+using DTO.Identity;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,7 +21,7 @@ namespace Thoughts.WebAPI.Services
         {
             _configuration = configuration;
         }
-        public string CreateSessionToken(IdentUser user, IList<string> roles)
+        public TokenResponse CreateSessionToken(IdentUser user, IList<string> roles)
         {
             var config = _configuration.GetSection("SecretTokenKey");
             _secretKey = config["Key"];
@@ -50,7 +52,25 @@ namespace Thoughts.WebAPI.Services
 
             SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
 
-            return jwtSecurityTokenHandler.WriteToken(securityToken);
+            var tokenResponse = new TokenResponse();
+
+            tokenResponse.Token = jwtSecurityTokenHandler.WriteToken(securityToken);
+
+            var securityRefreshTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(claims.ToArray()),
+
+                Expires = DateTime.Now.AddMinutes(360),
+
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            SecurityToken securityRefreshToken = jwtSecurityTokenHandler.CreateToken(securityRefreshTokenDescriptor);
+
+            tokenResponse.RefreshToken = jwtSecurityTokenHandler.WriteToken(securityRefreshToken);
+
+            return tokenResponse;
         }
     }
 }
