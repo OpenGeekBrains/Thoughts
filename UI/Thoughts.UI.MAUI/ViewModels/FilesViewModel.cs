@@ -24,13 +24,22 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         public ObservableCollection<FileViewModel> Files { get; } = new();
 
-        private int _pageNum;
+        private int _currentPageNum;
 
-        public int PageNum
+        public int CurrentPageNum
         {
-            get => _pageNum;
+            get => _currentPageNum;
 
-            set => Set(ref _pageNum, value);
+            set => Set(ref _currentPageNum, value);
+        }
+
+        private int _totalPagesCount;
+
+        public int TotalPagesCount
+        {
+            get => _totalPagesCount;
+
+            set => Set(ref _totalPagesCount, value);
         }
 
         private bool _isRefresh;
@@ -213,13 +222,15 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         public ICommand ChangeFileActiveCommand => _changeFileActiveCommand ??= new Command(OnChangeActive);
 
-        private async void OnChangeActive()
+        private async void OnChangeActive(object obj)
         {
             try
             {
                 var result = default(bool);
 
-                if(SelectedFile is null)
+                var file = obj as FileViewModel;
+
+                if (file is null)
                 {
                     _logger?.LogWarning("{Method}: selected file is null", nameof(OnChangeActive));
                     await Shell.Current.DisplayAlert("Ошибка!",
@@ -228,18 +239,18 @@ namespace Thoughts.UI.MAUI.ViewModels
                     return;
                 }
 
-                if (SelectedFile.Active)
+                if (file.Active)
                 {
-                    result = await _fileManager.DeactivateFileAsync(SelectedFile.Hash);
+                    result = await _fileManager.DeactivateFileAsync(file.Hash);
 
-                    SelectedFile.Active = !result;
+                    file.Active = !result;
 
                     return;
                 }
 
-                result = await _fileManager.ActivateFileAsync(SelectedFile.Hash);
+                result = await _fileManager.ActivateFileAsync(file.Hash);
 
-                SelectedFile.Active = result;
+                file.Active = result;
             }
             catch (Exception ex)
             {

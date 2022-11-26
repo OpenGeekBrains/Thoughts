@@ -12,12 +12,11 @@
             Command="{Binding GetFilesPageCommand}"/>
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Reload" 
-                     Command="{Binding GetFilesPageCommand}"
-                     IsEnabled="{Binding IsNotBusy}">
+        <ToolbarItem Text="Upload" 
+                     Command="{Binding UploadAnyCommand}">
             <ToolbarItem.IconImageSource>
                 <OnPlatform x:TypeArguments="ImageSource">
-                    <On Platform="Android, WinUI, iOS" Value="refresh60.svg" />
+                    <On Platform="Android, WinUI, iOS" Value="add_new_48.png" />
                 </OnPlatform>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
@@ -59,8 +58,7 @@
         <RefreshView Grid.ColumnSpan="3"
                      Command="{Binding GetFilesPageCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView Grid.ColumnSpan="3"
-                            Background="Transparent"
+            <CollectionView Background="Transparent"
                             ItemsSource="{Binding Files}"
                             SelectedItem="{Binding SelectedFile}"
                             SelectionMode="Single">
@@ -80,14 +78,15 @@
                                     <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="active32.svg" 
                                                  Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
+                                                 CommandParameter="{Binding .}"
                                                  HorizontalOptions="Start"
                                                  IsVisible="{Binding Active}" />
                                     
                                     <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="not_active32.png" 
                                                  Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
+                                                 CommandParameter="{Binding .}"
                                                  IsVisible="{Binding NotActive}" />
-
                                 </Grid>
 
                                 <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
@@ -99,13 +98,20 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-        <Button Text="Загрузить изображение"
+
+        <Button Text="Пред."
                 Style="{StaticResource LoadButtonStyle}"
                 Command="{Binding UploadImageCommand}"
                 Grid.Column="0"
                 Grid.Row="1"/>
 
-        <Button Text="Загрузить любой файл"
+        <Label Text="{Binding PageNum, StringFormat='{0} стр.'}"
+               FontSize="20"
+               Grid.Column="1"
+               Grid.Row="1"
+               VerticalOptions="Center"/>
+
+        <Button Text="След."
                 Style="{StaticResource LoadButtonStyle}"
                 Command="{Binding UploadAnyCommand}"
                 Grid.Column="2"

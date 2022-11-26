@@ -79,6 +79,8 @@
     <None Remove="Properties\launchSettings.json" />
     <None Remove="Resources\Images\active16.png" />
     <None Remove="Resources\Images\active32.svg" />
+    <None Remove="Resources\Images\add_new_24.png" />
+    <None Remove="Resources\Images\add_new_48.png" />
     <None Remove="Resources\Images\not_active32.png" />
     <None Remove="Resources\Images\not_found64.png" />
     <None Remove="Resources\Images\refresh60.svg" />
@@ -113,6 +115,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\FilesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\LoadFilesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\PostDetailsPage.xaml">
