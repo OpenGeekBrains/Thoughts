@@ -11,6 +11,10 @@
             EventName="NavigatedTo"
             Command="{Binding GetFilesPageCommand}"
             CommandParameter="{Binding CurrentPageNum}"/>
+
+        <toolkit:EventToCommandBehavior 
+            EventName="NavigatedFrom"
+            Command="{Binding ResetDataCommand}"/>
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Upload" 

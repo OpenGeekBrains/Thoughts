@@ -278,6 +278,21 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         #endregion
 
+        #region Reset data
+
+        ICommand _resetDataCommand;
+
+        public ICommand ResetDataCommand => _resetDataCommand ??= new Command(OnResetDataAsync);
+
+        private void OnResetDataAsync()
+        {
+            if (Files.Any()) Files.Clear();
+            CurrentPageNum = 1;
+            TotalPages = 0;
+        }
+
+        #endregion
+
         #region Next page command
 
 
