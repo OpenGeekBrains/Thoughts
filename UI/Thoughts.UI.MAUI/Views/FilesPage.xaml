@@ -9,7 +9,8 @@
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior 
             EventName="NavigatedTo"
-            Command="{Binding GetFilesPageCommand}"/>
+            Command="{Binding GetFilesPageCommand}"
+            CommandParameter="{Binding CurrentPageNum}"/>
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Upload" 
@@ -22,11 +23,10 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
-        <Style x:Key="LoadButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="Caption"/>
+        <Style x:Key="NavigateButton" TargetType="Button">
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="IsEnabled" Value="{Binding IsNotBusy}"/>
         </Style>
 
         <Style x:Key="ActivateImageButton" TargetType="ImageButton">
@@ -52,21 +52,20 @@
             </Setter>
         </Style>
     </ContentPage.Resources>
-    <Grid ColumnDefinitions="*,Auto,*"
+    <Grid ColumnDefinitions="Auto,*,Auto"
           RowDefinitions="*, Auto"
           ColumnSpacing="5">
         <RefreshView Grid.ColumnSpan="3"
                      Command="{Binding GetFilesPageCommand}"
+                     CommandParameter="{Binding CurrentPageNum}"
                      IsRefreshing="{Binding IsRefreshing}">
             <CollectionView Background="Transparent"
                             ItemsSource="{Binding Files}"
-                            SelectedItem="{Binding SelectedFile}"
-                            SelectionMode="Single">
+                            SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:FileViewModel">
-                        <Border Padding="15"
-                                StrokeShape="RoundRectangle 10"
-                                Margin="5">
+                        <Frame Padding="15"
+                               Margin="5">
                             <VerticalStackLayout>
                                 <Grid Padding="0, 0, 0, 10"
                                       ColumnDefinitions="*, Auto" 
@@ -93,27 +92,32 @@
                                 <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
 
                             </VerticalStackLayout>
-                        </Border>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
 
         <Button Text="Пред."
-                Style="{StaticResource LoadButtonStyle}"
-                Command="{Binding UploadImageCommand}"
+                Style="{StaticResource NavigateButton}"
+                IsVisible="{Binding NotFirstPage}"
+                Command="{Binding GetFilesPageCommand}"
+                CommandParameter="{Binding PreviousPageNum}"
                 Grid.Column="0"
                 Grid.Row="1"/>
 
-        <Label Text="{Binding PageNum, StringFormat='{0} стр.'}"
+        <!--<Label Text="{Binding CurrentPageNum, StringFormat='{0} стр.'}"
                FontSize="20"
                Grid.Column="1"
                Grid.Row="1"
-               VerticalOptions="Center"/>
-
+               VerticalOptions="Center"
+               HorizontalOptions="CenterAndExpand"/> -->
+        
         <Button Text="След."
-                Style="{StaticResource LoadButtonStyle}"
-                Command="{Binding UploadAnyCommand}"
+                Style="{StaticResource NavigateButton}"
+                IsVisible="{Binding NotLastPage}"
+                Command="{Binding GetFilesPageCommand}"
+                CommandParameter="{Binding NextPageNum}"
                 Grid.Column="2"
                 Grid.Row="1"/>
 

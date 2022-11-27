@@ -58,23 +58,31 @@ namespace Thoughts.WebAPI.Clients.Files
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)>> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default)
+        public async Task<(IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> Files, int TotalCount)> GetFilesAsync(
+            FilesFilter filter = default,
+            CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
-            _logger.LogDebug("{Method}: get files request for page = {pageNum} with pageSize = {pageSize}", nameof(GetFilesAsync), page, pageSize);
+            _logger.LogDebug("{Method}: get files request for page = {pageNum} with pageSize = {pageSize}", nameof(GetFilesAsync), filter?.Page, filter?.PageSize);
 
             var jsonElements = await _httpClient
                 .GetFromJsonAsync<IEnumerable<JsonElement>>($"{WebApiControllersPath.FileUrl}/getallfileinfo", token)
                 .ConfigureAwait(false);
 
-            var pageJsonElements = jsonElements
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize);
+            var totalCount = jsonElements.Count();
 
-            var result = FromJsonToFiles(pageJsonElements);
+            //для сортировки преобразуем сразу все файлы в нужный формат, т.к. от хоста передается анонимный класс
+            var pageFiles = FromJsonToFiles(jsonElements);
+            
+            if (filter is { Page: > 0 and var pageNumber, PageSize: > 0 and var pageSize})
+            {
+                pageFiles = OrderBy(jsonElements, filter.OrderByType)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize);
+            }
 
-            return result;
+            return (pageFiles, totalCount);
         }
 
         public async Task<bool> DeleteFileAsync(string hash, CancellationToken token = default)
@@ -132,8 +140,8 @@ namespace Thoughts.WebAPI.Clients.Files
         public bool UploadAnyFile(Stream stream, string fileName, string contentType) =>
             UploadAnyFileAsync(stream, fileName, contentType).Result;
 
-        public IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page, int pageSize) => 
-            GetFilesAsync(page, pageSize).Result;
+        public (IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> Files, int TotalCount) GetFiles(FilesFilter filter = default) =>
+            GetFilesAsync(filter).Result;
 
         #endregion
 
@@ -141,7 +149,7 @@ namespace Thoughts.WebAPI.Clients.Files
 
         private IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> FromJsonToFiles(IEnumerable<JsonElement> jsonElements, CancellationToken token = default)
         {
-            if (jsonElements is null) 
+            if (jsonElements is null)
                 throw new ArgumentNullException(nameof(jsonElements));
 
             var result = jsonElements.Select(je => GetFileInfo(je));
@@ -186,6 +194,44 @@ namespace Thoughts.WebAPI.Clients.Files
 
             return (hash, name, counter, size, created, active);
         }
+
+        private IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> OrderBy(
+            IEnumerable<JsonElement> jsonElements,
+            OrderByType orderByType) => 
+            orderByType switch
+            {
+                OrderByType.Default => FromJsonToFiles(jsonElements),
+                OrderByType.BySize => FromJsonToFiles(jsonElements).OrderBy(item => item.Size),
+                OrderByType.BySizeDesc => FromJsonToFiles(jsonElements).OrderByDescending(item => item.Size),
+                OrderByType.ByName => FromJsonToFiles(jsonElements).OrderBy(item => item.Name),
+                OrderByType.ByNameDesc => FromJsonToFiles(jsonElements).OrderByDescending(item => item.Name),
+                OrderByType.ByCreatedTime => FromJsonToFiles(jsonElements).OrderBy(item => item.Created),
+                OrderByType.ByCreatedTimeDesc => FromJsonToFiles(jsonElements).OrderByDescending(item => item.Created),
+                OrderByType.ByCountLinks => FromJsonToFiles(jsonElements).OrderBy(item => item.Counter),
+                OrderByType.ByCountLinksDesc => FromJsonToFiles(jsonElements).OrderByDescending(item => item.Counter),
+                OrderByType.ByHash => FromJsonToFiles(jsonElements).OrderBy(item => item.Hash),
+                OrderByType.ByHashDesc => FromJsonToFiles(jsonElements).OrderByDescending(item => item.Hash),
+                _ => FromJsonToFiles(jsonElements),
+            };
+
+        private IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> OrderBy(
+            IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> elements,
+            OrderByType orderByType) =>
+            orderByType switch
+            {
+                OrderByType.Default => elements,
+                OrderByType.BySize => elements.OrderBy(item => item.Size),
+                OrderByType.BySizeDesc => elements.OrderByDescending(item => item.Size),
+                OrderByType.ByName => elements.OrderBy(item => item.Name),
+                OrderByType.ByNameDesc => elements.OrderByDescending(item => item.Name),
+                OrderByType.ByCreatedTime => elements.OrderBy(item => item.Created),
+                OrderByType.ByCreatedTimeDesc => elements.OrderByDescending(item => item.Created),
+                OrderByType.ByCountLinks => elements.OrderBy(item => item.Counter),
+                OrderByType.ByCountLinksDesc => elements.OrderByDescending(item => item.Counter),
+                OrderByType.ByHash => elements.OrderBy(item => item.Hash),
+                OrderByType.ByHashDesc => elements.OrderByDescending(item => item.Hash),
+                _ => elements,
+            };
 
         #endregion
     }

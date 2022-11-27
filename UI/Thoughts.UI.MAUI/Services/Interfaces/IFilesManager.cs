@@ -8,7 +8,7 @@ namespace Thoughts.UI.MAUI.Services.Interfaces
 
         Task<bool> UploadAnyFileAsync(FileResult file, CancellationToken token = default);
 
-        Task<IEnumerable<FileViewModel>> GetFilesAsync(int page = default, CancellationToken token = default);
+        Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(int page = 1, CancellationToken token = default);
 
         Task<bool> DeleteFileAsync(string hash, CancellationToken token = default);
 

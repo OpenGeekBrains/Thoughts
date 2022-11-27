@@ -57,17 +57,24 @@ namespace Thoughts.UI.MAUI.Services
             return result;
         }
 
-        public async Task<IEnumerable<FileViewModel>> GetFilesAsync(int page = default, CancellationToken token = default)
+        public async Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(int page = 1, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
             if (page < 1)
             {
-                _logger.LogWarning("{Method}: Invalid page value = {value}. Change page value on \"1\"", nameof(GetFilesAsync), page);
+                _logger.LogWarning("{Method}: Page value can't be less than \"1\". Changing page value on \"1\"", nameof(GetFilesAsync));
                 page = 1;
             }
 
-            var files = await _filesService.GetFilesAsync(page, _pageSettings.PageSize, token).ConfigureAwait(false);
+            var fileFilter = new FilesFilter 
+            { 
+                Page = page, 
+                PageSize = _pageSettings.PageSize,
+                OrderByType = OrderByType.ByCreatedTimeDesc
+            };
+
+            var (files, totalCount) = await _filesService.GetFilesAsync(fileFilter, token).ConfigureAwait(false);
 
             var result = files.Select(f => new FileViewModel
             {
@@ -79,7 +86,9 @@ namespace Thoughts.UI.MAUI.Services
                 Active = f.Active
             });
 
-            return result;
+            var totalPages = (int) Math.Ceiling((double) totalCount / _pageSettings.PageSize);
+
+            return (result, totalPages);
         }
 
         public async Task<bool> DeleteFileAsync(string hash, CancellationToken token = default)

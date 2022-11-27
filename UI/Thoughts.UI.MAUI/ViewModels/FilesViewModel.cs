@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 using Microsoft.Extensions.Logging;
@@ -30,17 +31,44 @@ namespace Thoughts.UI.MAUI.ViewModels
         {
             get => _currentPageNum;
 
-            set => Set(ref _currentPageNum, value);
+            set
+            {
+                if (_currentPageNum == value) return;
+
+                _currentPageNum = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NextPageNum));
+                OnPropertyChanged(nameof(PreviousPageNum));
+                OnPropertyChanged(nameof(NotLastPage));
+                OnPropertyChanged(nameof(NotFirstPage));
+            }
         }
 
-        private int _totalPagesCount;
+        public int NextPageNum => CurrentPageNum + 1;
 
-        public int TotalPagesCount
+        public int PreviousPageNum => CurrentPageNum - 1;
+
+        private int _totalPages;
+
+        public int TotalPages
         {
-            get => _totalPagesCount;
+            get => _totalPages;
 
-            set => Set(ref _totalPagesCount, value);
+            set
+            {
+                if (_totalPages == value) return;
+
+                _totalPages = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NotLastPage));
+            }
         }
+
+        public bool NotLastPage => CurrentPageNum < TotalPages;
+
+        public bool NotFirstPage => CurrentPageNum > 1;
 
         private bool _isRefresh;
 
@@ -49,15 +77,6 @@ namespace Thoughts.UI.MAUI.ViewModels
             get => _isRefresh;
 
             set => Set(ref _isRefresh, value);
-        }
-
-        private FileViewModel _selectedFile;
-
-        public FileViewModel SelectedFile
-        {
-            get => _selectedFile;
-
-            set => Set(ref _selectedFile, value);
         }
 
         #endregion
@@ -110,6 +129,12 @@ namespace Thoughts.UI.MAUI.ViewModels
 
                 _logger?.LogInformation("{Method}: upload is {success}", nameof(OnUploadImageAsync), result);
 
+                if (result)
+                {
+                    _logger?.LogInformation("{Method}: reload page files and total pages", nameof(OnUploadImageAsync));
+                    await UpdatePageInfoAsync(CurrentPageNum);
+                }
+
                 var resultMsg = result ? "успешно" : "с ошибкой";
 
                 await Shell.Current.DisplayAlert("Загрузка файла",
@@ -118,8 +143,8 @@ namespace Thoughts.UI.MAUI.ViewModels
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "{Method}: {message}", nameof(OnUploadImageAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to upload file: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось загрузить файл: {ex.Message}", "OK");
             }
             finally
             {
@@ -155,6 +180,12 @@ namespace Thoughts.UI.MAUI.ViewModels
 
                 _logger?.LogInformation("{Method}: upload is {success}", nameof(OnUploadAnyAsync), result);
 
+                if (result)
+                {
+                    _logger?.LogInformation("{Method}: reload page files and total pages", nameof(OnUploadImageAsync));
+                    await UpdatePageInfoAsync(CurrentPageNum);
+                }
+
                 var resultMsg = result ? "успешно" : "с ошибкой";
 
                 await Shell.Current.DisplayAlert("Загрузка файла",
@@ -163,8 +194,8 @@ namespace Thoughts.UI.MAUI.ViewModels
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "{Method}: {message}", nameof(OnUploadAnyAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to upload file: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось загрузить файл: {ex.Message}", "OK");
             }
             finally
             {
@@ -181,31 +212,25 @@ namespace Thoughts.UI.MAUI.ViewModels
         public ICommand GetFilesPageCommand => _getFilesPageCommand
             ??= new Command(GetFilesPageAsync);
 
-        private async void GetFilesPageAsync()
+        private async void GetFilesPageAsync(object pageNum)
         {
             if (IsBusy) return;
 
             try
             {
+                var page = (int) pageNum;
+
                 if (!await CheckInternetConnectionAsync()) return;
 
                 IsBusy = true;
 
-                var files = await _fileManager.GetFilesAsync();
-
-                if (Files.Count > 1)
-                    Files.Clear();
-
-                foreach (var file in files)
-                {
-                    Files.Add(file);
-                }
+                await UpdatePageInfoAsync(page);
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "{Method}: {message}", nameof(GetFilesPageAsync), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to get files: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось обновить страницу файлов: {ex.Message}", "OK");
             }
             finally
             {
@@ -230,21 +255,12 @@ namespace Thoughts.UI.MAUI.ViewModels
 
                 var file = obj as FileViewModel;
 
-                if (file is null)
-                {
-                    _logger?.LogWarning("{Method}: selected file is null", nameof(OnChangeActive));
-                    await Shell.Current.DisplayAlert("Ошибка!",
-                        $"Сначала выберите файл", "OK");
-
-                    return;
-                }
+                if (file is null) throw new ArgumentNullException($"{nameof(file)}");
 
                 if (file.Active)
                 {
                     result = await _fileManager.DeactivateFileAsync(file.Hash);
-
                     file.Active = !result;
-
                     return;
                 }
 
@@ -255,14 +271,20 @@ namespace Thoughts.UI.MAUI.ViewModels
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "{Method}: {message}", nameof(OnChangeActive), ex.Message);
-                await Shell.Current.DisplayAlert("Error!",
-                    $"Unable to get files: {ex.Message}", "OK");
-            }
-            finally
-            {
-                SelectedFile = null;
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось обновить статус активации файла: {ex.Message}", "OK");
             }
         }
+
+        #endregion
+
+        #region Next page command
+
+
+        #endregion
+
+        #region Previous page command
+
 
         #endregion
 
@@ -316,6 +338,32 @@ namespace Thoughts.UI.MAUI.ViewModels
             return permissionStatus != PermissionStatus.Denied
                && permissionStatus != PermissionStatus.Disabled
                && permissionStatus != PermissionStatus.Unknown;
+        }
+
+        private async Task UpdatePageInfoAsync(int pageNum)
+        {
+            try
+            {
+                var (files, totalPages) = await _fileManager.GetFilesAsync(pageNum);
+
+                if (Files.Any())
+                    Files.Clear();
+
+                foreach (var file in files)
+                {
+                    Files.Add(file);
+                }
+
+                var currentPageNum = TotalPages > totalPages ? totalPages : pageNum;
+                TotalPages = totalPages;
+                CurrentPageNum = currentPageNum == 0 ? 1 : currentPageNum;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "{Method}: {message}", nameof(UpdatePageInfoAsync), ex.Message);
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось обновить страницу файлов: {ex.Message}", "OK");
+            }
         }
 
         #endregion

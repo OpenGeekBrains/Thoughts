@@ -6,7 +6,7 @@
 
         Task<bool> UploadAnyFileAsync(Stream stream, string fileName, string contentType, CancellationToken token = default);
 
-        Task<IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)>> GetFilesAsync(int page = default, int pageSize = default, CancellationToken token = default);
+        Task<(IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> Files, int TotalCount)> GetFilesAsync(FilesFilter filter = default, CancellationToken token = default);
 
         Task<bool> DeleteFileAsync(string hash, CancellationToken token = default);
 
@@ -24,6 +24,6 @@
 
         bool UploadAnyFile(Stream stream, string fileName, string contentType); 
 
-        IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> GetFiles(int page = default, int pageSize = default);
+        (IEnumerable<(string Hash, string Name, int Counter, long Size, DateTimeOffset Created, bool Active)> Files, int TotalCount) GetFiles(FilesFilter filter = default);
     }
 }
