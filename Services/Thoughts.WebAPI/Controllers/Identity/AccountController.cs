@@ -99,6 +99,7 @@ namespace Thoughts.WebAPI.Controllers.Identity
                         _logger.LogInformation("Авторизация пользователя {0} успешна", loginUserDTO.Login);
                         var sessionToken = _authUtils.CreateSessionToken(user, roles);
                         Response.Headers.Add("Authorization", sessionToken.Token);
+                        Response.Headers.Add("RefreshToken", sessionToken.RefreshToken);
                         return Ok();
                     }
                 }

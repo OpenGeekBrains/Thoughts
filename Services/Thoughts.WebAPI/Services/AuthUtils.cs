@@ -16,6 +16,8 @@ namespace Thoughts.WebAPI.Services
     {
         private readonly IConfiguration _configuration;
         private string _secretKey;
+        private double _accessTokenTimeMinute;
+        private double _refreshTokenTimeMinute;
 
         public AuthUtils(IConfiguration configuration)
         {
@@ -23,8 +25,11 @@ namespace Thoughts.WebAPI.Services
         }
         public TokenResponse CreateSessionToken(IdentUser user, IList<string> roles)
         {
+            double resultParse;
             var config = _configuration.GetSection("SecretTokenKey");
             _secretKey = config["Key"];
+            _accessTokenTimeMinute = double.TryParse(config["AccessTokenTimeMinute"], out resultParse) ? resultParse : 15;
+            _refreshTokenTimeMinute = double.TryParse(config["RefreshTokenTimeMinute"], out resultParse) ? resultParse : 360;
 
             JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -44,7 +49,7 @@ namespace Thoughts.WebAPI.Services
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
 
-                Expires = DateTime.Now.AddMinutes(15),
+                Expires = DateTime.Now.AddMinutes(_accessTokenTimeMinute),
 
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -60,7 +65,7 @@ namespace Thoughts.WebAPI.Services
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
 
-                Expires = DateTime.Now.AddMinutes(360),
+                Expires = DateTime.Now.AddMinutes(_refreshTokenTimeMinute),
 
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
