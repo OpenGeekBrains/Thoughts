@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DTO\DTO.csproj" />
     <ProjectReference Include="..\Thoughts.DAL.Entities\Thoughts.DAL.Entities.csproj" />
   </ItemGroup>
 

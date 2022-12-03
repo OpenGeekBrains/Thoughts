@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Thoughts.UI.WPF.Views"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="600"
-      DataContext="{Binding AccountsModel, Source={StaticResource Locator}}"
-      x:Name="AccountWindows"
+      DataContext="{Binding AccountsModel, Source={StaticResource Locator}}" 
+      x:Name="AccountWindows"       
       >
     
     <Grid Background="Transparent">
@@ -63,7 +63,6 @@
                 <Button Content="Logout" Width="140" Command="{Binding Logout}"/>
                 <Label Content="Подсказа для теста"/>
                 <TextBox Text="Admin AdPAss_123" Width="140"/>
-                
             </WrapPanel>
         </StackPanel>
         <DockPanel Grid.Column="1" Margin="10 0 5 10">

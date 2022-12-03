@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 
+using DTO.Identity;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,15 +16,20 @@ namespace Thoughts.WebAPI.Services
     {
         private readonly IConfiguration _configuration;
         private string _secretKey;
+        private double _accessTokenTimeMinute;
+        private double _refreshTokenTimeMinute;
 
         public AuthUtils(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public string CreateSessionToken(IdentUser user, IList<string> roles)
+        public TokenResponse CreateSessionToken(IdentUser user, IList<string> roles)
         {
+            double resultParse;
             var config = _configuration.GetSection("SecretTokenKey");
             _secretKey = config["Key"];
+            _accessTokenTimeMinute = double.TryParse(config["AccessTokenTimeMinute"], out resultParse) ? resultParse : 15;
+            _refreshTokenTimeMinute = double.TryParse(config["RefreshTokenTimeMinute"], out resultParse) ? resultParse : 360;
 
             JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -42,7 +49,7 @@ namespace Thoughts.WebAPI.Services
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
 
-                Expires = DateTime.Now.AddMinutes(15),
+                Expires = DateTime.Now.AddMinutes(_accessTokenTimeMinute),
 
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -50,8 +57,25 @@ namespace Thoughts.WebAPI.Services
 
             SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
 
-            return jwtSecurityTokenHandler.WriteToken(securityToken);
+            var tokenResponse = new TokenResponse();
 
+            tokenResponse.Token = jwtSecurityTokenHandler.WriteToken(securityToken);
+
+            var securityRefreshTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(claims.ToArray()),
+
+                Expires = DateTime.Now.AddMinutes(_refreshTokenTimeMinute),
+
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            SecurityToken securityRefreshToken = jwtSecurityTokenHandler.CreateToken(securityRefreshTokenDescriptor);
+
+            tokenResponse.RefreshToken = jwtSecurityTokenHandler.WriteToken(securityRefreshToken);
+
+            return tokenResponse;
         }
     }
 }

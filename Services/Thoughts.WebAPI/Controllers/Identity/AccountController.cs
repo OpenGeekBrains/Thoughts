@@ -1,4 +1,6 @@
-﻿using DTO.Identity;
+﻿using System.IdentityModel.Tokens.Jwt;
+
+using DTO.Identity;
 using DTO.Thoughts.Identity;
 
 using Microsoft.AspNetCore.Authorization;
@@ -98,7 +100,8 @@ namespace Thoughts.WebAPI.Controllers.Identity
                     {
                         _logger.LogInformation("Авторизация пользователя {0} успешна", loginUserDTO.Login);
                         var sessionToken = _authUtils.CreateSessionToken(user, roles);
-                        Response.Headers.Add("Authorization", sessionToken);
+                        Response.Headers.Add("Authorization", sessionToken.Token);
+                        Response.Headers.Add("RefreshToken", sessionToken.RefreshToken);
                         return Ok();
                     }
                 }
@@ -114,6 +117,44 @@ namespace Thoughts.WebAPI.Controllers.Identity
             _logger.LogInformation("Авторизовать пользователя {0} не удалось", loginUserDTO.Login);
 
             return BadRequest("Авторизовать пользователя не удалось");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetRefreshToken")]
+        public async Task<IActionResult> GetRefreshTokenAsync()
+        {
+            try
+            {
+                var headersAuthorization = (string)_contextAccessor.HttpContext.Request.Headers.Authorization;
+                var jwtToken = headersAuthorization.Remove(0, 7);
+                var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+
+                //var decodeRefreshJWT = jwtSecurityTokenHandler.ReadJwtToken(RefreshTokenDTO.RefreshToken);
+                var decodeRefreshJWT = jwtSecurityTokenHandler.ReadJwtToken(jwtToken);
+                var login = (string)decodeRefreshJWT.Payload.First(x => x.Key.Equals("unique_name")).Value;
+
+                var user = await _userManager.FindByNameAsync(login);
+                if (user is not null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    var sessionToken = _authUtils.CreateSessionToken(user, roles);
+                    Response.Headers.Add("Authorization", sessionToken.Token);
+                    Response.Headers.Add("RefreshToken", sessionToken.RefreshToken);
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (_logger.IsEnabled(LogLevel.Error))
+                {
+                    _logger.LogError(ex, "Не удалось обновить токен пользователя");
+                }
+            }
+
+            _logger.LogInformation("Не удалось обновить токен пользователя");
+
+            return BadRequest("Не удалось обновить токен пользователя");
         }
 
         [AllowAnonymous]

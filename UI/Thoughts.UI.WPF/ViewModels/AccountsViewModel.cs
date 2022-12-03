@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
+
 using System.Windows;
 using System.Windows.Controls;
+
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -16,19 +18,20 @@ namespace Thoughts.UI.WPF.ViewModels
 {
     public class AccountsViewModel : ViewModel
     {
+
+        private static AccountClient _account_client;
+
         public AccountsViewModel(AccountClient account_client)
         {
             _account_client = account_client;
         }
 
-        private static AccountClient _account_client;
 
         private ObservableCollection<IdentUser> _identUserCollection = new ObservableCollection<IdentUser>();
         private ObservableCollection<IdentRole> _identRoleCollection = new ObservableCollection<IdentRole>();
         private string _title;
         private string _userName;      // Admin  // AdPAss_123
         private bool _isAuthorization;
-
 
         public ObservableCollection<IdentUser> IdentUserCollection
         {
@@ -90,7 +93,6 @@ namespace Thoughts.UI.WPF.ViewModels
                     {
                         MessageBox.Show("Авторизация не выполнена.");
                     }
-
 
                 }, (p) => !_isAuthorization);
             }
@@ -170,7 +172,5 @@ namespace Thoughts.UI.WPF.ViewModels
                 }
             }
         }
-
-
     }
 }

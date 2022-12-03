@@ -6,8 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Polly;
+
 using Polly.Extensions.Http;
+using Polly;
 
 using Thoughts.UI.WPF.ViewModels;
 using Thoughts.WebAPI.Clients.Identity;
