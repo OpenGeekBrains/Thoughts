@@ -7,6 +7,7 @@ using Thoughts.DAL.Entities.Idetity;
 
 using static WebStore.Interfaces.Services.WebAPIAddresses.Addresses.Identity;
 using System.IdentityModel.Tokens.Jwt;
+using static System.Net.WebRequestMethods;
 
 namespace Thoughts.WebAPI.Clients.Identity;
 
@@ -24,6 +25,8 @@ public class AccountClient //: BaseClient //, UsersClient, IRolesClient
 
     public async Task<List<IdentUser>?> GetAllUsersAsync(CancellationToken Cancel = default)
     {
+        await CheckToken(Cancel).ConfigureAwait(false);
+
         var response = await Http.GetAsync($"{Accounts}/GetAllUsers", Cancel).ConfigureAwait(false);
 
         switch (response.StatusCode)
@@ -43,25 +46,7 @@ public class AccountClient //: BaseClient //, UsersClient, IRolesClient
 
     public async Task<List<IdentRole>?> GetAllRolessAsync(CancellationToken Cancel = default)
     {
-        var token = Http.DefaultRequestHeaders.Authorization.Parameter;
-
-        var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
-        var decodeJWT = jwtSecurityTokenHandler.ReadToken(token);
-
-        if (decodeJWT.ValidTo < DateTime.UtcNow)
-        {
-            var decodeRefreshJWT = jwtSecurityTokenHandler.ReadToken(_refreshToken);
-            if (decodeRefreshJWT.ValidTo > DateTime.UtcNow)
-            {
-                //ToDo добавить регенерацию токенов
-                return default;
-            }
-            else
-            {
-                return default;
-            }
-        }
+        await CheckToken(Cancel).ConfigureAwait(false);
 
         var response = await Http.GetAsync($"{Accounts}/GetAllRoles", Cancel).ConfigureAwait(false);
 
@@ -77,6 +62,33 @@ public class AccountClient //: BaseClient //, UsersClient, IRolesClient
                    .Content
                    .ReadFromJsonAsync<List<IdentRole>>(cancellationToken: Cancel);
                 return result;
+        }
+    }
+
+    private async Task CheckToken(CancellationToken Cancel)
+    {
+        var token = Http.DefaultRequestHeaders.Authorization.Parameter;
+
+        var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+
+        var decodeJWT = jwtSecurityTokenHandler.ReadJwtToken(token);
+
+        if (decodeJWT.ValidTo < DateTime.UtcNow)
+        {
+            var decodeRefreshJWT = jwtSecurityTokenHandler.ReadJwtToken(_refreshToken);
+            if (decodeRefreshJWT.ValidTo > DateTime.UtcNow)
+            {
+                var responseRefreshToken = await Http.GetAsync($"{Accounts}/GetRefreshToken", Cancel).ConfigureAwait(false);
+
+                if (responseRefreshToken.StatusCode == HttpStatusCode.OK)
+                {
+                    var bearer = responseRefreshToken.Headers.GetValues("Authorization").FirstOrDefault();
+                    Http.DefaultRequestHeaders.Authorization = new("Bearer", bearer);
+                    _refreshToken = responseRefreshToken.Headers.GetValues("RefreshToken").FirstOrDefault();
+                }
+                else
+                    throw new InvalidOperationException("Не удалось обновить токен!");
+            }
         }
     }
 
