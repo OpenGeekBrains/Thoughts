@@ -1,19 +1,24 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
-using System.Windows.Controls;
+
 using System.Windows;
+using System.Windows.Controls;
+
 using System.Windows.Input;
+using System.Windows.Media;
 
 using Thoughts.DAL.Entities.Idetity;
 using Thoughts.UI.WPF.Infrastructure.Commands;
 using Thoughts.UI.WPF.ViewModels.Base;
+using Thoughts.UI.WPF.Views;
 using Thoughts.WebAPI.Clients.Identity;
 
 namespace Thoughts.UI.WPF.ViewModels
 {
     public class AccountsViewModel : ViewModel
     {
+
         private static AccountClient _account_client;
 
         private static HttpClient http = new HttpClient
@@ -24,6 +29,7 @@ namespace Thoughts.UI.WPF.ViewModels
         {
             _account_client = account_client;
         }
+
 
         private ObservableCollection<IdentUser> _identUserCollection = new ObservableCollection<IdentUser>();
         private ObservableCollection<IdentRole> _identRoleCollection = new ObservableCollection<IdentRole>();
@@ -40,6 +46,7 @@ namespace Thoughts.UI.WPF.ViewModels
                 OnPropertyChanged("IdentUserCollection");
             }
         }
+
         public ObservableCollection<IdentRole> IdentRoleCollection
         {
             get => _identRoleCollection;
@@ -47,6 +54,25 @@ namespace Thoughts.UI.WPF.ViewModels
             {
                 _identRoleCollection = value;
                 OnPropertyChanged("IdentRoleCollection");
+            }
+        }
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged("Title");
+            }
+        }
+
+        public string UserName
+        {
+            get => _userName;
+            set
+            {
+                _userName = value;
+                OnPropertyChanged("UserName");
             }
         }
 
@@ -91,6 +117,7 @@ namespace Thoughts.UI.WPF.ViewModels
                     {
                         MessageBox.Show("Авторизация не выполнена.");
                     }
+
                 }, (p) => !_isAuthorization);
             }
         }
@@ -126,9 +153,9 @@ namespace Thoughts.UI.WPF.ViewModels
                     {
                         IdentRoleCollection = new ObservableCollection<IdentRole>(temp);
                     }
-                    else 
+                    else
                     {
-                        IdentRoleCollection = new ObservableCollection<IdentRole>(); 
+                        IdentRoleCollection = new ObservableCollection<IdentRole>();
                     }
                 }, (p) => _isAuthorization);
             }
@@ -169,5 +196,21 @@ namespace Thoughts.UI.WPF.ViewModels
                 }
             }
         }
+
+        private static void ChangeTitle(string name = "")
+        {
+            foreach (Window window in App.Current.Windows)
+            {
+                if (window is MainWindow)
+                {
+                    if (name != "")
+                        window.Title = $"Hello {name}";
+                    else
+                        window.Title = "Hello";
+                }
+            }
+        }
+
+
     }
 }
