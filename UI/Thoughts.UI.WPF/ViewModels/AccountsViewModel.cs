@@ -21,10 +21,6 @@ namespace Thoughts.UI.WPF.ViewModels
 
         private static AccountClient _account_client;
 
-        private static HttpClient http = new HttpClient
-        {
-            BaseAddress = new("https://localhost:5011")
-        };
         public AccountsViewModel(AccountClient account_client)
         {
             _account_client = account_client;
@@ -56,26 +52,6 @@ namespace Thoughts.UI.WPF.ViewModels
                 OnPropertyChanged("IdentRoleCollection");
             }
         }
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged("Title");
-            }
-        }
-
-        public string UserName
-        {
-            get => _userName;
-            set
-            {
-                _userName = value;
-                OnPropertyChanged("UserName");
-            }
-        }
-
         public string Title
         {
             get => _title;
@@ -196,21 +172,5 @@ namespace Thoughts.UI.WPF.ViewModels
                 }
             }
         }
-
-        private static void ChangeTitle(string name = "")
-        {
-            foreach (Window window in App.Current.Windows)
-            {
-                if (window is MainWindow)
-                {
-                    if (name != "")
-                        window.Title = $"Hello {name}";
-                    else
-                        window.Title = "Hello";
-                }
-            }
-        }
-
-
     }
 }
