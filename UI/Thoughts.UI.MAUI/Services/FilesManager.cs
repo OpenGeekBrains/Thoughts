@@ -57,24 +57,13 @@ namespace Thoughts.UI.MAUI.Services
             return result;
         }
 
-        public async Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(int page = 1, CancellationToken token = default)
+        public async Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(FilesFilter filter, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
-            if (page < 1)
-            {
-                _logger.LogWarning("{Method}: Page value can't be less than \"1\". Changing page value on \"1\"", nameof(GetFilesAsync));
-                page = 1;
-            }
+            filter ??= FilesFilter.Default;
 
-            var fileFilter = new FilesFilter 
-            { 
-                Page = page, 
-                PageSize = _pageSettings.PageSize,
-                OrderByType = OrderByType.ByCreatedTimeDesc
-            };
-
-            var (files, totalCount) = await _filesService.GetFilesAsync(fileFilter, token).ConfigureAwait(false);
+            var (files, totalCount) = await _filesService.GetFilesAsync(filter, token).ConfigureAwait(false);
 
             var result = files.Select(f => new FileViewModel
             {
@@ -86,7 +75,7 @@ namespace Thoughts.UI.MAUI.Services
                 Active = f.Active
             });
 
-            var totalPages = (int) Math.Ceiling((double) totalCount / _pageSettings.PageSize);
+            var totalPages = (int) Math.Ceiling((double) totalCount / filter.PageSize);
 
             return (result, totalPages);
         }

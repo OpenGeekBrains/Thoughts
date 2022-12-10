@@ -1,4 +1,5 @@
 ﻿using Thoughts.UI.MAUI.ViewModels;
+using Thoughts.WebAPI.Clients.Files;
 
 namespace Thoughts.UI.MAUI.Services.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Thoughts.UI.MAUI.Services.Interfaces
 
         Task<bool> UploadAnyFileAsync(FileResult file, CancellationToken token = default);
 
-        Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(int page = 1, CancellationToken token = default);
+        Task<(IEnumerable<FileViewModel> Files, int TotalPages)> GetFilesAsync(FilesFilter filter, CancellationToken token = default);
 
         Task<bool> DeleteFileAsync(string hash, CancellationToken token = default);
 

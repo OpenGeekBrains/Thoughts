@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 
 using Microsoft.Extensions.Logging;
 
 using Thoughts.UI.MAUI.Services.Interfaces;
 using Thoughts.UI.MAUI.ViewModels.Base;
+using Thoughts.WebAPI.Clients.Files;
 
 namespace Thoughts.UI.MAUI.ViewModels
 {
@@ -16,6 +16,7 @@ namespace Thoughts.UI.MAUI.ViewModels
         private readonly IFilesManager _fileManager;
         private readonly IConnectivity _connectivity;
         private readonly ILogger<FilesViewModel> _logger;
+        private readonly AppSettings.PageSettings _pageSettings;
 
         private readonly PickOptions _pickOptions;
 
@@ -85,10 +86,12 @@ namespace Thoughts.UI.MAUI.ViewModels
 
         public FilesViewModel(IFilesManager fileManager, 
             IConnectivity connectivity,
+            AppSettings appSettings,
             ILogger<FilesViewModel> logger = default)
         {
             _fileManager = fileManager;
             _connectivity = connectivity;
+            _pageSettings = appSettings.Page;
             _logger = logger;
 
             Title = "Файлы";
@@ -264,6 +267,8 @@ namespace Thoughts.UI.MAUI.ViewModels
                     return;
                 }
 
+                if (!await CheckInternetConnectionAsync()) return;
+
                 result = await _fileManager.ActivateFileAsync(file.Hash);
 
                 file.Active = result;
@@ -271,6 +276,49 @@ namespace Thoughts.UI.MAUI.ViewModels
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "{Method}: {message}", nameof(OnChangeActive), ex.Message);
+                await Shell.Current.DisplayAlert("Ошибка!",
+                    $"Не получилось обновить статус активации файла: {ex.Message}", "OK");
+            }
+        }
+
+        #endregion
+
+        #region Delete file
+
+        ICommand _deleteFileCommand;
+
+        public ICommand DeleteFileCommand => _deleteFileCommand ??= new Command(OnDeleteFile);
+
+        private async void OnDeleteFile(object obj)
+        {
+            try
+            {
+                var file = obj as FileViewModel;
+
+                if (file is null) throw new ArgumentNullException($"{nameof(file)}");
+
+                if (file.Active)
+                {
+                    await Shell.Current.DisplayAlert("Ошибка",
+                        "Поменяйте статус активности файла преждем чем удалить", "OK");
+                    return;
+                }
+
+                if (!await CheckInternetConnectionAsync()) return;
+
+                var result = await _fileManager.DeleteFileAsync(file.Hash);
+
+                if(result)
+                {
+                    _logger?.LogInformation("{Method}: delete file success", nameof(OnDeleteFile));
+                    await UpdatePageInfoAsync(CurrentPageNum);
+                }
+
+                _logger?.LogError("{Method}: delete file failure", nameof(OnDeleteFile));
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "{Method}: {message}", nameof(OnDeleteFile), ex.Message);
                 await Shell.Current.DisplayAlert("Ошибка!",
                     $"Не получилось обновить статус активации файла: {ex.Message}", "OK");
             }
@@ -359,7 +407,14 @@ namespace Thoughts.UI.MAUI.ViewModels
         {
             try
             {
-                var (files, totalPages) = await _fileManager.GetFilesAsync(pageNum);
+                var filter = new FilesFilter
+                {
+                    Page = pageNum == 0 ? 1 : pageNum, 
+                    PageSize = _pageSettings.PageSize,
+                    OrderByType = OrderByType.ByCreatedTime,
+                };
+
+                var (files, totalPages) = await _fileManager.GetFilesAsync(filter);
 
                 if (Files.Any())
                     Files.Clear();

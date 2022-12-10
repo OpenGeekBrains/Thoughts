@@ -7,6 +7,13 @@
         public int PageSize { get; set; }
 
         public OrderByType OrderByType { get; set; }
+
+        public static readonly FilesFilter Default = new FilesFilter
+        {
+            Page = 1,
+            PageSize = 5,
+            OrderByType = OrderByType.ByCreatedTime,
+        };
     }
 
     public enum OrderByType

@@ -68,35 +68,50 @@
                             SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:FileViewModel">
-                        <Frame Padding="15"
-                               Margin="5">
-                            <VerticalStackLayout>
-                                <Grid Padding="0, 0, 0, 10"
+                        <SwipeView Margin="5"
+                                   Threshold="80"
+                                   HorizontalOptions="EndAndExpand">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Удалить"
+                                           BackgroundColor="Red"
+                                           IconImageSource="trash30.png"
+                                           Command="{Binding DeleteFileCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
+                                           CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Grid>
+                                <Frame Padding="15">
+                                    <VerticalStackLayout>
+                                        <Grid Padding="0, 0, 0, 10"
                                       ColumnDefinitions="*, Auto" 
                                       ColumnSpacing="10">
-                                    <Label FontSize="18" 
+
+                                            <Label FontSize="18" 
                                            Text="{Binding Name}" 
                                            LineBreakMode="MiddleTruncation"/>
-                                    
-                                    <ImageButton Style="{StaticResource ActivateImageButton}"
+
+                                            <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="active32.svg" 
                                                  Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
                                                  CommandParameter="{Binding .}"
                                                  HorizontalOptions="Start"
                                                  IsVisible="{Binding Active}" />
-                                    
-                                    <ImageButton Style="{StaticResource ActivateImageButton}"
+
+                                            <ImageButton Style="{StaticResource ActivateImageButton}"
                                                  Source="not_active32.png" 
                                                  Command="{Binding ChangeFileActiveCommand, Source={RelativeSource AncestorType={x:Type vm:FilesViewModel}}}"
                                                  CommandParameter="{Binding .}"
                                                  IsVisible="{Binding NotActive}" />
-                                </Grid>
+                                        </Grid>
 
-                                <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
-                                <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
+                                        <Label FontSize="14" Text="{Binding Size, StringFormat='Размер: {0} байт'}"/>
+                                        <Label FontSize="14" Text="{Binding Created, StringFormat='Создан: {0:d MMMM yyyy, HH:mm:ss}'}"/>
 
-                            </VerticalStackLayout>
-                        </Frame>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -105,6 +120,7 @@
         <Button Text="Пред."
                 Style="{StaticResource NavigateButton}"
                 IsVisible="{Binding NotFirstPage}"
+                IsEnabled="{Binding IsNotBusy}"
                 Command="{Binding GetFilesPageCommand}"
                 CommandParameter="{Binding PreviousPageNum}"
                 Grid.Column="0"
@@ -120,6 +136,7 @@
         <Button Text="След."
                 Style="{StaticResource NavigateButton}"
                 IsVisible="{Binding NotLastPage}"
+                IsEnabled="{Binding IsNotBusy}"
                 Command="{Binding GetFilesPageCommand}"
                 CommandParameter="{Binding NextPageNum}"
                 Grid.Column="2"

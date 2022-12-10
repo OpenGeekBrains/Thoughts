@@ -7,25 +7,31 @@
     Shell.FlyoutBehavior="Flyout">
 
     <FlyoutItem Title="Главная">
-            <ShellContent Title="Главная"
-                          ContentTemplate="{DataTemplate views:MainPage}"
-                          Route="MainPage" />
+        
+        <ShellContent Title="Главная"
+                      ContentTemplate="{DataTemplate views:MainPage}"
+                      Route="MainPage" />
+        
     </FlyoutItem>
 
     <FlyoutItem Title="Погода">
-            <ShellContent Title="Погода"
-                          ContentTemplate="{DataTemplate views:WeatherInfosPage}"
-                          Route="WeatherInfosPage" />
+        
+        <ShellContent Title="Погода"
+                      ContentTemplate="{DataTemplate views:WeatherInfosPage}"
+                      Route="WeatherInfosPage" />
+        
     </FlyoutItem>
 
     <FlyoutItem Title="Блоги">
-            <ShellContent Title="Блоги"
-                          ContentTemplate="{DataTemplate views:BlogsPage}"
-                          Route="BlogsPage" />
+        
+        <ShellContent Title="Блоги"
+                      ContentTemplate="{DataTemplate views:BlogsPage}"
+                      Route="BlogsPage" />
 
     </FlyoutItem>
 
-    <FlyoutItem Title="Файлы">
+    <FlyoutItem Title="Файлы" Icon="list30.png">
+
         <ShellContent Title="Файлы"
                       ContentTemplate="{DataTemplate views:FilesPage}"
                       Route="FilesPage" />
