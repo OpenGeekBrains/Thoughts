@@ -5,34 +5,46 @@
     /// </summary>
     public class AppSettings
     {
-        /// <summary>
-        /// Api address for work on devices.
-        /// </summary>
-        public string DeviceWebAPI { get; set; }
+        public WebApiSettings WebApi { get; set; }
 
-        /// <summary>
-        /// Api address for debug except Android.
-        /// </summary>
-        public string DebugWebAPI { get; set; }
+        public PageSettings Page { get; set; }
 
-        /// <summary>
-        /// Api address for debug on emulator Android only.
-        /// </summary>
-        public string DebugWebAPIAndroid { get; set; }
+        public class WebApiSettings
+        {
+            /// <summary>
+            /// Api address for work on devices.
+            /// </summary>
+            public string DeviceWebAPI { get; set; }
 
-        /// <summary>
-        /// MVC Api address for work on devices.
-        /// </summary>
-        public string DeviceMvcWebAPI { get; set; }
+            /// <summary>
+            /// Api address for debug except Android.
+            /// </summary>
+            public string DebugWebAPI { get; set; }
 
-        /// <summary>
-        /// MVC Api address for debug except Android.
-        /// </summary>
-        public string DebugMvcWebAPI { get; set; }
+            /// <summary>
+            /// Api address for debug on emulator Android only.
+            /// </summary>
+            public string DebugWebAPIAndroid { get; set; }
 
-        /// <summary>
-        /// MVC Api address for debug on emulator Android only.
-        /// </summary>
-        public string DebugMvcWebAPIAndroid { get; set; }
+            /// <summary>
+            /// MVC Api address for work on devices.
+            /// </summary>
+            public string DeviceMvcWebAPI { get; set; }
+
+            /// <summary>
+            /// MVC Api address for debug except Android.
+            /// </summary>
+            public string DebugMvcWebAPI { get; set; }
+
+            /// <summary>
+            /// MVC Api address for debug on emulator Android only.
+            /// </summary>
+            public string DebugMvcWebAPIAndroid { get; set; }
+        }
+
+        public class PageSettings
+        {
+            public int PageSize { get; set; }
+        }
     }
 }

@@ -16,7 +16,7 @@ public class WeatherClient : IWeatherService
         return result ?? throw new InvalidOperationException("Не удалось получить данные от сервиса");
     }
 
-    public IEnumerable<WeatherInfo> GetAll() => GetAllAsync().GetAwaiter().GetResult();
+    public IEnumerable<WeatherInfo> GetAll() => GetAllAsync().Result;
 }
 
 public record WeatherInfo(DateTime Date, string? Summary)

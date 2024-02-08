@@ -24,6 +24,6 @@ namespace Thoughts.UI.MAUI.Services
             return posts.ToList();
         }
 
-        public IList<Post> GetAllInfos() => GetAllInfosAsync().GetAwaiter().GetResult();
+        public IList<Post> GetAllInfos() => GetAllInfosAsync().Result;
     }
 }

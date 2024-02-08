@@ -32,6 +32,6 @@ namespace Thoughts.UI.MAUI.Services
             return result ?? Enumerable.Empty<WeatherInfo>();
         }
 
-        public IEnumerable<WeatherInfo> GetAllInfos() => GetAllInfosAsync().GetAwaiter().GetResult();
+        public IEnumerable<WeatherInfo> GetAllInfos() => GetAllInfosAsync().Result;
     }
 }

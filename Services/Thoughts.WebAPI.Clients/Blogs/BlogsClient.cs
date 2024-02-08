@@ -20,6 +20,6 @@ namespace Thoughts.WebAPI.Clients.Blogs
             return posts ?? Enumerable.Empty<Post>();
         }
 
-        public IEnumerable<Post> GetAll() => GetAllAsync().GetAwaiter().GetResult();
+        public IEnumerable<Post> GetAll() => GetAllAsync().Result;
     }
 }
